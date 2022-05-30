@@ -1,0 +1,29 @@
+{
+  "name": "react-sellapp",
+  "version": "1.0.0",
+  "description": "Sell.app embed integration for React applications.",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rm -rf dist/ && npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module CommonJS --outDir dist/cjs"
+  },
+  "author": "6ichem",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^17.0.36",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.5",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "typescript": "^4.5.2"
+  },
+  "peerDependencies": {
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  }
+}
