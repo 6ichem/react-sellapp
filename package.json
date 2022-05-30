@@ -1,5 +1,9 @@
 {
   "name": "react-sellapp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/6ichem/react-sellapp.git"
+  },
   "version": "1.0.0",
   "description": "Sell.app embed integration for React applications.",
   "main": "dist/cjs/index.js",
