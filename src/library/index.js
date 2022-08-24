@@ -634,7 +634,7 @@ function has$1(target, key) {
   }
   return result;
 }
-function ownKeys(target) {
+function ownKeys$2(target) {
   track(target, "iterate", isArray$1(target) ? "length" : ITERATE_KEY);
   return Reflect.ownKeys(target);
 }
@@ -643,7 +643,7 @@ const mutableHandlers = {
   set,
   deleteProperty,
   has: has$1,
-  ownKeys,
+  ownKeys: ownKeys$2,
 };
 const readonlyHandlers = {
   get: readonlyGet,
@@ -1235,11 +1235,11 @@ function nextTick(fn) {
 }
 function findInsertionIndex(id) {
   let start2 = flushIndex + 1;
-  let end = queue.length;
-  while (start2 < end) {
-    const middle = (start2 + end) >>> 1;
+  let end3 = queue.length;
+  while (start2 < end3) {
+    const middle = (start2 + end3) >>> 1;
     const middleJobId = getId(queue[middle]);
-    middleJobId < id ? (start2 = middle + 1) : (end = middle);
+    middleJobId < id ? (start2 = middle + 1) : (end3 = middle);
   }
   return start2;
 }
@@ -1491,9 +1491,9 @@ function renderComponentRoot(instance) {
     props,
     propsOptions: [propsOptions],
     slots,
-    attrs,
+    attrs: attrs2,
     emit,
-    render: render2,
+    render: render3,
     renderCache,
     data,
     setupState,
@@ -1507,7 +1507,7 @@ function renderComponentRoot(instance) {
     if (vnode.shapeFlag & 4) {
       const proxyToUse = withProxy || proxy;
       result = normalizeVNode(
-        render2.call(
+        render3.call(
           proxyToUse,
           proxyToUse,
           renderCache,
@@ -1517,30 +1517,30 @@ function renderComponentRoot(instance) {
           ctx
         )
       );
-      fallthroughAttrs = attrs;
+      fallthroughAttrs = attrs2;
     } else {
-      const render3 = Component;
+      const render4 = Component;
       if (false);
       result = normalizeVNode(
-        render3.length > 1
-          ? render3(
+        render4.length > 1
+          ? render4(
               props,
               false
                 ? {
                     get attrs() {
                       markAttrsAccessed();
-                      return attrs;
+                      return attrs2;
                     },
                     slots,
                     emit,
                   }
-                : { attrs, slots, emit }
+                : { attrs: attrs2, slots, emit }
             )
-          : render3(props, null)
+          : render4(props, null)
       );
       fallthroughAttrs = Component.props
-        ? attrs
-        : getFunctionalFallthrough(attrs);
+        ? attrs2
+        : getFunctionalFallthrough(attrs2);
     }
   } catch (err) {
     blockStack.length = 0;
@@ -1575,20 +1575,20 @@ function renderComponentRoot(instance) {
   setCurrentRenderingInstance(prev);
   return result;
 }
-const getFunctionalFallthrough = (attrs) => {
+const getFunctionalFallthrough = (attrs2) => {
   let res;
-  for (const key in attrs) {
+  for (const key in attrs2) {
     if (key === "class" || key === "style" || isOn(key)) {
-      (res || (res = {}))[key] = attrs[key];
+      (res || (res = {}))[key] = attrs2[key];
     }
   }
   return res;
 };
-const filterModelListeners = (attrs, props) => {
+const filterModelListeners = (attrs2, props) => {
   const res = {};
-  for (const key in attrs) {
+  for (const key in attrs2) {
     if (!isModelListener(key) || !(key.slice(9) in props)) {
-      res[key] = attrs[key];
+      res[key] = attrs2[key];
     }
   }
   return res;
@@ -1674,24 +1674,24 @@ function queueEffectWithSuspense(fn, suspense) {
 function provide$1(key, value) {
   if (!currentInstance);
   else {
-    let provides = currentInstance.provides;
+    let provides7 = currentInstance.provides;
     const parentProvides =
       currentInstance.parent && currentInstance.parent.provides;
-    if (parentProvides === provides) {
-      provides = currentInstance.provides = Object.create(parentProvides);
+    if (parentProvides === provides7) {
+      provides7 = currentInstance.provides = Object.create(parentProvides);
     }
-    provides[key] = value;
+    provides7[key] = value;
   }
 }
 function inject(key, defaultValue, treatDefaultAsFactory = false) {
   const instance = currentInstance || currentRenderingInstance;
   if (instance) {
-    const provides =
+    const provides7 =
       instance.parent == null
         ? instance.vnode.appContext && instance.vnode.appContext.provides
         : instance.parent.provides;
-    if (provides && key in provides) {
-      return provides[key];
+    if (provides7 && key in provides7) {
+      return provides7[key];
     } else if (arguments.length > 1) {
       return treatDefaultAsFactory && isFunction$1(defaultValue)
         ? defaultValue.call(instance.proxy)
@@ -2047,7 +2047,7 @@ function resolveTransitionHooks(vnode, props, state, instance) {
   const callHook2 = (hook, args) => {
     hook && callWithAsyncErrorHandling(hook, instance, 9, args);
   };
-  const hooks = {
+  const hooks8 = {
     mode,
     persisted,
     beforeEnter(el) {
@@ -2094,8 +2094,8 @@ function resolveTransitionHooks(vnode, props, state, instance) {
         } else {
           callHook2(afterHook, [el]);
         }
-        if (hooks.delayedLeave) {
-          hooks.delayedLeave();
+        if (hooks8.delayedLeave) {
+          hooks8.delayedLeave();
         }
         el._enterCb = void 0;
       });
@@ -2146,7 +2146,7 @@ function resolveTransitionHooks(vnode, props, state, instance) {
       return resolveTransitionHooks(vnode2, props, state, instance);
     },
   };
-  return hooks;
+  return hooks8;
 }
 function emptyPlaceholder(vnode) {
   if (isKeepAlive(vnode)) {
@@ -2162,14 +2162,14 @@ function getKeepAliveChild(vnode) {
       : void 0
     : vnode;
 }
-function setTransitionHooks(vnode, hooks) {
+function setTransitionHooks(vnode, hooks8) {
   if (vnode.shapeFlag & 6 && vnode.component) {
-    setTransitionHooks(vnode.component.subTree, hooks);
+    setTransitionHooks(vnode.component.subTree, hooks8);
   } else if (vnode.shapeFlag & 128) {
-    vnode.ssContent.transition = hooks.clone(vnode.ssContent);
-    vnode.ssFallback.transition = hooks.clone(vnode.ssFallback);
+    vnode.ssContent.transition = hooks8.clone(vnode.ssContent);
+    vnode.ssFallback.transition = hooks8.clone(vnode.ssFallback);
   } else {
-    vnode.transition = hooks;
+    vnode.transition = hooks8;
   }
 }
 function getTransitionRawChildren(children2, keepComment = false) {
@@ -2236,7 +2236,7 @@ function injectToKeepAliveRoot(hook, type, target, keepAliveRoot) {
 }
 function injectHook(type, hook, target = currentInstance, prepend = false) {
   if (target) {
-    const hooks = target[type] || (target[type] = []);
+    const hooks8 = target[type] || (target[type] = []);
     const wrappedHook =
       hook.__weh ||
       (hook.__weh = (...args) => {
@@ -2251,9 +2251,9 @@ function injectHook(type, hook, target = currentInstance, prepend = false) {
         return res;
       });
     if (prepend) {
-      hooks.unshift(wrappedHook);
+      hooks8.unshift(wrappedHook);
     } else {
-      hooks.push(wrappedHook);
+      hooks8.push(wrappedHook);
     }
     return wrappedHook;
   }
@@ -2302,7 +2302,7 @@ function applyOptions(instance) {
     beforeUnmount,
     destroyed,
     unmounted,
-    render: render2,
+    render: render3,
     renderTracked,
     renderTriggered,
     errorCaptured,
@@ -2370,11 +2370,11 @@ function applyOptions(instance) {
     }
   }
   if (provideOptions) {
-    const provides = isFunction$1(provideOptions)
+    const provides7 = isFunction$1(provideOptions)
       ? provideOptions.call(publicThis)
       : provideOptions;
-    Reflect.ownKeys(provides).forEach((key) => {
-      provide$1(key, provides[key]);
+    Reflect.ownKeys(provides7).forEach((key) => {
+      provide$1(key, provides7[key]);
     });
   }
   if (created) {
@@ -2412,8 +2412,8 @@ function applyOptions(instance) {
       instance.exposed = {};
     }
   }
-  if (render2 && instance.render === NOOP) {
-    instance.render = render2;
+  if (render3 && instance.render === NOOP) {
+    instance.render = render3;
   }
   if (inheritAttrs != null) {
     instance.inheritAttrs = inheritAttrs;
@@ -2608,10 +2608,10 @@ function mergeWatchOptions(to, from) {
 }
 function initProps(instance, rawProps, isStateful, isSSR = false) {
   const props = {};
-  const attrs = {};
-  def(attrs, InternalObjectKey, 1);
+  const attrs2 = {};
+  def(attrs2, InternalObjectKey, 1);
   instance.propsDefaults = /* @__PURE__ */ Object.create(null);
-  setFullProps(instance, rawProps, props, attrs);
+  setFullProps(instance, rawProps, props, attrs2);
   for (const key in instance.propsOptions[0]) {
     if (!(key in props)) {
       props[key] = void 0;
@@ -2621,17 +2621,17 @@ function initProps(instance, rawProps, isStateful, isSSR = false) {
     instance.props = isSSR ? props : shallowReactive(props);
   } else {
     if (!instance.type.props) {
-      instance.props = attrs;
+      instance.props = attrs2;
     } else {
       instance.props = props;
     }
   }
-  instance.attrs = attrs;
+  instance.attrs = attrs2;
 }
 function updateProps(instance, rawProps, rawPrevProps, optimized) {
   const {
     props,
-    attrs,
+    attrs: attrs2,
     vnode: { patchFlag },
   } = instance;
   const rawCurrentProps = toRaw(props);
@@ -2644,9 +2644,9 @@ function updateProps(instance, rawProps, rawPrevProps, optimized) {
         let key = propsToUpdate[i];
         const value = rawProps[key];
         if (options) {
-          if (hasOwn(attrs, key)) {
-            if (value !== attrs[key]) {
-              attrs[key] = value;
+          if (hasOwn(attrs2, key)) {
+            if (value !== attrs2[key]) {
+              attrs2[key] = value;
               hasAttrsChanged = true;
             }
           } else {
@@ -2661,15 +2661,15 @@ function updateProps(instance, rawProps, rawPrevProps, optimized) {
             );
           }
         } else {
-          if (value !== attrs[key]) {
-            attrs[key] = value;
+          if (value !== attrs2[key]) {
+            attrs2[key] = value;
             hasAttrsChanged = true;
           }
         }
       }
     }
   } else {
-    if (setFullProps(instance, rawProps, props, attrs)) {
+    if (setFullProps(instance, rawProps, props, attrs2)) {
       hasAttrsChanged = true;
     }
     let kebabKey;
@@ -2698,10 +2698,10 @@ function updateProps(instance, rawProps, rawPrevProps, optimized) {
         }
       }
     }
-    if (attrs !== rawCurrentProps) {
-      for (const key in attrs) {
+    if (attrs2 !== rawCurrentProps) {
+      for (const key in attrs2) {
         if (!rawProps || (!hasOwn(rawProps, key) && true)) {
-          delete attrs[key];
+          delete attrs2[key];
           hasAttrsChanged = true;
         }
       }
@@ -2711,7 +2711,7 @@ function updateProps(instance, rawProps, rawPrevProps, optimized) {
     trigger$1(instance, "set", "$attrs");
   }
 }
-function setFullProps(instance, rawProps, props, attrs) {
+function setFullProps(instance, rawProps, props, attrs2) {
   const [options, needCastKeys] = instance.propsOptions;
   let hasAttrsChanged = false;
   let rawCastValues;
@@ -2729,8 +2729,8 @@ function setFullProps(instance, rawProps, props, attrs) {
           (rawCastValues || (rawCastValues = {}))[camelKey] = value;
         }
       } else if (!isEmitListener(instance.emitsOptions, key)) {
-        if (!(key in attrs) || value !== attrs[key]) {
-          attrs[key] = value;
+        if (!(key in attrs2) || value !== attrs2[key]) {
+          attrs2[key] = value;
           hasAttrsChanged = true;
         }
       }
@@ -3012,7 +3012,7 @@ function createAppContext() {
   };
 }
 let uid = 0;
-function createAppAPI(render2, hydrate) {
+function createAppAPI(render3, hydrate) {
   return function createApp2(rootComponent, rootProps = null) {
     if (rootProps != null && !isObject(rootProps)) {
       rootProps = null;
@@ -3072,7 +3072,7 @@ function createAppAPI(render2, hydrate) {
           if (isHydrate && hydrate) {
             hydrate(vnode, rootContainer);
           } else {
-            render2(vnode, rootContainer, isSVG);
+            render3(vnode, rootContainer, isSVG);
           }
           isMounted = true;
           app2._container = rootContainer;
@@ -3082,7 +3082,7 @@ function createAppAPI(render2, hydrate) {
       },
       unmount() {
         if (isMounted) {
-          render2(null, app2._container);
+          render3(null, app2._container);
           delete app2._container.__vue_app__;
         }
       },
@@ -4487,14 +4487,14 @@ function baseCreateRenderer(options, createHydrationFns) {
       performRemove();
     }
   };
-  const removeFragment = (cur, end) => {
+  const removeFragment = (cur, end3) => {
     let next;
-    while (cur !== end) {
+    while (cur !== end3) {
       next = hostNextSibling(cur);
       hostRemove(cur);
       cur = next;
     }
-    hostRemove(end);
+    hostRemove(end3);
   };
   const unmountComponent = (instance, parentSuspense, doRemove) => {
     const { bum, scope, update: update2, subTree, um } = instance;
@@ -4553,7 +4553,7 @@ function baseCreateRenderer(options, createHydrationFns) {
     }
     return hostNextSibling(vnode.anchor || vnode.el);
   };
-  const render2 = (vnode, container2, isSVG) => {
+  const render3 = (vnode, container2, isSVG) => {
     if (vnode == null) {
       if (container2._vnode) {
         unmount(container2._vnode, null, null, true);
@@ -4590,9 +4590,9 @@ function baseCreateRenderer(options, createHydrationFns) {
     [hydrate, hydrateNode] = createHydrationFns(internals);
   }
   return {
-    render: render2,
+    render: render3,
     hydrate,
-    createApp: createAppAPI(render2, hydrate),
+    createApp: createAppAPI(render3, hydrate),
   };
 }
 function toggleRecurse({ effect, update: update2 }, allowed) {
@@ -4693,7 +4693,7 @@ const TeleportImpl = {
       pbc: patchBlockChildren,
       o: { insert, querySelector, createText, createComment },
     } = internals;
-    const disabled = isTeleportDisabled(n2.props);
+    const disabled2 = isTeleportDisabled(n2.props);
     let { shapeFlag, children: children2, dynamicChildren } = n2;
     if (n1 == null) {
       const placeholder = (n2.el = createText(""));
@@ -4720,7 +4720,7 @@ const TeleportImpl = {
           );
         }
       };
-      if (disabled) {
+      if (disabled2) {
         mount(container2, mainAnchor);
       } else if (target) {
         mount(target, targetAnchor);
@@ -4758,7 +4758,7 @@ const TeleportImpl = {
           false
         );
       }
-      if (disabled) {
+      if (disabled2) {
         if (!wasDisabled) {
           moveTeleport(n2, container2, mainAnchor, internals, 1);
         }
@@ -5162,13 +5162,13 @@ function cloneVNode(vnode, extraProps, mergeRef = false) {
   };
   return cloned;
 }
-function createTextVNode(text = " ", flag = 0) {
-  return createVNode(Text, null, text, flag);
+function createTextVNode(text2 = " ", flag = 0) {
+  return createVNode(Text, null, text2, flag);
 }
-function createCommentVNode(text = "", asBlock = false) {
+function createCommentVNode(text2 = "", asBlock = false) {
   return asBlock
-    ? (openBlock(), createBlock(Comment$1, null, text))
-    : createVNode(Comment$1, null, text);
+    ? (openBlock(), createBlock(Comment$1, null, text2))
+    : createVNode(Comment$1, null, text2);
 }
 function normalizeVNode(child) {
   if (child == null || typeof child === "boolean") {
@@ -5565,13 +5565,13 @@ function setupStatefulComponent(instance, isSSR) {
   instance.proxy = markRaw(
     new Proxy(instance.ctx, PublicInstanceProxyHandlers)
   );
-  const { setup } = Component;
-  if (setup) {
+  const { setup: setup4 } = Component;
+  if (setup4) {
     const setupContext = (instance.setupContext =
-      setup.length > 1 ? createSetupContext(instance) : null);
+      setup4.length > 1 ? createSetupContext(instance) : null);
     setCurrentInstance(instance);
     pauseTracking();
-    const setupResult = callWithErrorHandling(setup, instance, 0, [
+    const setupResult = callWithErrorHandling(setup4, instance, 0, [
       instance.props,
       setupContext,
     ]);
@@ -5654,11 +5654,11 @@ function createSetupContext(instance) {
   const expose = (exposed) => {
     instance.exposed = exposed || {};
   };
-  let attrs;
+  let attrs2;
   {
     return {
       get attrs() {
-        return attrs || (attrs = createAttrsProxy(instance));
+        return attrs2 || (attrs2 = createAttrsProxy(instance));
       },
       slots: instance.slots,
       emit: instance.emit,
@@ -5736,13 +5736,13 @@ const nodeOps = {
     }
     return el;
   },
-  createText: (text) => doc.createTextNode(text),
-  createComment: (text) => doc.createComment(text),
-  setText: (node, text) => {
-    node.nodeValue = text;
+  createText: (text2) => doc.createTextNode(text2),
+  createComment: (text2) => doc.createComment(text2),
+  setText: (node, text2) => {
+    node.nodeValue = text2;
   },
-  setElementText: (el, text) => {
-    el.textContent = text;
+  setElementText: (el, text2) => {
+    el.textContent = text2;
   },
   parentNode: (node) => node.parentNode,
   nextSibling: (node) => node.nextSibling,
@@ -5757,12 +5757,12 @@ const nodeOps = {
     }
     return cloned;
   },
-  insertStaticContent(content, parent, anchor, isSVG, start2, end) {
+  insertStaticContent(content, parent, anchor, isSVG, start2, end3) {
     const before = anchor ? anchor.previousSibling : parent.lastChild;
-    if (start2 && (start2 === end || start2.nextSibling)) {
+    if (start2 && (start2 === end3 || start2.nextSibling)) {
       while (true) {
         parent.insertBefore(start2.cloneNode(true), anchor);
-        if (start2 === end || !(start2 = start2.nextSibling)) break;
+        if (start2 === end3 || !(start2 = start2.nextSibling)) break;
       }
     } else {
       templateContainer.innerHTML = isSVG ? `<svg>${content}</svg>` : content;
@@ -5945,11 +5945,11 @@ if (typeof window !== "undefined") {
   skipTimestampCheck = !!(ffMatch && Number(ffMatch[1]) <= 53);
 }
 let cachedNow = 0;
-const p = Promise.resolve();
+const p$1 = Promise.resolve();
 const reset = () => {
   cachedNow = 0;
 };
-const getNow = () => cachedNow || (p.then(reset), (cachedNow = _getNow()));
+const getNow = () => cachedNow || (p$1.then(reset), (cachedNow = _getNow()));
 function addEventListener(el, event, handler, options) {
   el.addEventListener(event, handler, options);
 }
@@ -6279,18 +6279,18 @@ function whenTransitionEnds(el, expectedType, explicitTimeout, resolve2) {
   }
   const endEvent = type + "end";
   let ended = 0;
-  const end = () => {
+  const end3 = () => {
     el.removeEventListener(endEvent, onEnd);
     resolveIfNotStale();
   };
   const onEnd = (e) => {
     if (e.target === el && ++ended >= propCount) {
-      end();
+      end3();
     }
   };
   setTimeout(() => {
     if (ended < propCount) {
-      end();
+      end3();
     }
   }, timeout + 1);
   el.addEventListener(endEvent, onEnd);
@@ -6347,7 +6347,7 @@ function getTimeout(delays, durations) {
   while (delays.length < durations.length) {
     delays = delays.concat(delays);
   }
-  return Math.max(...durations.map((d, i) => toMs(d) + toMs(delays[i])));
+  return Math.max(...durations.map((d2, i) => toMs(d2) + toMs(delays[i])));
 }
 function toMs(s) {
   return Number(s.slice(0, -1).replace(",", ".")) * 1e3;
@@ -6500,10 +6500,10 @@ function Se({ props: t, attrs: n, slots: u, slot: e, name: o }) {
   let _a2 = L(t, ["unmount", "static"]),
     { as: r } = _a2,
     s = __objRest(_a2, ["as"]),
-    d = (a = u.default) == null ? void 0 : a.call(u, e);
+    d2 = (a = u.default) == null ? void 0 : a.call(u, e);
   if (r === "template") {
     if (Object.keys(s).length > 0 || Object.keys(n).length > 0) {
-      let [i, ...l] = d != null ? d : [];
+      let [i, ...l] = d2 != null ? d2 : [];
       if (!co(i) || l.length > 0)
         throw new Error(
           [
@@ -6527,9 +6527,9 @@ function Se({ props: t, attrs: n, slots: u, slot: e, name: o }) {
         );
       return cloneVNode(i, s);
     }
-    return Array.isArray(d) && d.length === 1 ? d[0] : d;
+    return Array.isArray(d2) && d2.length === 1 ? d2[0] : d2;
   }
-  return h$1(r, s, d);
+  return h$1(r, s, d2);
 }
 function L(t, n = []) {
   let u = Object.assign({}, t);
@@ -6543,9 +6543,9 @@ function co(t) {
         typeof t.type == "object" ||
         typeof t.type == "function";
 }
-var mo = 0;
+var mo$1 = 0;
 function vo() {
-  return ++mo;
+  return ++mo$1;
 }
 function h() {
   return vo();
@@ -6566,20 +6566,20 @@ function J(t, n) {
           let s = u
             .slice()
             .reverse()
-            .findIndex((d, a, i) =>
-              o !== -1 && i.length - a - 1 >= o ? false : !n.resolveDisabled(d)
+            .findIndex((d2, a, i) =>
+              o !== -1 && i.length - a - 1 >= o ? false : !n.resolveDisabled(d2)
             );
           return s === -1 ? s : u.length - 1 - s;
         }
         case 2:
-          return u.findIndex((s, d) =>
-            d <= o ? false : !n.resolveDisabled(s)
+          return u.findIndex((s, d2) =>
+            d2 <= o ? false : !n.resolveDisabled(s)
           );
         case 3: {
           let s = u
             .slice()
             .reverse()
-            .findIndex((d) => !n.resolveDisabled(d));
+            .findIndex((d2) => !n.resolveDisabled(d2));
           return s === -1 ? s : u.length - 1 - s;
         }
         case 4:
@@ -6644,7 +6644,7 @@ function Y({ container: t, accept: n, walk: u, enabled: e }) {
   watchEffect(() => {
     let o = t.value;
     if (!o || (e !== void 0 && !e.value)) return;
-    let r = Object.assign((d) => n(d), { acceptNode: n }),
+    let r = Object.assign((d2) => n(d2), { acceptNode: n }),
       s = document.createTreeWalker(o, NodeFilter.SHOW_ELEMENT, r, false);
     for (; s.nextNode(); ) u(s.currentNode);
   });
@@ -6670,7 +6670,7 @@ defineComponent({
     let o = ref(1),
       r = ref(null),
       s = ref(null),
-      d = ref(null),
+      d2 = ref(null),
       a = ref(null),
       i = ref({ static: false, hold: false }),
       l = ref([]),
@@ -6681,7 +6681,7 @@ defineComponent({
         value: p2,
         inputRef: s,
         labelRef: r,
-        buttonRef: d,
+        buttonRef: d2,
         optionsRef: a,
         disabled: computed(() => t.disabled),
         options: l,
@@ -6736,9 +6736,9 @@ defineComponent({
                     )) != null
                 ? E
                 : []
-            ).reduce((D, w, F) => Object.assign(D, { [w.id]: F }), {});
+            ).reduce((D, w2, F) => Object.assign(D, { [w2.id]: F }), {});
           (l.value = [...l.value, { id: m, dataRef: g }].sort(
-            (D, w) => y[D.id] - y[w.id]
+            (D, w2) => y[D.id] - y[w2.id]
           )),
             (c.value = (() => (S === null ? null : l.value.indexOf(S)))());
         },
@@ -6757,7 +6757,7 @@ defineComponent({
       let g = m.target;
       o.value === 0 &&
         (((S = v(s)) == null ? void 0 : S.contains(g)) ||
-          ((y = v(d)) == null ? void 0 : y.contains(g)) ||
+          ((y = v(d2)) == null ? void 0 : y.contains(g)) ||
           ((R = v(a)) == null ? void 0 : R.contains(g)) ||
           f.closeCombobox());
     }),
@@ -6798,9 +6798,9 @@ defineComponent({
     }
     return () => {
       let s = { open: e.comboboxState.value === 0, disabled: e.disabled.value },
-        d = { id: o, ref: e.labelRef, onClick: r };
+        d2 = { id: o, ref: e.labelRef, onClick: r };
       return x({
-        props: __spreadValues(__spreadValues({}, t), d),
+        props: __spreadValues(__spreadValues({}, t), d2),
         slot: s,
         attrs: n,
         slots: u,
@@ -6874,7 +6874,7 @@ defineComponent({
           return;
       }
     }
-    let d = P(
+    let d2 = P(
       computed(() => ({ as: t.as, type: n.type })),
       e.buttonRef
     );
@@ -6884,7 +6884,7 @@ defineComponent({
         i = {
           ref: e.buttonRef,
           id: o,
-          type: d.value,
+          type: d2.value,
           tabindex: "-1",
           "aria-haspopup": true,
           "aria-controls": (l = v(e.optionsRef)) == null ? void 0 : l.id,
@@ -6975,7 +6975,7 @@ defineComponent({
           break;
       }
     }
-    function d(a) {
+    function d2(a) {
       o.openCombobox(), n("change", a);
     }
     return () => {
@@ -6997,8 +6997,8 @@ defineComponent({
               : b.id,
           id: r,
           onKeydown: s,
-          onChange: d,
-          onInput: d,
+          onChange: d2,
+          onInput: d2,
           role: "combobox",
           type: "text",
           tabIndex: 0,
@@ -7041,20 +7041,20 @@ defineComponent({
       Y({
         container: computed(() => v(e.optionsRef)),
         enabled: computed(() => e.comboboxState.value === 0),
-        accept(d) {
-          return d.getAttribute("role") === "option"
+        accept(d2) {
+          return d2.getAttribute("role") === "option"
             ? NodeFilter.FILTER_REJECT
-            : d.hasAttribute("role")
+            : d2.hasAttribute("role")
             ? NodeFilter.FILTER_SKIP
             : NodeFilter.FILTER_ACCEPT;
         },
-        walk(d) {
-          d.setAttribute("role", "none");
+        walk(d2) {
+          d2.setAttribute("role", "none");
         },
       }),
       () => {
         var l, c, p2, f;
-        let d = { open: e.comboboxState.value === 0 },
+        let d2 = { open: e.comboboxState.value === 0 },
           a = {
             "aria-activedescendant":
               e.activeOptionIndex.value === null ||
@@ -7074,7 +7074,7 @@ defineComponent({
           i = L(t, ["hold"]);
         return x({
           props: __spreadValues(__spreadValues({}, i), a),
-          slot: d,
+          slot: d2,
           attrs: n,
           slots: u,
           features: 1 | 2,
@@ -7101,8 +7101,8 @@ defineComponent({
           : false
       ),
       s = computed(() => toRaw(e.value.value) === toRaw(t.value)),
-      d = computed(() => ({ disabled: t.disabled, value: t.value }));
-    onMounted(() => e.registerOption(o, d)),
+      d2 = computed(() => ({ disabled: t.disabled, value: t.value }));
+    onMounted(() => e.registerOption(o, d2)),
       onUnmounted(() => e.unregisterOption(o)),
       onMounted(() => {
         watch(
@@ -7239,18 +7239,18 @@ function O(t, n) {
       );
     })(),
     s = n & 32 ? { preventScroll: true } : {},
-    d = 0,
+    d2 = 0,
     a = u.length,
     i;
   do {
-    if (d >= a || d + a <= 0) return 0;
-    let l = r + d;
+    if (d2 >= a || d2 + a <= 0) return 0;
+    let l = r + d2;
     if (n & 16) l = (l + a) % a;
     else {
       if (l < 0) return 3;
       if (l >= a) return 1;
     }
-    (i = u[l]), i == null || i.focus(s), (d += o);
+    (i = u[l]), i == null || i.focus(s), (d2 += o);
   } while (i !== document.activeElement);
   return i.hasAttribute("tabindex") || i.setAttribute("tabindex", "0"), 2;
 }
@@ -7263,12 +7263,12 @@ function Re(t, n = ref(true), u = ref({})) {
     o = ref(null);
   function r() {
     if (!n.value || t.value.size !== 1) return;
-    let { initialFocus: d } = u.value,
+    let { initialFocus: d2 } = u.value,
       a = document.activeElement;
-    if (d) {
-      if (d === a) return;
+    if (d2) {
+      if (d2 === a) return;
     } else if (ie(t.value, a)) return;
-    if (((e.value = a), d)) te(d);
+    if (((e.value = a), d2)) te(d2);
     else {
       let i = false;
       for (let l of t.value)
@@ -7291,16 +7291,16 @@ function Re(t, n = ref(true), u = ref({})) {
       n.value ? r() : s();
     }),
     onUnmounted(s),
-    C("keydown", (d) => {
+    C("keydown", (d2) => {
       if (
         !!n.value &&
-        d.key === "Tab" &&
+        d2.key === "Tab" &&
         !!document.activeElement &&
         t.value.size === 1
       ) {
-        d.preventDefault();
+        d2.preventDefault();
         for (let a of t.value)
-          if (O(a, (d.shiftKey ? 2 : 4) | 16) === 2) {
+          if (O(a, (d2.shiftKey ? 2 : 4) | 16) === 2) {
             o.value = document.activeElement;
             break;
           }
@@ -7308,15 +7308,15 @@ function Re(t, n = ref(true), u = ref({})) {
     }),
     C(
       "focus",
-      (d) => {
+      (d2) => {
         if (!n.value || t.value.size !== 1) return;
         let a = o.value;
         if (!a) return;
-        let i = d.target;
+        let i = d2.target;
         i && i instanceof HTMLElement
           ? ie(t.value, i)
             ? ((o.value = i), te(i))
-            : (d.preventDefault(), d.stopPropagation(), te(a))
+            : (d2.preventDefault(), d2.stopPropagation(), te(a))
           : te(o.value);
       },
       true
@@ -7438,21 +7438,21 @@ var Pt = defineComponent({
         Rt(s),
         onUnmounted(() => {
           var a;
-          let d = document.getElementById("headlessui-portal-root");
-          !d ||
-            (r.value === d &&
+          let d2 = document.getElementById("headlessui-portal-root");
+          !d2 ||
+            (r.value === d2 &&
               r.value.children.length <= 0 &&
               ((a = r.value.parentElement) == null || a.removeChild(r.value)));
         }),
         Te(),
         () => {
           if (r.value === null) return null;
-          let d = { ref: s };
+          let d2 = { ref: s };
           return h$1(
             Teleport,
             { to: r.value },
             x({
-              props: __spreadValues(__spreadValues({}, t), d),
+              props: __spreadValues(__spreadValues({}, t), d2),
               slot: {},
               attrs: u,
               slots: n,
@@ -7524,12 +7524,12 @@ var ne = defineComponent({
     return (
       onMounted(() => onUnmounted(e.register(o))),
       () => {
-        let { name: r = "Description", slot: s = ref({}), props: d = {} } = e,
+        let { name: r = "Description", slot: s = ref({}), props: d2 = {} } = e,
           a = t,
           i = __spreadProps(
             __spreadValues(
               {},
-              Object.entries(d).reduce(
+              Object.entries(d2).reduce(
                 (l, [c, p2]) => Object.assign(l, { [c]: unref(p2) }),
                 {}
               )
@@ -7653,11 +7653,11 @@ var Ee = "DC8F892D-2EBD-447C-A4C8-A03058436FF4",
           let R = v(l);
           if (!R) return;
           let E = new IntersectionObserver((D) => {
-            for (let w of D)
-              w.boundingClientRect.x === 0 &&
-                w.boundingClientRect.y === 0 &&
-                w.boundingClientRect.width === 0 &&
-                w.boundingClientRect.height === 0 &&
+            for (let w2 of D)
+              w2.boundingClientRect.x === 0 &&
+                w2.boundingClientRect.y === 0 &&
+                w2.boundingClientRect.width === 0 &&
+                w2.boundingClientRect.height === 0 &&
                 g.close();
           });
           E.observe(R), y(() => E.disconnect());
@@ -7678,14 +7678,14 @@ var Ee = "DC8F892D-2EBD-447C-A4C8-A03058436FF4",
           _a2 = t,
           { open: R, initialFocus: E } = _a2,
           D = __objRest(_a2, ["open", "initialFocus"]),
-          w = { open: a.value === 0 };
+          w2 = { open: a.value === 0 };
         return h$1(Ne, { force: true }, () =>
           h$1(Pt, () =>
             h$1(wt, { target: l.value }, () =>
               h$1(Ne, { force: false }, () =>
                 x({
                   props: __spreadValues(__spreadValues({}, D), y),
-                  slot: w,
+                  slot: w2,
                   attrs: u,
                   slots: e,
                   visible: i.value,
@@ -7768,13 +7768,13 @@ defineComponent({
       o = `headlessui-disclosure-panel-${h()}`,
       r = ref(t.defaultOpen ? 0 : 1),
       s = ref(null),
-      d = ref(null),
+      d2 = ref(null),
       a = {
         buttonId: e,
         panelId: o,
         disclosureState: r,
         panel: s,
-        button: d,
+        button: d2,
         toggleDisclosure() {
           r.value = T(r.value, { [0]: 1, [1]: 0 });
         },
@@ -7822,7 +7822,7 @@ defineComponent({
       watchEffect(() => {
         e.button.value = s.value;
       });
-    let d = P(
+    let d2 = P(
       computed(() => ({ as: t.as, type: n.type })),
       s
     );
@@ -7864,11 +7864,11 @@ defineComponent({
     return () => {
       let c = { open: e.disclosureState.value === 0 },
         p2 = r
-          ? { ref: s, type: d.value, onClick: a, onKeydown: i }
+          ? { ref: s, type: d2.value, onClick: a, onKeydown: i }
           : {
               id: e.buttonId,
               ref: s,
-              type: d.value,
+              type: d2.value,
               "aria-expanded": t.disabled
                 ? void 0
                 : e.disclosureState.value === 0,
@@ -7904,9 +7904,9 @@ defineComponent({
       );
     return () => {
       let s = { open: e.disclosureState.value === 0, close: e.close },
-        d = { id: e.panelId, ref: e.panel };
+        d2 = { id: e.panelId, ref: e.panel };
       return x({
-        props: __spreadValues(__spreadValues({}, t), d),
+        props: __spreadValues(__spreadValues({}, t), d2),
         slot: s,
         attrs: n,
         slots: u,
@@ -7936,14 +7936,14 @@ defineComponent({
         r.value = false;
       }),
       () => {
-        let d = {},
+        let d2 = {},
           a = { ref: o },
           _a2 = t,
           { initialFocus: i } = _a2,
           l = __objRest(_a2, ["initialFocus"]);
         return x({
           props: __spreadValues(__spreadValues({}, l), a),
-          slot: d,
+          slot: d2,
           attrs: n,
           slots: u,
           name: "FocusTrap",
@@ -7977,7 +7977,7 @@ defineComponent({
     let o = ref(1),
       r = ref(null),
       s = ref(null),
-      d = ref(null),
+      d2 = ref(null),
       a = ref([]),
       i = ref(""),
       l = ref(null),
@@ -7988,7 +7988,7 @@ defineComponent({
         orientation: computed(() => (t.horizontal ? "horizontal" : "vertical")),
         labelRef: r,
         buttonRef: s,
-        optionsRef: d,
+        optionsRef: d2,
         disabled: computed(() => t.disabled),
         options: a,
         searchQuery: i,
@@ -8033,7 +8033,7 @@ defineComponent({
           var g, S;
           let m = Array.from(
             (S =
-              (g = d.value) == null
+              (g = d2.value) == null
                 ? void 0
                 : g.querySelectorAll('[id^="headlessui-listbox-option-"]')) !=
               null
@@ -8064,7 +8064,8 @@ defineComponent({
           m = document.activeElement;
         o.value === 0 &&
           (((g = v(s)) == null ? void 0 : g.contains(b)) ||
-            (((S = v(d)) == null ? void 0 : S.contains(b)) || p2.closeListbox(),
+            (((S = v(d2)) == null ? void 0 : S.contains(b)) ||
+              p2.closeListbox(),
             !(m !== document.body && (m == null ? void 0 : m.contains(b))) &&
               (f.defaultPrevented ||
                 (y = v(s)) == null ||
@@ -8102,9 +8103,9 @@ defineComponent({
     }
     return () => {
       let s = { open: e.listboxState.value === 0, disabled: e.disabled.value },
-        d = { id: o, ref: e.labelRef, onClick: r };
+        d2 = { id: o, ref: e.labelRef, onClick: r };
       return x({
-        props: __spreadValues(__spreadValues({}, t), d),
+        props: __spreadValues(__spreadValues({}, t), d2),
         slot: s,
         attrs: n,
         slots: u,
@@ -8150,7 +8151,7 @@ defineComponent({
           break;
       }
     }
-    function d(i) {
+    function d2(i) {
       e.disabled.value ||
         (e.listboxState.value === 0
           ? (e.closeListbox(),
@@ -8191,7 +8192,7 @@ defineComponent({
           disabled: e.disabled.value === true ? true : void 0,
           onKeydown: r,
           onKeyup: s,
-          onClick: d,
+          onClick: d2,
         };
       return x({
         props: __spreadValues(__spreadValues({}, t), l),
@@ -8273,9 +8274,9 @@ defineComponent({
           break;
       }
     }
-    let d = I(),
+    let d2 = I(),
       a = computed(() =>
-        d !== null ? d.value === 0 : e.listboxState.value === 0
+        d2 !== null ? d2.value === 0 : e.listboxState.value === 0
       );
     return () => {
       var p2, f, b, m;
@@ -8327,7 +8328,7 @@ defineComponent({
           : false
       ),
       s = computed(() => toRaw(e.value.value) === toRaw(t.value)),
-      d = ref({ disabled: t.disabled, value: t.value, textValue: "" });
+      d2 = ref({ disabled: t.disabled, value: t.value, textValue: "" });
     onMounted(() => {
       var f, b;
       let p2 =
@@ -8336,9 +8337,9 @@ defineComponent({
         null
           ? void 0
           : b.toLowerCase().trim();
-      p2 !== void 0 && (d.value.textValue = p2);
+      p2 !== void 0 && (d2.value.textValue = p2);
     }),
-      onMounted(() => e.registerOption(o, d)),
+      onMounted(() => e.registerOption(o, d2)),
       onUnmounted(() => e.unregisterOption(o)),
       onMounted(() => {
         watch(
@@ -8437,14 +8438,14 @@ defineComponent({
       o = ref(null),
       r = ref(null),
       s = ref([]),
-      d = ref(""),
+      d2 = ref(""),
       a = ref(null),
       i = {
         menuState: e,
         buttonRef: o,
         itemsRef: r,
         items: s,
-        searchQuery: d,
+        searchQuery: d2,
         activeItemIndex: a,
         closeMenu: () => {
           (e.value = 1), (a.value = null);
@@ -8457,12 +8458,12 @@ defineComponent({
             resolveId: (f) => f.id,
             resolveDisabled: (f) => f.dataRef.disabled,
           });
-          (d.value === "" && a.value === p2) ||
-            ((d.value = ""), (a.value = p2));
+          (d2.value === "" && a.value === p2) ||
+            ((d2.value = ""), (a.value = p2));
         },
         search(l) {
-          let p2 = d.value !== "" ? 0 : 1;
-          d.value += l.toLowerCase();
+          let p2 = d2.value !== "" ? 0 : 1;
+          d2.value += l.toLowerCase();
           let b = (
               a.value !== null
                 ? s.value
@@ -8471,13 +8472,13 @@ defineComponent({
                 : s.value
             ).find(
               (g) =>
-                g.dataRef.textValue.startsWith(d.value) && !g.dataRef.disabled
+                g.dataRef.textValue.startsWith(d2.value) && !g.dataRef.disabled
             ),
             m = b ? s.value.indexOf(b) : -1;
           m === -1 || m === a.value || (a.value = m);
         },
         clearSearch() {
-          d.value = "";
+          d2.value = "";
         },
         registerItem(l, c) {
           var f, b;
@@ -8567,7 +8568,7 @@ defineComponent({
           break;
       }
     }
-    function d(i) {
+    function d2(i) {
       t.disabled ||
         (e.menuState.value === 0
           ? (e.closeMenu(),
@@ -8603,7 +8604,7 @@ defineComponent({
           "aria-expanded": t.disabled ? void 0 : e.menuState.value === 0,
           onKeydown: r,
           onKeyup: s,
-          onClick: d,
+          onClick: d2,
         };
       return x({
         props: __spreadValues(__spreadValues({}, t), l),
@@ -8694,7 +8695,7 @@ defineComponent({
           break;
       }
     }
-    function d(l) {
+    function d2(l) {
       switch (l.key) {
         case " ":
           l.preventDefault();
@@ -8717,7 +8718,7 @@ defineComponent({
           "aria-labelledby": (b = v(e.buttonRef)) == null ? void 0 : b.id,
           id: o,
           onKeydown: s,
-          onKeyup: d,
+          onKeyup: d2,
           role: "menu",
           tabIndex: 0,
           ref: e.itemsRef,
@@ -8775,7 +8776,7 @@ defineComponent({
                 : p2.call(c, { block: "nearest" });
             }));
       });
-    function d(c) {
+    function d2(c) {
       if (t.disabled) return c.preventDefault();
       e.closeMenu(),
         nextTick(() => {
@@ -8804,7 +8805,7 @@ defineComponent({
           role: "menuitem",
           tabIndex: c === true ? void 0 : -1,
           "aria-disabled": c === true ? true : void 0,
-          onClick: d,
+          onClick: d2,
           onFocus: a,
           onPointermove: i,
           onMousemove: i,
@@ -8844,12 +8845,12 @@ var Cn = defineComponent({
       o = `headlessui-popover-panel-${h()}`,
       r = ref(1),
       s = ref(null),
-      d = ref(null),
+      d2 = ref(null),
       a = {
         popoverState: r,
         buttonId: e,
         panelId: o,
-        panel: d,
+        panel: d2,
         button: s,
         togglePopover() {
           r.value = T(r.value, { [0]: 1, [1]: 0 });
@@ -8885,14 +8886,14 @@ var Cn = defineComponent({
       return (m = l == null ? void 0 : l.isFocusWithinPopoverGroup()) != null
         ? m
         : ((f = v(s)) == null ? void 0 : f.contains(document.activeElement)) ||
-            ((b = v(d)) == null ? void 0 : b.contains(document.activeElement));
+            ((b = v(d2)) == null ? void 0 : b.contains(document.activeElement));
     }
     return (
       watchEffect(() => (c == null ? void 0 : c(i))),
       C(
         "focus",
         () => {
-          r.value === 0 && (p2() || !s || !d || a.closePopover());
+          r.value === 0 && (p2() || !s || !d2 || a.closePopover());
         },
         true
       ),
@@ -8901,7 +8902,7 @@ var Cn = defineComponent({
         let b = f.target;
         r.value === 0 &&
           (((m = v(s)) == null ? void 0 : m.contains(b)) ||
-            ((g = v(d)) == null ? void 0 : g.contains(b)) ||
+            ((g = v(d2)) == null ? void 0 : g.contains(b)) ||
             (a.closePopover(),
             mt(b, 1) || (f.preventDefault(), (S = v(s)) == null || S.focus())));
       }),
@@ -8923,7 +8924,7 @@ defineComponent({
       o = $t(),
       r = o == null ? void 0 : o.closeOthers,
       s = On(),
-      d = s === null ? false : s === e.panelId,
+      d2 = s === null ? false : s === e.panelId,
       a = ref(null),
       i = ref(typeof window == "undefined" ? null : document.activeElement);
     C(
@@ -8934,7 +8935,7 @@ defineComponent({
       true
     );
     let l = ref(null);
-    d ||
+    d2 ||
       watchEffect(() => {
         e.button.value = l.value;
       });
@@ -8944,7 +8945,7 @@ defineComponent({
     );
     function p2(m) {
       var g, S, y, R;
-      if (d) {
+      if (d2) {
         if (e.popoverState.value === 1) return;
         switch (m.key) {
           case " ":
@@ -8996,7 +8997,7 @@ defineComponent({
     function f(m) {
       var g, S;
       if (
-        !d &&
+        !d2 &&
         (m.key === " " && m.preventDefault(),
         e.popoverState.value === 0 && !!e.panel && !!e.button)
       )
@@ -9018,7 +9019,7 @@ defineComponent({
     function b() {
       var m, g;
       t.disabled ||
-        (d
+        (d2
           ? (e.closePopover(), (m = v(e.button)) == null || m.focus())
           : (e.popoverState.value === 1 && (r == null || r(e.buttonId)),
             (g = v(e.button)) == null || g.focus(),
@@ -9026,7 +9027,7 @@ defineComponent({
     }
     return () => {
       let m = { open: e.popoverState.value === 0 },
-        g = d
+        g = d2
           ? { ref: l, type: c.value, onKeydown: p2, onClick: b }
           : {
               ref: l,
@@ -9063,7 +9064,7 @@ defineComponent({
       s = computed(() =>
         r !== null ? r.value === 0 : e.popoverState.value === 0
       );
-    function d() {
+    function d2() {
       e.closePopover();
     }
     return () => {
@@ -9072,7 +9073,7 @@ defineComponent({
         props: __spreadValues(__spreadValues({}, t), {
           id: o,
           "aria-hidden": true,
-          onClick: d,
+          onClick: d2,
         }),
         slot: a,
         attrs: n,
@@ -9149,7 +9150,7 @@ defineComponent({
       s = computed(() =>
         r !== null ? r.value === 0 : o.popoverState.value === 0
       );
-    function d(a) {
+    function d2(a) {
       var i, l;
       switch (a.key) {
         case "Escape":
@@ -9170,7 +9171,7 @@ defineComponent({
     }
     return () => {
       let a = { open: o.popoverState.value === 0, close: o.close },
-        i = { ref: o.panel, id: o.panelId, onKeydown: d };
+        i = { ref: o.panel, id: o.panelId, onKeydown: d2 };
       return x({
         props: __spreadValues(__spreadValues({}, t), i),
         slot: a,
@@ -9201,7 +9202,7 @@ defineComponent({
         }
       );
     }
-    function d() {
+    function d2() {
       var l;
       let i = document.activeElement;
       return ((l = v(e)) == null ? void 0 : l.contains(i))
@@ -9225,7 +9226,7 @@ defineComponent({
       provide$1(Ut, {
         registerPopover: s,
         unregisterPopover: r,
-        isFocusWithinPopoverGroup: d,
+        isFocusWithinPopoverGroup: d2,
         closeOthers: a,
       }),
       () =>
@@ -9278,14 +9279,14 @@ var Me = defineComponent({
     return (
       onMounted(() => onUnmounted(e.register(o))),
       () => {
-        let { name: r = "Label", slot: s = {}, props: d = {} } = e,
+        let { name: r = "Label", slot: s = {}, props: d2 = {} } = e,
           _a2 = t,
           { passive: a } = _a2,
           i = __objRest(_a2, ["passive"]),
           l = __spreadProps(
             __spreadValues(
               {},
-              Object.entries(d).reduce(
+              Object.entries(d2).reduce(
                 (p2, [f, b]) => Object.assign(p2, { [f]: unref(b) }),
                 {}
               )
@@ -9322,7 +9323,7 @@ var wi = defineComponent({
     let o = ref(null),
       r = ref([]),
       s = fe({ name: "RadioGroupLabel" }),
-      d = G({ name: "RadioGroupDescription" }),
+      d2 = G({ name: "RadioGroupDescription" }),
       a = computed(() => t.modelValue),
       i = {
         options: r,
@@ -9413,7 +9414,7 @@ var wi = defineComponent({
           id: c,
           role: "radiogroup",
           "aria-labelledby": s.value,
-          "aria-describedby": d.value,
+          "aria-describedby": d2.value,
           onKeydown: l,
         };
       return x({
@@ -9438,10 +9439,10 @@ var Li = defineComponent({
         o = `headlessui-radiogroup-option-${h()}`,
         r = fe({ name: "RadioGroupLabel" }),
         s = G({ name: "RadioGroupDescription" }),
-        d = ref(null),
+        d2 = ref(null),
         a = computed(() => ({ value: t.value, disabled: t.disabled })),
         i = ref(1);
-      onMounted(() => e.registerOption({ id: o, element: d, propsRef: a })),
+      onMounted(() => e.registerOption({ id: o, element: d2, propsRef: a })),
         onUnmounted(() => e.unregisterOption(o));
       let l = computed(() => {
           var S;
@@ -9459,7 +9460,7 @@ var Li = defineComponent({
       function b() {
         var S;
         !e.change(t.value) ||
-          ((i.value |= 2), (S = d.value) == null || S.focus());
+          ((i.value |= 2), (S = d2.value) == null || S.focus());
       }
       function m() {
         i.value |= 2;
@@ -9476,7 +9477,7 @@ var Li = defineComponent({
           },
           R = {
             id: o,
-            ref: d,
+            ref: d2,
             role: "radio",
             "aria-checked": p2.value ? "true" : "false",
             "aria-labelledby": r.value,
@@ -9534,8 +9535,8 @@ defineComponent({
     function s() {
       n("update:modelValue", !t.modelValue);
     }
-    let d = ref(null),
-      a = o === null ? d : o.switchRef,
+    let d2 = ref(null),
+      a = o === null ? d2 : o.switchRef,
       i = P(
         computed(() => ({ as: t.as, type: u.type })),
         a
@@ -9597,7 +9598,7 @@ defineComponent({
     let o = ref(null),
       r = ref([]),
       s = ref([]),
-      d = {
+      d2 = {
         selectedIndex: o,
         orientation: computed(() => (t.vertical ? "vertical" : "horizontal")),
         activation: computed(() => (t.manual ? "manual" : "auto")),
@@ -9622,19 +9623,19 @@ defineComponent({
         },
       };
     return (
-      provide$1(oo, d),
+      provide$1(oo, d2),
       watchEffect(() => {
         var c;
         if (
-          d.tabs.value.length <= 0 ||
+          d2.tabs.value.length <= 0 ||
           (t.selectedIndex === null && o.value !== null)
         )
           return;
-        let a = d.tabs.value.map((p2) => v(p2)).filter(Boolean),
+        let a = d2.tabs.value.map((p2) => v(p2)).filter(Boolean),
           i = a.filter((p2) => !p2.hasAttribute("disabled")),
           l = (c = t.selectedIndex) != null ? c : t.defaultIndex;
         if (l < 0) o.value = a.indexOf(i[0]);
-        else if (l > d.tabs.value.length) o.value = a.indexOf(i[i.length - 1]);
+        else if (l > d2.tabs.value.length) o.value = a.indexOf(i[i.length - 1]);
         else {
           let p2 = a.slice(0, l),
             b = [...a.slice(l), ...p2].find((m) => i.includes(m));
@@ -9691,7 +9692,7 @@ defineComponent({
       r = ref();
     onMounted(() => e.registerTab(r)), onUnmounted(() => e.unregisterTab(r));
     let s = computed(() => e.tabs.value.indexOf(r)),
-      d = computed(() => s.value === e.selectedIndex.value);
+      d2 = computed(() => s.value === e.selectedIndex.value);
     function a(p2) {
       let f = e.tabs.value.map((b) => v(b)).filter(Boolean);
       if (p2.key === " " || p2.key === "Enter") {
@@ -9732,7 +9733,7 @@ defineComponent({
     );
     return () => {
       var b, m;
-      let p2 = { selected: d.value },
+      let p2 = { selected: d2.value },
         f = {
           ref: r,
           onKeydown: a,
@@ -9746,8 +9747,8 @@ defineComponent({
             null
               ? void 0
               : m.id,
-          "aria-selected": d.value,
-          tabIndex: d.value ? 0 : -1,
+          "aria-selected": d2.value,
+          tabIndex: d2.value ? 0 : -1,
           disabled: t.disabled ? true : void 0,
         };
       return x({
@@ -9785,10 +9786,10 @@ defineComponent({
     onMounted(() => e.registerPanel(r)),
       onUnmounted(() => e.unregisterPanel(r));
     let s = computed(() => e.panels.value.indexOf(r)),
-      d = computed(() => s.value === e.selectedIndex.value);
+      d2 = computed(() => s.value === e.selectedIndex.value);
     return () => {
       var l, c;
-      let a = { selected: d.value },
+      let a = { selected: d2.value },
         i = {
           ref: r,
           id: o,
@@ -9797,7 +9798,7 @@ defineComponent({
             (c = (l = e.tabs.value[s.value]) == null ? void 0 : l.value) == null
               ? void 0
               : c.id,
-          tabIndex: d.value ? 0 : -1,
+          tabIndex: d2.value ? 0 : -1,
         };
       return x({
         props: __spreadValues(__spreadValues({}, t), i),
@@ -9805,7 +9806,7 @@ defineComponent({
         attrs: n,
         slots: u,
         features: 2 | 1,
-        visible: d.value,
+        visible: d2.value,
         name: "TabPanel",
       });
     };
@@ -9859,8 +9860,8 @@ function $n(t, n) {
   let u = Ze();
   if (!t) return u.dispose;
   let { transitionDuration: e, transitionDelay: o } = getComputedStyle(t),
-    [r, s] = [e, o].map((d) => {
-      let [a = 0] = d
+    [r, s] = [e, o].map((d2) => {
+      let [a = 0] = d2
         .split(",")
         .filter(Boolean)
         .map((i) => (i.includes("ms") ? parseFloat(i) : parseFloat(i) * 1e3))
@@ -9875,17 +9876,17 @@ function $n(t, n) {
 }
 function tt(t, n, u, e, o, r) {
   let s = Ze(),
-    d = r !== void 0 ? no(r) : () => {};
+    d2 = r !== void 0 ? no(r) : () => {};
   return (
     Fe(t, ...o),
     et(t, ...n, ...u),
     s.nextFrame(() => {
       Fe(t, ...u),
         et(t, ...e),
-        s.add($n(t, (a) => (Fe(t, ...e, ...n), et(t, ...o), d(a))));
+        s.add($n(t, (a) => (Fe(t, ...e, ...n), et(t, ...o), d2(a))));
     }),
     s.add(() => Fe(t, ...n, ...u, ...e, ...o)),
-    s.add(() => d("cancelled")),
+    s.add(() => d2("cancelled")),
     s.dispose
   );
 }
@@ -9923,20 +9924,20 @@ function io(t) {
     u = ref(false);
   onMounted(() => (u.value = true)), onUnmounted(() => (u.value = false));
   function e(r, s = 1) {
-    let d = n.value.findIndex(({ id: a }) => a === r);
-    d !== -1 &&
+    let d2 = n.value.findIndex(({ id: a }) => a === r);
+    d2 !== -1 &&
       (T(s, {
         [0]() {
-          n.value.splice(d, 1);
+          n.value.splice(d2, 1);
         },
         [1]() {
-          n.value[d].state = "hidden";
+          n.value[d2].state = "hidden";
         },
       }),
       !He(n) && u.value && (t == null || t()));
   }
   function o(r) {
-    let s = n.value.find(({ id: d }) => d === r);
+    let s = n.value.find(({ id: d2 }) => d2 === r);
     return (
       s
         ? s.state !== "visible" && (s.state = "visible")
@@ -9983,7 +9984,7 @@ var uo = 1,
       let o = ref(null),
         r = ref("visible"),
         s = computed(() => (t.unmount ? 0 : 1)),
-        { show: d, appear: a } = qn(),
+        { show: d2, appear: a } = qn(),
         { register: i, unregister: l } = zn(),
         c = { value: true },
         p2 = h(),
@@ -9997,7 +9998,7 @@ var uo = 1,
       }),
         watchEffect(() => {
           if (s.value === 1 && !!p2) {
-            if (d && r.value !== "visible") {
+            if (d2 && r.value !== "visible") {
               r.value = "visible";
               return;
             }
@@ -10022,17 +10023,17 @@ var uo = 1,
           }
         });
       });
-      function w(F) {
+      function w2(F) {
         let xe = c.value && !a.value,
           U = v(o);
         !U ||
           !(U instanceof HTMLElement) ||
           xe ||
           ((f.value = true),
-          d.value && n("beforeEnter"),
-          d.value || n("beforeLeave"),
+          d2.value && n("beforeEnter"),
+          d2.value || n("beforeLeave"),
           F(
-            d.value
+            d2.value
               ? tt(U, m, g, S, y, (ye) => {
                   (f.value = false), ye === "finished" && n("afterEnter");
                 })
@@ -10046,9 +10047,9 @@ var uo = 1,
       return (
         onMounted(() => {
           watch(
-            [d, a],
+            [d2, a],
             (F, xe, U) => {
-              w(U), (c.value = false);
+              w2(U), (c.value = false);
             },
             { immediate: true }
           );
@@ -10128,7 +10129,7 @@ var uo = 1,
           );
       });
       let s = ref(r.value ? "visible" : "hidden"),
-        d = io(() => {
+        d2 = io(() => {
           s.value = "hidden";
         }),
         a = { value: true },
@@ -10137,10 +10138,10 @@ var uo = 1,
         onMounted(() => {
           watchEffect(() => {
             (a.value = false),
-              r.value ? (s.value = "visible") : He(d) || (s.value = "hidden");
+              r.value ? (s.value = "visible") : He(d2) || (s.value = "hidden");
           });
         }),
-        provide$1(rt, d),
+        provide$1(rt, d2),
         provide$1(lt, i),
         () => {
           let l = L(t, ["show", "appear", "unmount"]),
@@ -10180,7 +10181,6 @@ var uo = 1,
       );
     },
   });
-
 function setupCheckoutButtons() {
   const { state, send: send2 } = useOverlay();
   document
@@ -10339,7 +10339,7 @@ var nullEvent = ActionTypes.NullEvent;
 var assign$5 = ActionTypes.Assign;
 var after$1 = ActionTypes.After;
 var doneState = ActionTypes.DoneState;
-var log$1 = ActionTypes.Log;
+var log$2 = ActionTypes.Log;
 var init = ActionTypes.Init;
 var invoke = ActionTypes.Invoke;
 var errorExecution = ActionTypes.ErrorExecution;
@@ -10361,7 +10361,7 @@ var actionTypes = /* @__PURE__ */ Object.freeze({
   errorPlatform,
   init,
   invoke,
-  log: log$1,
+  log: log$2,
   nullEvent,
   pure: pure$2,
   raise: raise$1,
@@ -10584,7 +10584,7 @@ function toArrayStrict(value) {
   }
   return [value];
 }
-function toArray(value) {
+function toArray$1(value) {
   if (value === void 0) {
     return [];
   }
@@ -10847,7 +10847,7 @@ function normalizeTarget(target) {
   if (target === void 0 || target === TARGETLESS_KEY) {
     return void 0;
   }
-  return toArray(target);
+  return toArray$1(target);
 }
 function evaluateGuard(machine, guard, context, _event, state) {
   var guards = machine.options.guards;
@@ -10885,13 +10885,13 @@ function toObserver(nextHandler, errorHandler, completionHandler) {
   if (typeof nextHandler === "object") {
     return nextHandler;
   }
-  var noop2 = function () {
+  var noop5 = function () {
     return void 0;
   };
   return {
     next: nextHandler,
-    error: errorHandler || noop2,
-    complete: completionHandler || noop2,
+    error: errorHandler || noop5,
+    complete: completionHandler || noop5,
   };
 }
 function createInvokeId(stateNodeId, index) {
@@ -11062,12 +11062,12 @@ var defaultLogExpr = function (context, event) {
     event,
   };
 };
-function log(expr, label) {
+function log$1(expr, label) {
   if (expr === void 0) {
     expr = defaultLogExpr;
   }
   return {
-    type: log$1,
+    type: log$2,
     label,
     expr,
   };
@@ -11247,7 +11247,7 @@ function resolveActions(
               machine.options.delays
             );
             return sendAction;
-          case log$1:
+          case log$2:
             return resolveLog(actionObject, updatedContext, _event);
           case choose$1: {
             var chooseAction = actionObject;
@@ -11277,7 +11277,7 @@ function resolveActions(
                   updatedContext,
                   _event,
                   toActionObjects(
-                    toArray(matchedActions),
+                    toArray$1(matchedActions),
                     machine.options.actions
                   ),
                   preserveActionOrder
@@ -11304,7 +11304,7 @@ function resolveActions(
                   updatedContext,
                   _event,
                   toActionObjects(
-                    toArray(matchedActions),
+                    toArray$1(matchedActions),
                     machine.options.actions
                   ),
                   preserveActionOrder
@@ -11387,7 +11387,7 @@ var actions = /* @__PURE__ */ Object.freeze({
   getActionFunction,
   initEvent,
   isActionObject,
-  log,
+  log: log$1,
   pure: pure$1,
   raise,
   resolveActions,
@@ -11728,8 +11728,8 @@ function getAdjList(configuration) {
   return adjList;
 }
 function getValue(rootNode, configuration) {
-  var config = getConfiguration([rootNode], configuration);
-  return getValueFromAdj(rootNode, getAdjList(config));
+  var config2 = getConfiguration([rootNode], configuration);
+  return getValueFromAdj(rootNode, getAdjList(config2));
 }
 function has(iterable, item) {
   if (Array.isArray(iterable)) {
@@ -11838,37 +11838,37 @@ function bindActionToState(action, state) {
   return boundAction;
 }
 var State = /* @__PURE__ */ (function () {
-  function State2(config) {
+  function State2(config2) {
     var _this = this;
     var _a2;
     this.actions = [];
     this.activities = EMPTY_ACTIVITY_MAP;
     this.meta = {};
     this.events = [];
-    this.value = config.value;
-    this.context = config.context;
-    this._event = config._event;
-    this._sessionid = config._sessionid;
+    this.value = config2.value;
+    this.context = config2.context;
+    this._event = config2._event;
+    this._sessionid = config2._sessionid;
     this.event = this._event.data;
-    this.historyValue = config.historyValue;
-    this.history = config.history;
-    this.actions = config.actions || [];
-    this.activities = config.activities || EMPTY_ACTIVITY_MAP;
-    this.meta = getMeta(config.configuration);
-    this.events = config.events || [];
+    this.historyValue = config2.historyValue;
+    this.history = config2.history;
+    this.actions = config2.actions || [];
+    this.activities = config2.activities || EMPTY_ACTIVITY_MAP;
+    this.meta = getMeta(config2.configuration);
+    this.events = config2.events || [];
     this.matches = this.matches.bind(this);
     this.toStrings = this.toStrings.bind(this);
-    this.configuration = config.configuration;
-    this.transitions = config.transitions;
-    this.children = config.children;
-    this.done = !!config.done;
+    this.configuration = config2.configuration;
+    this.transitions = config2.transitions;
+    this.children = config2.children;
+    this.done = !!config2.done;
     this.tags =
-      (_a2 = Array.isArray(config.tags)
-        ? new Set(config.tags)
-        : config.tags) !== null && _a2 !== void 0
+      (_a2 = Array.isArray(config2.tags)
+        ? new Set(config2.tags)
+        : config2.tags) !== null && _a2 !== void 0
         ? _a2
         : /* @__PURE__ */ new Set();
-    this.machine = config.machine;
+    this.machine = config2.machine;
     Object.defineProperty(this, "nextEvents", {
       get: function () {
         return nextEvents(_this.configuration);
@@ -11913,8 +11913,8 @@ var State = /* @__PURE__ */ (function () {
       children: {},
     });
   };
-  State2.create = function (config) {
-    return new State2(config);
+  State2.create = function (config2) {
+    return new State2(config2);
   };
   State2.inert = function (stateValue, context) {
     if (stateValue instanceof State2) {
@@ -12342,8 +12342,8 @@ var Interpreter = /* @__PURE__ */ (function () {
           !_f.done;
           _f = _e.next()
         ) {
-          var listener = _f.value;
-          listener(state.event);
+          var listener3 = _f.value;
+          listener3(state.event);
         }
       } catch (e_2_1) {
         e_2 = {
@@ -12363,8 +12363,8 @@ var Interpreter = /* @__PURE__ */ (function () {
         !_h.done;
         _h = _g.next()
       ) {
-        var listener = _h.value;
-        listener(state, state.event);
+        var listener3 = _h.value;
+        listener3(state, state.event);
       }
     } catch (e_3_1) {
       e_3 = {
@@ -12415,8 +12415,8 @@ var Interpreter = /* @__PURE__ */ (function () {
           !_m.done;
           _m = _l.next()
         ) {
-          var listener = _m.value;
-          listener(doneInvoke(this.id, doneData));
+          var listener3 = _m.value;
+          listener3(doneInvoke(this.id, doneData));
         }
       } catch (e_5_1) {
         e_5 = {
@@ -12432,10 +12432,10 @@ var Interpreter = /* @__PURE__ */ (function () {
       this.stop();
     }
   };
-  Interpreter2.prototype.onTransition = function (listener) {
-    this.listeners.add(listener);
+  Interpreter2.prototype.onTransition = function (listener3) {
+    this.listeners.add(listener3);
     if (this.status === InterpreterStatus.Running) {
-      listener(this.state, this.state.event);
+      listener3(this.state, this.state.event);
     }
     return this;
   };
@@ -12452,58 +12452,58 @@ var Interpreter = /* @__PURE__ */ (function () {
         },
       };
     }
-    var listener;
+    var listener3;
     var resolvedCompleteListener = completeListener;
     if (typeof nextListenerOrObserver === "function") {
-      listener = nextListenerOrObserver;
+      listener3 = nextListenerOrObserver;
     } else {
-      listener = nextListenerOrObserver.next.bind(nextListenerOrObserver);
+      listener3 = nextListenerOrObserver.next.bind(nextListenerOrObserver);
       resolvedCompleteListener = nextListenerOrObserver.complete.bind(
         nextListenerOrObserver
       );
     }
-    this.listeners.add(listener);
+    this.listeners.add(listener3);
     if (this.status === InterpreterStatus.Running) {
-      listener(this.state);
+      listener3(this.state);
     }
     if (resolvedCompleteListener) {
       this.onDone(resolvedCompleteListener);
     }
     return {
       unsubscribe: function () {
-        listener && _this.listeners.delete(listener);
+        listener3 && _this.listeners.delete(listener3);
         resolvedCompleteListener &&
           _this.doneListeners.delete(resolvedCompleteListener);
       },
     };
   };
-  Interpreter2.prototype.onEvent = function (listener) {
-    this.eventListeners.add(listener);
+  Interpreter2.prototype.onEvent = function (listener3) {
+    this.eventListeners.add(listener3);
     return this;
   };
-  Interpreter2.prototype.onSend = function (listener) {
-    this.sendListeners.add(listener);
+  Interpreter2.prototype.onSend = function (listener3) {
+    this.sendListeners.add(listener3);
     return this;
   };
-  Interpreter2.prototype.onChange = function (listener) {
-    this.contextListeners.add(listener);
+  Interpreter2.prototype.onChange = function (listener3) {
+    this.contextListeners.add(listener3);
     return this;
   };
-  Interpreter2.prototype.onStop = function (listener) {
-    this.stopListeners.add(listener);
+  Interpreter2.prototype.onStop = function (listener3) {
+    this.stopListeners.add(listener3);
     return this;
   };
-  Interpreter2.prototype.onDone = function (listener) {
-    this.doneListeners.add(listener);
+  Interpreter2.prototype.onDone = function (listener3) {
+    this.doneListeners.add(listener3);
     return this;
   };
-  Interpreter2.prototype.off = function (listener) {
-    this.listeners.delete(listener);
-    this.eventListeners.delete(listener);
-    this.sendListeners.delete(listener);
-    this.stopListeners.delete(listener);
-    this.doneListeners.delete(listener);
-    this.contextListeners.delete(listener);
+  Interpreter2.prototype.off = function (listener3) {
+    this.listeners.delete(listener3);
+    this.eventListeners.delete(listener3);
+    this.sendListeners.delete(listener3);
+    this.stopListeners.delete(listener3);
+    this.doneListeners.delete(listener3);
+    this.contextListeners.delete(listener3);
     return this;
   };
   Interpreter2.prototype.start = function (initialState) {
@@ -12542,8 +12542,8 @@ var Interpreter = /* @__PURE__ */ (function () {
         !_g.done;
         _g = _f.next()
       ) {
-        var listener = _g.value;
-        this.listeners.delete(listener);
+        var listener3 = _g.value;
+        this.listeners.delete(listener3);
       }
     } catch (e_6_1) {
       e_6 = {
@@ -12562,9 +12562,9 @@ var Interpreter = /* @__PURE__ */ (function () {
         !_j.done;
         _j = _h.next()
       ) {
-        var listener = _j.value;
-        listener();
-        this.stopListeners.delete(listener);
+        var listener3 = _j.value;
+        listener3();
+        this.stopListeners.delete(listener3);
       }
     } catch (e_7_1) {
       e_7 = {
@@ -12583,8 +12583,8 @@ var Interpreter = /* @__PURE__ */ (function () {
         !_l.done;
         _l = _k.next()
       ) {
-        var listener = _l.value;
-        this.contextListeners.delete(listener);
+        var listener3 = _l.value;
+        this.contextListeners.delete(listener3);
       }
     } catch (e_8_1) {
       e_8 = {
@@ -12603,8 +12603,8 @@ var Interpreter = /* @__PURE__ */ (function () {
         !_o.done;
         _o = _m.next()
       ) {
-        var listener = _o.value;
-        this.doneListeners.delete(listener);
+        var listener3 = _o.value;
+        this.doneListeners.delete(listener3);
       }
     } catch (e_9_1) {
       e_9 = {
@@ -12913,7 +12913,7 @@ var Interpreter = /* @__PURE__ */ (function () {
         this.stopChild(action.activity.id);
         break;
       }
-      case log$1:
+      case log$2:
         var label = action.label,
           value = action.value;
         if (label) {
@@ -13117,8 +13117,8 @@ var Interpreter = /* @__PURE__ */ (function () {
     var emitted;
     var receive = function (e) {
       emitted = e;
-      listeners.forEach(function (listener) {
-        return listener(e);
+      listeners.forEach(function (listener3) {
+        return listener3(e);
       });
       if (canceled) {
         return;
@@ -13430,13 +13430,13 @@ var validateArrayifiedTransitions = function (stateNode, event, transitions) {
   );
 };
 var StateNode = /* @__PURE__ */ (function () {
-  function StateNode2(config, options, _context, _stateInfo) {
+  function StateNode2(config2, options, _context, _stateInfo) {
     var _this = this;
     if (_context === void 0) {
-      _context = "context" in config ? config.context : void 0;
+      _context = "context" in config2 ? config2.context : void 0;
     }
     var _a2;
-    this.config = config;
+    this.config = config2;
     this._context = _context;
     this.order = -1;
     this.__xstatenode = true;
@@ -13545,19 +13545,19 @@ var StateNode = /* @__PURE__ */ (function () {
           })
         : NULL_EVENT in this.config.on);
     this.strict = !!this.config.strict;
-    this.onEntry = toArray(this.config.entry || this.config.onEntry).map(
+    this.onEntry = toArray$1(this.config.entry || this.config.onEntry).map(
       function (action) {
         return toActionObject(action);
       }
     );
-    this.onExit = toArray(this.config.exit || this.config.onExit).map(function (
-      action
-    ) {
-      return toActionObject(action);
-    });
+    this.onExit = toArray$1(this.config.exit || this.config.onExit).map(
+      function (action) {
+        return toActionObject(action);
+      }
+    );
     this.meta = this.config.meta;
     this.doneData = this.type === "final" ? this.config.data : void 0;
-    this.invoke = toArray(this.config.invoke).map(function (invokeConfig, i) {
+    this.invoke = toArray$1(this.config.invoke).map(function (invokeConfig, i) {
       var _a3, _b;
       if (isMachine(invokeConfig)) {
         var invokeId = createInvokeId(_this.id, i);
@@ -13613,13 +13613,13 @@ var StateNode = /* @__PURE__ */ (function () {
         );
       }
     });
-    this.activities = toArray(this.config.activities)
+    this.activities = toArray$1(this.config.activities)
       .concat(this.invoke)
       .map(function (activity) {
         return toActivityDefinition(activity);
       });
     this.transition = this.transition.bind(this);
-    this.tags = toArray(this.config.tags);
+    this.tags = toArray$1(this.config.tags);
   }
   StateNode2.prototype._init = function () {
     if (this.__cache.transitions) {
@@ -13777,7 +13777,7 @@ var StateNode = /* @__PURE__ */ (function () {
               : configTransition;
             var resolvedDelay = !isNaN(+delay) ? +delay : delay;
             var eventType = mutateEntryExit(resolvedDelay, i);
-            return toArray(resolvedTransition).map(function (transition) {
+            return toArray$1(resolvedTransition).map(function (transition) {
               return __assign(__assign({}, transition), {
                 event: eventType,
                 delay: resolvedDelay,
@@ -14982,7 +14982,7 @@ var StateNode = /* @__PURE__ */ (function () {
     var guards = this.machine.options.guards;
     var target = this.resolveTarget(normalizedTarget);
     var transition = __assign(__assign({}, transitionConfig), {
-      actions: toActionObjects(toArray(transitionConfig.actions)),
+      actions: toActionObjects(toArray$1(transitionConfig.actions)),
       cond: toGuard(transitionConfig.cond, guards),
       target,
       source: this,
@@ -15108,7 +15108,7 @@ var StateNode = /* @__PURE__ */ (function () {
         __read(eventlessConfig),
         false
       ).map(function (transitionConfig) {
-        return toArray(transitionConfig).map(function (transition) {
+        return toArray$1(transitionConfig).map(function (transition) {
           return _this.formatTransition(transition);
         });
       })
@@ -15143,14 +15143,14 @@ var StateNode = /* @__PURE__ */ (function () {
   };
   return StateNode2;
 })();
-function createMachine(config, options) {
-  return new StateNode(config, options);
+function createMachine(config2, options) {
+  return new StateNode(config2, options);
 }
 var assign$3 = assign$4;
 function isActorWithState(actorRef) {
   return "state" in actorRef;
 }
-var noop = function () {};
+var noop$3 = function () {};
 function defaultGetSnapshot(actorRef) {
   return "getSnapshot" in actorRef
     ? actorRef.getSnapshot()
@@ -15175,8 +15175,8 @@ function useActor(actorRef, getSnapshot) {
         next: function (emitted) {
           return (state.value = emitted);
         },
-        error: noop,
-        complete: noop,
+        error: noop$3,
+        complete: noop$3,
       }).unsubscribe;
       onCleanup(function () {
         return unsubscribe();
@@ -15286,7 +15286,7 @@ function recordFilter(o, predicate) {
     })
   );
 }
-const api = {
+const api$1 = {
   async get(url, query) {
     const compiledUrl = new URL(url);
     if (query) {
@@ -15338,12 +15338,12 @@ async function api_fetch(url, init2) {
 const API_PATH$2 = `${BASE_API_URL}/{store_id}/{product_id}/{variant_id}`;
 async function checkoutProduct(store_id, product_id, variant_id, body) {
   const url = route(API_PATH$2, { store_id, product_id, variant_id });
-  return await api.post(url, body);
+  return await api$1.post(url, body);
 }
 const API_PATH$1 = `${BASE_API_URL}/{store_id}/{product_id}`;
 async function fetchProduct(store_id, product_id, query = {}) {
   const url = route(API_PATH$1, { store_id, product_id });
-  return await api.get(url, query);
+  return await api$1.get(url, query);
 }
 const API_PATH = `${BASE_API_URL}/{store_id}/{product_id}/{variant_id}`;
 async function fetchProductVariant(
@@ -15353,7 +15353,7 @@ async function fetchProductVariant(
   parameters = {}
 ) {
   const url = route(API_PATH, { store_id, product_id, variant_id });
-  return await api.get(url, parameters);
+  return await api$1.get(url, parameters);
 }
 const { assign: assign$2, pure, send: send$2 } = actions;
 const onError = pure((_, event) => {
@@ -15576,6 +15576,7 @@ const customer_email = {
               quantity: context.quantity,
               extra: context.extra,
               customer_email: checkout_information.customer_email,
+              terms_of_service: checkout_information.terms_of_service,
               payment_method: checkout_information.payment_method,
               additional_information:
                 checkout_information.additional_information,
@@ -15638,10 +15639,11 @@ function useOverlay() {
 }
 const checkout_information = reactive({
   customer_email: "",
-  payment_method: "STRIPE",
+  payment_method: "",
   additional_information: {},
+  terms_of_service: false,
 });
-function render$8(_ctx, _cache) {
+function render$9(_ctx, _cache) {
   return (
     openBlock(),
     createBlock(
@@ -15662,7 +15664,7 @@ function render$8(_ctx, _cache) {
     )
   );
 }
-function render$7(_ctx, _cache) {
+function render$8(_ctx, _cache) {
   return (
     openBlock(),
     createBlock(
@@ -15683,7 +15685,7 @@ function render$7(_ctx, _cache) {
     )
   );
 }
-function render$6(_ctx, _cache) {
+function render$7(_ctx, _cache) {
   return (
     openBlock(),
     createBlock(
@@ -15704,7 +15706,7 @@ function render$6(_ctx, _cache) {
     )
   );
 }
-function render$5(_ctx, _cache) {
+function render$6(_ctx, _cache) {
   return (
     openBlock(),
     createBlock(
@@ -15728,7 +15730,7 @@ function render$5(_ctx, _cache) {
     )
   );
 }
-function render$4(_ctx, _cache) {
+function render$5(_ctx, _cache) {
   return (
     openBlock(),
     createBlock(
@@ -15750,7 +15752,7 @@ function render$4(_ctx, _cache) {
     )
   );
 }
-function render$3(_ctx, _cache) {
+function render$4(_ctx, _cache) {
   return (
     openBlock(),
     createBlock(
@@ -15771,7 +15773,7 @@ function render$3(_ctx, _cache) {
     )
   );
 }
-function render$2(_ctx, _cache) {
+function render$3(_ctx, _cache) {
   return (
     openBlock(),
     createBlock(
@@ -15792,7 +15794,7 @@ function render$2(_ctx, _cache) {
     )
   );
 }
-function render$1(_ctx, _cache) {
+function render$2(_ctx, _cache) {
   return (
     openBlock(),
     createBlock(
@@ -15813,7 +15815,7 @@ function render$1(_ctx, _cache) {
     )
   );
 }
-function render(_ctx, _cache) {
+function render$1(_ctx, _cache) {
   return (
     openBlock(),
     createBlock(
@@ -15847,7 +15849,7 @@ const _sfc_main$e = {
   name: "Spinner",
 };
 const _hoisted_1$e = {
-  class: "sell-animate-spin sell-h-5 sell-w-5",
+  class: "embed-animate-spin embed-h-5 embed-w-5",
   xmlns: "http://www.w3.org/2000/svg",
   fill: "none",
   viewBox: "0 0 24 24",
@@ -15855,7 +15857,7 @@ const _hoisted_1$e = {
 const _hoisted_2$c = /* @__PURE__ */ createBaseVNode(
   "circle",
   {
-    class: "sell-opacity-25",
+    class: "embed-opacity-25",
     cx: "12",
     cy: "12",
     r: "10",
@@ -15868,7 +15870,7 @@ const _hoisted_2$c = /* @__PURE__ */ createBaseVNode(
 const _hoisted_3$a = /* @__PURE__ */ createBaseVNode(
   "path",
   {
-    class: "sell-opacity-75",
+    class: "embed-opacity-75",
     fill: "currentColor",
     d: "M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z",
   },
@@ -15909,13 +15911,13 @@ function _sfc_render$d(_ctx, _cache, $props, $setup, $data, $options) {
       "button",
       {
         class: normalizeClass([
-          "sell-inline-flex sell-items-center sell-justify-center sm:sell-text-sm sell-font-medium sell-px-4 sell-py-2 sell-rounded-md sell-shadow-sm focus:sell-ring-2 focus:sell-outline-none disabled:sell-opacity-75 disabled:sell-cursor-not-allowed",
+          "embed-inline-flex embed-items-center embed-justify-center sm:embed-text-sm embed-font-medium embed-px-4 embed-py-2 embed-rounded-md embed-shadow-sm focus:embed-ring-2 focus:embed-outline-none disabled:embed-opacity-75 disabled:embed-cursor-not-allowed embed-border-none",
           {
-            "sell-font-semibold sell-transition sell-duration-150 ease-in-out sell-shadow hover:sell-shadow-lg sell-bg-slate-400 dark:sell-bg-slate-700 hover:sell-bg-slate-500 dark:hover:sell-bg-slate-600 sell-text-white":
+            "embed-font-semibold embed-transition embed-duration-150 embed-ease-in-out embed-shadow hover:embed-shadow-lg embed-bg-slate-400 dark:embed-bg-slate-800 hover:embed-bg-slate-500 dark:hover:embed-bg-black embed-text-white":
               typeof _ctx.$attrs.toffee !== "undefined",
-            "sell-bg-white hover:sell-bg-slate-50 dark:sell-bg-slate-800 dark:hover:sell-bg-slate-800 sell-text-slate-700 dark:sell-text-slate-50 sell-border sell-border-slate-300 dark:sell-border-slate-900 focus:sell-ring-offset-2 sell-ring-offset-transparent focus:sell-ring-slate-500":
+            "embed-bg-white hover:embed-bg-slate-50 dark:embed-bg-slate-800 dark:hover:embed-bg-slate-800 embed-text-slate-700 dark:embed-text-slate-50 embed-border embed-border-slate-300 dark:embed-border-slate-900 focus:embed-ring-offset-2 embed-ring-offset-transparent focus:embed-ring-slate-500":
               typeof _ctx.$attrs.outline !== "undefined",
-            "sell-bg-red-600 hover:sell-bg-red-700 sell-text-white focus:sell-ring-offset-2 sell-ring-offset-transparent focus:sell-ring-red-500":
+            "embed-bg-red-600 hover:embed-bg-red-700 embed-text-white focus:embed-ring-offset-2 embed-ring-offset-transparent focus:embed-ring-red-500":
               typeof _ctx.$attrs.danger !== "undefined",
           },
         ]),
@@ -15965,7 +15967,7 @@ const _sfc_main$c = defineComponent({
 });
 const _hoisted_1$c = {
   class:
-    "sell-mt-6 sell-w-full sell-justify-between sell-flex sell-items-center sell-col-span-2 sell-space-x-2",
+    "embed-mt-6 embed-w-full embed-justify-between embed-flex embed-items-center embed-col-span-2 embed-space-x-2",
 };
 const _hoisted_2$b = /* @__PURE__ */ createTextVNode("Back");
 const _hoisted_3$9 = /* @__PURE__ */ createTextVNode("Continue");
@@ -15979,7 +15981,7 @@ function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
         {
           onClick: _cache[0] || (_cache[0] = ($event) => _ctx.send(_ctx.back)),
           class:
-            "sell-w-24 sell-outline-none focus:sell-ring-0 sell-shadow-lg hover:sell-shadow-xl hover:sell-bg-slate-50 dark:hover:sell-bg-black dark:sell-bg-slate-800 dark:sell-text-white",
+            "embed-w-24 embed-outline-none focus:embed-ring-0 embed-shadow-lg hover:embed-shadow-xl hover:embed-bg-slate-50 dark:hover:embed-bg-black dark:embed-bg-slate-800 dark:embed-text-white",
           disabled: _ctx.state.hasTag("loading"),
         },
         {
@@ -15994,7 +15996,7 @@ function _sfc_render$c(_ctx, _cache, $props, $setup, $data, $options) {
         {
           loading: _ctx.state.hasTag("loading"),
           onClick: _cache[1] || (_cache[1] = ($event) => _ctx.send(_ctx.next)),
-          class: "sell-w-24",
+          class: "embed-w-24",
           style: normalizeStyle({
             "background-color": _ctx.state.context.customization.theme,
           }),
@@ -16047,47 +16049,56 @@ const _sfc_main$b = defineComponent({
   },
 });
 const _hoisted_1$b = {
-  class: "sell-flex sell-flex-col sell-px-4 sell-pt-5 sell-pb-4 sm:sell-p-6",
+  class:
+    "embed-flex embed-flex-col embed-px-4 embed-pt-5 embed-pb-4 sm:embed-p-6",
 };
 const _hoisted_2$a = /* @__PURE__ */ createBaseVNode(
   "p",
   {
     class:
-      "sell-mb-4 sell-font-medium sell-text-center dark:sell-text-white sell-text-sm",
+      "embed-mb-4 embed-font-medium embed-text-center dark:embed-text-white embed-text-xs embed-italic",
   },
-  "Select the product you would like to purchase",
+  "Select the product variant you'd like to purchase",
   -1
 );
-const _hoisted_3$8 = /* @__PURE__ */ createTextVNode("Variants");
-const _hoisted_4$6 = { class: "sell-space-y-4" };
-const _hoisted_5$4 = {
+const _hoisted_3$8 = /* @__PURE__ */ createTextVNode(
+  "Select the product variant"
+);
+const _hoisted_4$6 = { class: "embed-space-y-4" };
+const _hoisted_5$5 = {
   class:
-    "sell-flex sell-flex-col sm:sell-flex-row sm:sell-justify-between sell-text-left",
+    "embed-flex embed-flex-col sm:embed-flex-row sm:embed-justify-between embed-text-left",
 };
-const _hoisted_6$4 = { class: "sell-flex sell-items-center sell-flex-grow-0" };
-const _hoisted_7$2 = { class: "sell-text-sm" };
+const _hoisted_6$3 = {
+  class: "embed-flex embed-items-center embed-flex-grow-0",
+};
+const _hoisted_7$2 = { class: "embed-text-sm" };
 const _hoisted_8$2 = {
   class:
-    "sell-mt-2 sell-flex sell-text-sm sm:sell-mt-0 sm:sell-block sm:sell-ml-4 sm:sell-text-right sell-w-auto sell-flex-shrink-0",
+    "embed-mt-2 embed-flex embed-text-sm sm:embed-mt-0 sm:embed-block sm:embed-ml-4 sm:embed-text-right embed-w-auto embed-flex-shrink-0",
 };
 const _hoisted_9$2 = {
-  class: "sell-font-medium sell-text-slate-900 dark:sell-text-white",
+  class: "embed-font-medium text-slate-900 dark:embed-text-white",
 };
-const _hoisted_10$2 = /* @__PURE__ */ createBaseVNode(
+const _hoisted_10$2 = {
+  class:
+    "embed-flex embed-text-xs embed-text-left text-slate-900 dark:embed-text-white",
+};
+const _hoisted_11$2 = /* @__PURE__ */ createBaseVNode(
   "div",
   {
     class:
-      "sell-absolute -sell-inset-px sell-rounded-lg sell-pointer-events-none",
+      "embed-absolute embed--inset-px embed-rounded-lg embed-pointer-events-none",
     "aria-hidden": "true",
   },
   null,
   -1
 );
-const _hoisted_11$2 = {
+const _hoisted_12$2 = {
   class:
-    "sell-mt-6 sell-w-full sell-justify-end sell-flex sell-items-center sell-col-span-2 sell-space-x-2",
+    "embed-mt-6 embed-w-full embed-justify-end embed-flex embed-items-center embed-col-span-2 embed-space-x-2",
 };
-const _hoisted_12$2 = /* @__PURE__ */ createTextVNode("Continue");
+const _hoisted_13$2 = /* @__PURE__ */ createTextVNode("Continue");
 function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_DialogTitle = resolveComponent("DialogTitle");
   const _component_RadioGroupLabel = resolveComponent("RadioGroupLabel");
@@ -16106,7 +16117,7 @@ function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
           {
             as: "h2",
             class:
-              "sell-mb-1 sell-font-bold sell-text-center dark:sell-text-white sell-text-xl",
+              "embed-mb-1 embed-font-bold embed-text-center dark:embed-text-white embed-text-xl",
           },
           {
             default: withCtx(() => [
@@ -16128,7 +16139,7 @@ function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
             default: withCtx(() => [
               createVNode(
                 _component_RadioGroupLabel,
-                { class: "sell-sr-only" },
+                { class: "embed-sr-only" },
                 {
                   default: withCtx(() => [_hoisted_3$8]),
                   _: 1,
@@ -16155,27 +16166,28 @@ function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
                               "div",
                               {
                                 class: normalizeClass([
-                                  "sell-flex sell-flex-col",
+                                  "embed-flex embed-flex-col",
                                   [
                                     checked
-                                      ? "sell-shadow-lg dark:sell-shadow-black sell-shadow-slate-500 sell-bg-white dark:sell-bg-slate-900 sell-shadow-slate-400 dark:sell-shadow-black"
-                                      : "sell-bg-slate-50 dark:sell-bg-slate-800 sell-shadow dark:sell-shadow-black/20 dark:hover:sell-bg-slate-900 hover:sell-bg-white hover:sell-shadow-slate-400 dark:hover:sell-shadow-black",
-                                    "sell-transition sell-duration-200 ease-in-out sell-relative sell-block sell-rounded-lg sell-px-6 sell-py-4 sell-cursor-pointer sm:sell-flex sm:sell-justify-between focus:sell-outline-none",
+                                      ? "embed-shadow-lg dark:embed-shadow-black embed-shadow-slate-500 embed-bg-white dark:embed-bg-slate-900 embed-shadow-slate-400 dark:embed-shadow-black"
+                                      : "bg-slate-50 dark:embed-bg-slate-800 embed-shadow dark:embed-shadow-black/20 dark:hover:embed-bg-slate-900 hover:embed-bg-white hover:embed-shadow-slate-400 dark:hover:embed-shadow-black",
+                                    "embed-transition embed-duration-200 embed-ease-in-out embed-relative embed-block embed-rounded-lg embed-px-6 embed-py-4 embed-cursor-pointer sm:embed-flex sm:embed-justify-between focus:embed-outline-none",
                                   ],
                                 ]),
                               },
                               [
-                                createBaseVNode("div", _hoisted_5$4, [
-                                  createBaseVNode("div", _hoisted_6$4, [
+                                createBaseVNode("div", _hoisted_5$5, [
+                                  createBaseVNode("div", _hoisted_6$3, [
                                     createBaseVNode("div", _hoisted_7$2, [
                                       createVNode(
                                         _component_RadioGroupLabel,
                                         {
                                           as: "p",
                                           class:
-                                            "sell-font-medium sell-text-slate-900 dark:sell-text-white",
+                                            "embed-font-medium text-slate-900 dark:embed-text-white",
                                           style: {
-                                            "text-transform": "capitalize",
+                                            "text-transform":
+                                              "embed-capitalize",
                                           },
                                         },
                                         {
@@ -16207,11 +16219,13 @@ function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
                                   {
                                     as: "div",
                                     class:
-                                      "sell-flex sell-text-xs sell-text-left sell-mt-2",
+                                      "embed-flex embed-text-xs embed-text-left embed-mt-2",
                                   },
                                   {
                                     default: withCtx(() => [
-                                      createTextVNode(
+                                      createBaseVNode(
+                                        "div",
+                                        _hoisted_10$2,
                                         toDisplayString(variant.description),
                                         1
                                       ),
@@ -16220,7 +16234,7 @@ function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
                                   },
                                   1024
                                 ),
-                                _hoisted_10$2,
+                                _hoisted_11$2,
                               ],
                               2
                             ),
@@ -16241,22 +16255,23 @@ function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
           8,
           ["modelValue"]
         ),
-        createBaseVNode("div", _hoisted_11$2, [
+        createBaseVNode("div", _hoisted_12$2, [
           createVNode(
             _component_Button,
             {
               loading: _ctx.state.hasTag("loading"),
               onClick:
                 _cache[1] || (_cache[1] = ($event) => _ctx.selectVariant()),
-              class: "sell-w-24",
+              class: "embed-w-24",
+              disabled: _ctx.selected_variant == null,
               toffee: "",
             },
             {
-              default: withCtx(() => [_hoisted_12$2]),
+              default: withCtx(() => [_hoisted_13$2]),
               _: 1,
             },
             8,
-            ["loading"]
+            ["loading", "disabled"]
           ),
         ]),
       ]),
@@ -16269,8 +16284,8 @@ var VariantSelection = /* @__PURE__ */ _export_sfc(_sfc_main$b, [
 const _sfc_main$a = defineComponent({
   name: "NumberInput",
   components: {
-    MinusIcon: render$3,
-    PlusIcon: render$1,
+    MinusIcon: render$4,
+    PlusIcon: render$2,
   },
   inheritAttrs: false,
   props: {
@@ -16325,7 +16340,7 @@ const _sfc_main$a = defineComponent({
     };
   },
 });
-const _hoisted_1$a = { class: "sell-relative" };
+const _hoisted_1$a = { class: "embed-relative" };
 const _hoisted_2$9 = ["disabled"];
 const _hoisted_3$7 = ["value", "disabled"];
 const _hoisted_4$5 = ["disabled"];
@@ -16339,11 +16354,11 @@ function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
         "button",
         {
           class:
-            "sell-absolute sell-inset-y-0 sell-left-0 sell-pl-3 sell-flex sell-items-center dark:sell-text-white disabled:sell-opacity-50 disabled:sell-cursor-not-allowed",
+            "embed-absolute embed-inset-y-0 embed-left-0 embed-pl-3 embed-flex embed-items-center dark:embed-text-white disabled:embed-opacity-50 disabled:embed-cursor-not-allowed",
           disabled: !_ctx.canDecrement,
           onClick: _cache[0] || (_cache[0] = ($event) => _ctx.decrement()),
         },
-        [createVNode(_component_MinusIcon, { class: "sell-w-5 sell-h-5" })],
+        [createVNode(_component_MinusIcon, { class: "embed-w-5 embed-h-5" })],
         8,
         _hoisted_2$9
       ),
@@ -16352,7 +16367,7 @@ function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
         mergeProps(_ctx.$attrs, {
           value: _ctx.modelValue,
           class:
-            "sell-w-full sell-rounded-lg sell-shadow-sm sell-text-center dark:sell-bg-slate-800 dark:sell-border-slate-800 dark:sell-text-white focus:sell-outline-none focus:sell-ring-1 focus:sell-ring-slate-500 focus:sell-border-slate-500",
+            "embed-w-full embed-rounded-lg embed-shadow hover:embed-shadow-md focus:embed-shadow-lg embed-text-center dark:embed-bg-slate-800 dark:embed-shadow-black dark:embed-text-white focus:embed-outline-none focus:embed-ring-0",
           type: "text",
           inputmode: "numeric",
           onInput:
@@ -16368,11 +16383,11 @@ function _sfc_render$a(_ctx, _cache, $props, $setup, $data, $options) {
         "button",
         {
           class:
-            "sell-absolute sell-inset-y-0 sell-right-0 sell-pr-3 sell-flex sell-items-center dark:sell-text-white disabled:sell-opacity-50 disabled:sell-cursor-not-allowed",
+            "embed-absolute embed-inset-y-0 embed-right-0 embed-pr-3 embed-flex embed-items-center dark:embed-text-white disabled:embed-opacity-50 disabled:embed-cursor-not-allowed",
           disabled: !_ctx.canIncrement,
           onClick: _cache[2] || (_cache[2] = ($event) => _ctx.increment()),
         },
-        [createVNode(_component_PlusIcon, { class: "sell-w-5 sell-h-5" })],
+        [createVNode(_component_PlusIcon, { class: "embed-w-5 embed-h-5" })],
         8,
         _hoisted_4$5
       ),
@@ -16385,7 +16400,7 @@ var NumberInput = /* @__PURE__ */ _export_sfc(_sfc_main$a, [
 const _sfc_main$9 = defineComponent({
   name: "InputGroup",
   components: {
-    ExclamationCircleIcon: render$6,
+    ExclamationCircleIcon: render$7,
   },
   inheritAttrs: false,
   props: {
@@ -16425,17 +16440,17 @@ const _sfc_main$9 = defineComponent({
 });
 const _hoisted_1$9 = {
   class:
-    "sell-block sell-text-sm sell-font-medium sell-text-slate-700 dark:sell-text-white",
+    "embed-block embed-text-sm embed-font-medium embed-text-slate-700 dark:embed-text-white",
 };
 const _hoisted_2$8 = {
   key: 0,
   class:
-    "sell-absolute sell-inset-y-0 sell-left-0 sell-pl-3 sell-flex sell-items-center sell-pointer-events-none",
+    "embed-absolute embed-inset-y-0 embed-left-0 embed-pl-3 embed-flex embed-items-center embed-pointer-events-none",
 };
 const _hoisted_3$6 = ["type", "value"];
 const _hoisted_4$4 = ["checked", "type", "value"];
-const _hoisted_5$3 = ["value"];
-const _hoisted_6$3 = ["textContent"];
+const _hoisted_5$4 = ["value"];
+const _hoisted_6$2 = ["textContent"];
 function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_ExclamationCircleIcon = resolveComponent(
     "ExclamationCircleIcon"
@@ -16450,7 +16465,7 @@ function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
           "div",
           {
             class: normalizeClass({
-              "sell-w-full sell-flex sell-justify-between":
+              "embed-w-full embed-flex embed-justify-between embed-flex embed-items-center":
                 _ctx.type === "checkbox",
             }),
           },
@@ -16465,8 +16480,8 @@ function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
               "div",
               {
                 class: normalizeClass([
-                  "sell-relative sell-rounded-md",
-                  { "sell-mt-1": _ctx.type !== "checkbox" && !!_ctx.label },
+                  "embed-relative embed-rounded-md",
+                  { "embed-mt-1": _ctx.type !== "checkbox" && !!_ctx.label },
                 ]),
               },
               [
@@ -16485,12 +16500,12 @@ function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
                           key: 1,
                           type: _ctx.type,
                           class: {
-                            "sell-block sell-w-full sell-rounded-md sm:sell-text-sm disabled:sell-opacity-70 sell-shadow-lg sell-shadow-slate-300 focus:sell-shadow-slate-400 dark:sell-shadow-black/20 dark:focus:sell-shadow-black focus:sell-ring-0 focus:sell-border-transparent sell-border-transparent sell-placeholder-slate-600 focus:sell-placeholder-slate-800 dark:focus:sell-placeholder-slate-400 sell-text-black dark:sell-text-white sell-bg-slate-100 focus:sell-bg-white dark:sell-bg-slate-900 dark:focus:sell-bg-slate-800 sell-transition sell-duration-300 ease-in-out":
+                            "embed-block embed-w-full embed-rounded-md sm:embed-text-sm disabled:embed-opacity-70 embed-shadow-lg embed-shadow-slate-300 focus:embed-shadow-slate-400 dark:embed-shadow-black/20 dark:focus:embed-shadow-black focus:embed-ring-0 focus:embed-border-transparent embed-border-transparent embed-placeholder-slate-600 focus:placeholder-slate-800 dark:focus:embed-placeholder-slate-400 embed-text-black dark:embed-text-white embed-bg-slate-100 focus:embed-bg-white dark:embed-bg-slate-900 dark:focus:embed-bg-slate-800 embed-transition embed-duration-300 embed-ease-in-out":
                               _ctx.type !== "checkbox",
-                            "sell-pl-10": _ctx.hasSlot("icon"),
-                            "sell-placeholder-red-300 dark:sell-placeholder-red-600 sell-text-red-900 sell-border-red-300 focus:sell-ring-red-500 focus:sell-border-red-500":
+                            "embed-pl-10": _ctx.hasSlot("icon"),
+                            "embed-placeholder-red-300 dark:embed-placeholder-red-600 embed-text-red-900 embed-border-red-300 focus:embed-ring-red-500 focus:embed-border-red-500":
                               !!_ctx.error,
-                            "sell-pr-10":
+                            "embed-pr-10":
                               !!_ctx.error && _ctx.type !== "number",
                           },
                           value: _ctx.modelValue,
@@ -16517,7 +16532,7 @@ function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
                           checked: _ctx.modelValue,
                           type: _ctx.type,
                           class:
-                            "sell-rounded hover:sell-bg-slate-100 dark:hover:sell-bg-slate-700 sell-text-slate dark:sell-text-slate-700 sell-bg-white focus:sell-bg-slate-50 dark:sell-bg-slate-800 dark:focus:sell-bg-slate-700 sell-text-black dark:sell-text-white sell-placeholder-slate-600 dark:sell-placeholder-slate-500 focus:sell-placeholder-slate-800 dark:focus:sell-placeholder-slate-400 sell-border sell-border-slate-400 dark:sell-border-slate-900 focus:sell-border-slate-500 dark:focus:sell-border-slate-800 focus:sell-ring-0 sell-shadow-md sell-shadow-slate-200 focus:sell-shadow-slate-300 dark:sell-shadow-black/20 dark:focus:sell-shadow-black sell-transition sell-duration-200 ease-in-out disabled:sell-bg-slate-100 dark:disabled:sell-bg-slate-900 disabled:sell-opacity-70",
+                            "embed-rounded embed-bg-white dark:embed-bg-slate-800 hover:embed-bg-slate-500 dark:hover:embed-bg-slate-900 focus:embed-bg-slate-700 dark:focus:embed-bg-black embed-text-black dark:embed-text-white embed-placeholder-slate-600 dark:embed-placeholder-slate-500 focus:placeholder-slate-800 dark:focus:embed-placeholder-slate-400 embed-border embed-border-slate-400 dark:embed-border-slate-900 focus:embed-border-slate-500 dark:focus:embed-border-slate-800 focus:embed-ring-0 embed-shadow-md embed-shadow-slate-200 focus:embed-shadow-slate-300 dark:embed-shadow-black/20 dark:focus:embed-shadow-black embed-transition embed-duration-200 embed-ease-in-out disabled:embed-bg-slate-100 dark:disabled:embed-bg-slate-900 disabled:embed-opacity-70",
                           value: _ctx.modelValue,
                         },
                         _ctx.$attrs,
@@ -16539,9 +16554,9 @@ function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
                         {
                           key: 3,
                           class: [
-                            "sell-block sell-w-full sell-rounded-md sm:sell-text-sm disabled:sell-opacity-70 sell-shadow-lg sell-shadow-slate-300 focus:sell-shadow-slate-400 dark:sell-shadow-black/20 dark:focus:sell-shadow-black focus:sell-ring-0 focus:sell-border-transparent sell-border-transparent sell-placeholder-slate-600 focus:sell-placeholder-slate-800 dark:focus:sell-placeholder-slate-400 sell-text-black dark:sell-text-white sell-bg-slate-100 focus:sell-bg-white dark:sell-bg-slate-900 dark:focus:sell-bg-slate-800 sell-transition sell-duration-300 ease-in-out",
+                            "embed-block embed-w-full embed-rounded-md sm:embed-text-sm disabled:embed-opacity-70 embed-shadow-lg embed-shadow-slate-300 focus:embed-shadow-slate-400 dark:embed-shadow-black/20 dark:focus:embed-shadow-black focus:embed-ring-0 focus:embed-border-transparent embed-border-transparent embed-placeholder-slate-600 focus:placeholder-slate-800 dark:focus:embed-placeholder-slate-400 embed-text-black dark:embed-text-white embed-bg-slate-100 focus:embed-bg-white dark:embed-bg-slate-900 dark:focus:embed-bg-slate-800 embed-transition embed-duration-300 embed-ease-in-out",
                             {
-                              "sell-placeholder-red-300 sell-text-red-900 sell-border-red-300 focus:sell-ring-red-500 focus:sell-border-red-500":
+                              "embed-placeholder-red-300 embed-text-red-900 embed-border-red-300 focus:embed-ring-red-500 focus:embed-border-red-500":
                                 !!_ctx.error,
                             },
                           ],
@@ -16557,7 +16572,7 @@ function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
                       ),
                       null,
                       16,
-                      _hoisted_5$3
+                      _hoisted_5$4
                     )),
                 !!_ctx.error && (_ctx.type === "text" || _ctx.type === "email")
                   ? (openBlock(),
@@ -16566,14 +16581,14 @@ function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
                       {
                         key: 4,
                         class: normalizeClass([
-                          "sell-absolute sell-inset-y-0 sell-right-0 sell-pr-3 sell-flex sell-items-center sell-pointer-events-none",
-                          { "sell-mr-6": _ctx.type === "number" },
+                          "embed-absolute embed-inset-y-0 embed-right-0 embed-pr-3 embed-flex embed-items-center embed-pointer-events-none",
+                          { "embed-mr-6": _ctx.type === "number" },
                         ]),
                       },
                       [
                         createVNode(_component_ExclamationCircleIcon, {
                           class:
-                            "sell-h-5 sell-w-5 sell-text-red-500 dark:sell-text-red-900",
+                            "embed-h-5 embed-w-5 embed-text-red-500 dark:embed-text-red-900",
                           "aria-hidden": "true",
                         }),
                       ],
@@ -16593,12 +16608,12 @@ function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
               {
                 key: 0,
                 class:
-                  "sell-mt-3 sell-text-xs sell-text-red-600 dark:sell-text-red sell-w-full sell-flex-grow",
+                  "embed-mt-3 embed-text-xs embed-text-red-600 dark:embed-text-red embed-w-full embed-flex-grow",
                 textContent: toDisplayString(_ctx.error),
               },
               null,
               8,
-              _hoisted_6$3
+              _hoisted_6$2
             ))
           : createCommentVNode("", true),
       ],
@@ -16616,8 +16631,8 @@ const _sfc_main$8 = defineComponent({
     Button,
     DialogTitle: qr,
     NumberInput,
-    GiftIcon: render$5,
-    PlusSmIcon: render$2,
+    GiftIcon: render$6,
+    PlusSmIcon: render$3,
   },
   setup() {
     var _a2, _b, _c;
@@ -16630,6 +16645,7 @@ const _sfc_main$8 = defineComponent({
     const orMore = ref(
       context.value.extra !== void 0 && context.value.extra !== "0.00"
     );
+    const applyCoupon = ref(context.value.coupon == "");
     function apply(key, value) {
       send2([
         {
@@ -16656,6 +16672,7 @@ const _sfc_main$8 = defineComponent({
       data,
       context,
       orMore,
+      applyCoupon,
       apply,
       isSoldOut,
       isLoading,
@@ -16665,79 +16682,90 @@ const _sfc_main$8 = defineComponent({
 const _hoisted_1$8 = {
   key: 0,
   class:
-    "sell-aspect-w-3 sell-aspect-h-1 sell-flex-shrink-0 sell-rounded-t-2xl sell-overflow-hidden sell-bg-slate-100 dark:sell-bg-black",
+    "aspect-w-3 aspect-h-1 embed-flex-shrink-0 embed-rounded-t-2xl embed-overflow-hidden embed-bg-inherit",
 };
 const _hoisted_2$7 = ["src", "alt"];
 const _hoisted_3$5 = {
   class:
-    "sell-flex sell-flex-col sell-px-4 sell-pt-5 sell-pb-4 sell-sm:p-6 sell-space-y-3",
+    "embed-flex embed-flex-col embed-px-4 embed-pt-5 embed-pb-4 sm:embed-p-6 embed-space-y-3",
 };
-const _hoisted_4$3 = {
-  class: "sell-flex sell-flex-col sell-mx-auto sell-items-center",
+const _hoisted_4$3 = ["innerHTML"];
+const _hoisted_5$3 = {
+  class: "embed-flex embed-flex-col embed-mx-auto embed-items-center",
 };
-const _hoisted_5$2 = {
+const _hoisted_6$1 = {
   key: 0,
   class:
-    "sell-text-xl sell-text-center sell-font-light dark:sell-text-white sell-line-through",
-};
-const _hoisted_6$2 = {
-  class: "sell-text-xl sell-text-center dark:sell-text-white sell-font-bold",
+    "embed-text-xl embed-text-center embed-font-light dark:embed-text-white embed-line-through",
 };
 const _hoisted_7$1 = {
-  key: 0,
-  class: "sell-flex sell-flex-col sell-mx-auto sell-items-center",
-};
-const _hoisted_8$1 = { class: "sell-flex sell-flex-col" };
-const _hoisted_9$1 = { class: "sell-flex sell-gap-2 sell-items-center" };
-const _hoisted_10$1 = /* @__PURE__ */ createBaseVNode(
-  "span",
-  { class: "dark:sell-text-white sell-font-semibold" },
-  "$",
-  -1
-);
-const _hoisted_11$1 = /* @__PURE__ */ createTextVNode(" Add ");
-const _hoisted_12$1 = ["textContent"];
-const _hoisted_13 = ["innerHTML"];
-const _hoisted_14 = {
   class:
-    "sell-flex sell-flex-col sell-gap-1 sell-rounded-md sell-shadow-sm sell-flex-shrink-0",
+    "embed-text-xl embed-text-center dark:embed-text-white embed-font-bold",
 };
-const _hoisted_15 = { class: "sell-flex sell-gap-1" };
+const _hoisted_8$1 = {
+  key: 0,
+  class: "embed-flex embed-flex-col embed-mx-auto embed-items-center",
+};
+const _hoisted_9$1 = { class: "embed-flex embed-flex-col" };
+const _hoisted_10$1 = { class: "embed-w-full" };
+const _hoisted_11$1 = { class: "embed-flex embed-rounded-md" };
+const _hoisted_12$1 = {
+  class:
+    "embed-relative embed-flex embed-items-stretch embed-flex-grow focus-within:embed-z-10",
+};
+const _hoisted_13$1 = /* @__PURE__ */ createBaseVNode("span", null, "Add", -1);
+const _hoisted_14$1 = [_hoisted_13$1];
+const _hoisted_15$1 = ["textContent"];
 const _hoisted_16 = {
   class:
-    "sell-relative sell-flex sell-items-stretch sell-flex-grow focus-within:sell-z-10",
+    "embed-shadow embed-shadow-slate-400 dark:embed-shadow-black embed-bg-slate-100 dark:embed-bg-slate-800 dark:embed-text-slate-100 embed-p-2 embed-rounded-xl embed-overflow-auto embed-overscroll-contain embed-h-32 embed-text-sm",
 };
-const _hoisted_17 = /* @__PURE__ */ createBaseVNode("span", null, "Apply", -1);
-const _hoisted_18 = ["textContent"];
+const _hoisted_17 = ["innerHTML"];
+const _hoisted_18 = {
+  class: "embed-flex embed-flex-col embed-mx-auto embed-items-center",
+};
 const _hoisted_19 = {
+  class:
+    "embed-flex embed-flex-col embed-gap-1 embed-rounded-md embed-shadow-sm embed-flex-shrink-0",
+};
+const _hoisted_20 = { class: "embed-flex embed-gap-1" };
+const _hoisted_21 = {
+  class:
+    "embed-relative embed-flex embed-items-stretch embed-flex-grow focus-within:embed-z-10",
+};
+const _hoisted_22 = /* @__PURE__ */ createBaseVNode("span", null, "Apply", -1);
+const _hoisted_23 = ["textContent"];
+const _hoisted_24 = {
+  key: 3,
+  class:
+    "embed-mt-3 embed-text-center embed-p-2 embed-bg-green-600 embed-text-white embed-text-xs embed-rounded-xl embed-text-left",
+};
+const _hoisted_25 = {
   key: 1,
-  class:
-    "sell-mt-1 sell-text-center sell-p-2 sell-bg-green-600 sell-text-white sell-text-xs sell-rounded-xl sell-text-left",
+  class: "embed-flex embed-flex-col embed-gap-1",
 };
-const _hoisted_20 = { class: "sell-flex sell-flex-col sell-gap-1" };
-const _hoisted_21 = { class: "sell-flex sell-space-x-2" };
-const _hoisted_22 = {
+const _hoisted_26 = { class: "embed-flex embed-space-x-2" };
+const _hoisted_27 = {
   class:
-    "sell-inline-block sell-text-left sell-text-sm sell-ml-1 dark:sell-text-white",
+    "embed-inline-block embed-text-left embed-text-xs embed-italic embed-ml-8 sm:embed-ml-10 dark:embed-text-white",
 };
-const _hoisted_23 = /* @__PURE__ */ createBaseVNode(
+const _hoisted_28 = {
+  key: 0,
+  class: "embed-text-lg",
+};
+const _hoisted_29 = { key: 1 };
+const _hoisted_30 = /* @__PURE__ */ createBaseVNode(
   "span",
   null,
-  "Stock:\xA0",
+  " in stock\xA0",
   -1
 );
-const _hoisted_24 = {
-  key: 0,
-  class: "sell-text-lg",
-};
-const _hoisted_25 = { key: 1 };
-const _hoisted_26 = ["textContent"];
+const _hoisted_31 = ["textContent"];
 function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
   var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n2;
   const _component_DialogTitle = resolveComponent("DialogTitle");
-  const _component_InputGroup = resolveComponent("InputGroup");
-  const _component_Button = resolveComponent("Button");
   const _component_GiftIcon = resolveComponent("GiftIcon");
+  const _component_Button = resolveComponent("Button");
   const _component_NumberInput = resolveComponent("NumberInput");
   return (
     openBlock(),
@@ -16748,7 +16776,7 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
             createBaseVNode(
               "img",
               {
-                class: "sell-object-scale-down sell-h-32 sell-w-96",
+                class: "embed-object-contain",
                 src: _ctx.variant.images[0],
                 alt: _ctx.variant.title,
               },
@@ -16764,7 +16792,7 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
             _component_DialogTitle,
             {
               as: "h1",
-              class: "sell-font-semibold dark:sell-text-white sell-text-lg",
+              class: "embed-font-semibold dark:embed-text-white embed-text-lg",
             },
             {
               default: withCtx(() => [
@@ -16773,27 +16801,41 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
               _: 1,
             }
           ),
+          _ctx.variant.description !== "Default Variant"
+            ? (openBlock(),
+              createElementBlock(
+                "p",
+                {
+                  key: 0,
+                  class: "dark:embed-text-white embed-text-xs embed-italic",
+                  innerHTML: _ctx.variant.description,
+                },
+                null,
+                8,
+                _hoisted_4$3
+              ))
+            : createCommentVNode("", true),
         ]),
-        createBaseVNode("div", _hoisted_4$3, [
+        createBaseVNode("div", _hoisted_5$3, [
           _ctx.variant.price !== _ctx.variant.total
             ? (openBlock(),
               createElementBlock(
                 "div",
-                _hoisted_5$2,
+                _hoisted_6$1,
                 toDisplayString(_ctx.variant.price),
                 1
               ))
             : createCommentVNode("", true),
           createBaseVNode(
             "div",
-            _hoisted_6$2,
+            _hoisted_7$1,
             toDisplayString(_ctx.variant.total),
             1
           ),
         ]),
         _ctx.variant.humble
           ? (openBlock(),
-            createElementBlock("div", _hoisted_7$1, [
+            createElementBlock("div", _hoisted_8$1, [
               _ctx.orMore
                 ? (openBlock(),
                   createBlock(
@@ -16801,53 +16843,56 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
                     {
                       key: 0,
                       appear: "",
-                      "enter-from-class": "sell-opacity-0 sell-scale-0",
-                      "enter-to-class": "sell-opacity-1 sell-scale-100",
+                      "enter-from-class": "embed-opacity-0 embed-scale-0",
+                      "enter-to-class": "opacity-1 embed-scale-100",
                       "enter-active-class":
-                        "sell-transition sell-transform sell-origin",
-                      "leave-from-class": "sell-opacity-1 sell-scale-100",
-                      "leave-to-class": "sell-opacity-0 sell-scale-0",
-                      "leave-active-class": "sell-transition sell-transform",
+                        "embed-transition embed-transform origin",
+                      "leave-from-class": "opacity-1 embed-scale-100",
+                      "leave-to-class": "embed-opacity-0 embed-scale-0",
+                      "leave-active-class": "embed-transition embed-transform",
                     },
                     {
                       default: withCtx(() => {
                         var _a3, _b2, _c2, _d2, _e2;
                         return [
-                          createBaseVNode("div", _hoisted_8$1, [
-                            createBaseVNode("div", _hoisted_9$1, [
-                              createVNode(
-                                _component_InputGroup,
-                                {
-                                  modelValue: _ctx.data.extra,
-                                  "onUpdate:modelValue":
-                                    _cache[0] ||
-                                    (_cache[0] = ($event) =>
-                                      (_ctx.data.extra = $event)),
-                                  autocomplete: "off",
-                                  type: "number",
-                                  placeholder: "0.00",
-                                },
-                                {
-                                  icon: withCtx(() => [_hoisted_10$1]),
-                                  _: 1,
-                                },
-                                8,
-                                ["modelValue"]
-                              ),
-                              createVNode(
-                                _component_Button,
-                                {
-                                  onClick:
-                                    _cache[1] ||
-                                    (_cache[1] = ($event) =>
-                                      _ctx.apply("extra")),
-                                  toffee: "",
-                                },
-                                {
-                                  default: withCtx(() => [_hoisted_11$1]),
-                                  _: 1,
-                                }
-                              ),
+                          createBaseVNode("div", _hoisted_9$1, [
+                            createBaseVNode("div", _hoisted_10$1, [
+                              createBaseVNode("div", _hoisted_11$1, [
+                                createBaseVNode("div", _hoisted_12$1, [
+                                  withDirectives(
+                                    createBaseVNode(
+                                      "input",
+                                      {
+                                        type: "number",
+                                        name: "extra",
+                                        id: "extra",
+                                        "onUpdate:modelValue":
+                                          _cache[0] ||
+                                          (_cache[0] = ($event) =>
+                                            (_ctx.data.extra = $event)),
+                                        class:
+                                          "dark:embed-bg-black dark:embed-text-white focus:embed-ring-0 embed-border-0 embed-block embed-w-full embed-rounded-none embed-rounded-l-md sm:embed-text-sm embed-shadow-sm dark:embed-shadow-black focus:embed-shadow-md",
+                                        placeholder: "0.00",
+                                      },
+                                      null,
+                                      512
+                                    ),
+                                    [[vModelText, _ctx.data.extra]]
+                                  ),
+                                ]),
+                                createBaseVNode(
+                                  "button",
+                                  {
+                                    onClick:
+                                      _cache[1] ||
+                                      (_cache[1] = ($event) =>
+                                        _ctx.apply("extra")),
+                                    class:
+                                      "embed--ml-px embed-relative embed-inline-flex embed-items-center embed-space-x-2 embed-px-4 embed-py-2 embed-border-0 embed-text-sm embed-font-medium embed-rounded-r-md text-slate-700 dark:embed-text-slate-200 hover:embed-text-slate-900 dark:hover:embed-text-white embed-shadow-sm dark:embed-shadow-black hover:embed-shadow-md embed-bg-slate-100 dark:embed-bg-slate-800 hover:embed-bg-slate-200 dark:hover:embed-bg-ultra focus:embed-outline-none focus:embed-ring-0",
+                                  },
+                                  _hoisted_14$1
+                                ),
+                              ]),
                             ]),
                             (
                               (_c2 =
@@ -16866,7 +16911,7 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
                                   {
                                     key: 0,
                                     class:
-                                      "sell-ml-1.5 sell-text-left sell-text-sm sell-text-red-600 dark:sell-text-red sell-w-full",
+                                      "embed-ml-1.5 embed-text-left embed-text-sm embed-text-red-600 dark:embed-text-red embed-w-full",
                                     textContent: toDisplayString(
                                       (_e2 =
                                         (_d2 = _ctx.context.error) == null
@@ -16878,7 +16923,7 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
                                   },
                                   null,
                                   8,
-                                  _hoisted_12$1
+                                  _hoisted_15$1
                                 ))
                               : createCommentVNode("", true),
                           ]),
@@ -16895,71 +16940,110 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
                       onClick:
                         _cache[2] ||
                         (_cache[2] = ($event) => (_ctx.orMore = true)),
-                      class: "hover:sell-underline dark:sell-text-white",
+                      class:
+                        "embed-text-slate-800 dark:embed-text-slate-300 hover:embed-text-black dark:hover:embed-text-white embed-mx-auto embed-font-semibold embed-rounded-full embed-bg-slate-200 dark:embed-bg-slate-800 hover:embed-bg-slate-300 dark:hover:embed-bg-black embed-px-3 embed-py-0.5 embed-shadow hover:embed-shadow-lg dark:embed-shadow-black hover:embed--translate-y-0.5 embed-transition embed-duration-150 embed-ease-in-out",
                     },
-                    "or more"
+                    " Add more "
                   )),
             ]))
           : createCommentVNode("", true),
-        createBaseVNode(
-          "p",
-          {
-            class:
-              "sell-shadow sell-shadow-slate-400 dark:sell-shadow-black sell-bg-slate-100 dark:sell-bg-slate-800 dark:sell-text-slate-100 sell-p-2 sell-rounded-xl sell-overflow-auto sell-overscroll-contain sell-h-32 sell-text-sm",
-            innerHTML: _ctx.product.description,
-          },
-          null,
-          8,
-          _hoisted_13
-        ),
-        createBaseVNode("div", _hoisted_14, [
-          createBaseVNode("div", _hoisted_15, [
-            createBaseVNode("div", _hoisted_16, [
-              withDirectives(
-                createBaseVNode(
-                  "input",
-                  {
-                    type: "text",
-                    name: "coupon-code",
-                    class:
-                      "focus:sell-outline-none sell-shadow-lg sell-shadow-slate-200 focus:sell-shadow-slate-300 dark:sell-shadow-black/20 dark:focus:sell-shadow-black focus:sell-ring-0 focus:sell-border-transparent sell-border-transparent sell-placeholder-slate-600 focus:sell-placeholder-slate-800 dark:focus:sell-placeholder-slate-400 sell-text-black dark:sell-text-white sell-block sell-w-full sell-rounded-md sm:sell-text-sm sell-bg-slate-50 focus:sell-bg-white dark:sell-bg-slate-900 dark:focus:sell-bg-slate-800 w-full sell-transition sell-duration-300 ease-in-out",
-                    placeholder: "Enter Coupon",
-                    "onUpdate:modelValue":
-                      _cache[3] ||
-                      (_cache[3] = ($event) => (_ctx.data.coupon = $event)),
-                  },
-                  null,
-                  512
-                ),
-                [[vModelText, _ctx.data.coupon]]
-              ),
-            ]),
-            createVNode(
-              _component_Button,
-              {
-                outline: "",
-                loading: _ctx.isLoading,
-                type: "button",
-                onClick:
-                  _cache[4] || (_cache[4] = ($event) => _ctx.apply("coupon")),
-                class:
-                  "sell-relative sell-inline-flex sell-items-center sell-space-x-2 sell-px-4 sell-py-2",
-              },
-              {
-                default: withCtx(() => [
-                  createVNode(_component_GiftIcon, {
-                    class:
-                      "sell-h-5 sell-w-5 sell-text-slate-400 dark:sell-text-slate-50",
-                    "aria-hidden": "true",
-                  }),
-                  _hoisted_17,
-                ]),
-                _: 1,
-              },
-              8,
-              ["loading"]
-            ),
-          ]),
+        createBaseVNode("div", _hoisted_16, [
+          createBaseVNode(
+            "p",
+            {
+              innerHTML: _ctx.product.description,
+            },
+            null,
+            8,
+            _hoisted_17
+          ),
+        ]),
+        createBaseVNode("div", _hoisted_18, [
+          _ctx.applyCoupon
+            ? (openBlock(),
+              createBlock(
+                Transition,
+                {
+                  key: 0,
+                  appear: "",
+                  "enter-from-class": "embed-opacity-0 embed-scale-0",
+                  "enter-to-class": "opacity-1 embed-scale-100",
+                  "enter-active-class":
+                    "embed-transition embed-transform origin",
+                  "leave-from-class": "opacity-1 embed-scale-100",
+                  "leave-to-class": "embed-opacity-0 embed-scale-0",
+                  "leave-active-class": "embed-transition embed-transform",
+                },
+                {
+                  default: withCtx(() => [
+                    createBaseVNode("div", _hoisted_19, [
+                      createBaseVNode("div", _hoisted_20, [
+                        createBaseVNode("div", _hoisted_21, [
+                          withDirectives(
+                            createBaseVNode(
+                              "input",
+                              {
+                                type: "text",
+                                name: "coupon-code",
+                                class:
+                                  "focus:embed-outline-none embed-shadow-sm hover:embed-shadow focus:embed-shadow-md embed-shadow-slate-200 focus:embed-shadow-slate-300 dark:embed-shadow-black dark:focus:embed-shadow-black focus:embed-ring-0 focus:embed-border-transparent embed-border-transparent embed-placeholder-slate-600 focus:placeholder-slate-800 dark:focus:embed-placeholder-slate-400 embed-text-black dark:embed-text-white embed-block embed-w-full embed-rounded-md sm:embed-text-sm embed-bg-slate-50 focus:embed-bg-white dark:embed-bg-slate-900 dark:focus:embed-bg-black embed-w-full embed-transition embed-duration-300 embed-ease-in-out",
+                                placeholder: "Enter Coupon",
+                                "onUpdate:modelValue":
+                                  _cache[3] ||
+                                  (_cache[3] = ($event) =>
+                                    (_ctx.data.coupon = $event)),
+                              },
+                              null,
+                              512
+                            ),
+                            [[vModelText, _ctx.data.coupon]]
+                          ),
+                        ]),
+                        createVNode(
+                          _component_Button,
+                          {
+                            outline: "",
+                            loading: _ctx.isLoading,
+                            type: "button",
+                            onClick:
+                              _cache[4] ||
+                              (_cache[4] = ($event) => _ctx.apply("coupon")),
+                            class:
+                              "embed-relative embed-inline-flex embed-items-center embed-space-x-2 embed-px-4 embed-py-2 hover:embed--translate-y-0.5 hover:embed-shadow-md dark:embed-shadow-black embed-duration-150",
+                          },
+                          {
+                            default: withCtx(() => [
+                              createVNode(_component_GiftIcon, {
+                                class:
+                                  "embed-h-5 embed-w-5 text-slate-400 dark:embed-text-slate-50",
+                                "aria-hidden": "true",
+                              }),
+                              _hoisted_22,
+                            ]),
+                            _: 1,
+                          },
+                          8,
+                          ["loading"]
+                        ),
+                      ]),
+                    ]),
+                  ]),
+                  _: 1,
+                }
+              ))
+            : (openBlock(),
+              createElementBlock(
+                "button",
+                {
+                  key: 1,
+                  onClick:
+                    _cache[5] ||
+                    (_cache[5] = ($event) => (_ctx.applyCoupon = true)),
+                  class:
+                    "embed-text-slate-500 hover:embed-text-slate-800 dark:hover:embed-text-slate-200 embed-font-medium embed-mx-auto embed-transition embed-duration-100 embed-ease-in-out",
+                },
+                " Have a coupon code? "
+              )),
           (
             (_d =
               (_c = (_b = _ctx.context.error) == null ? void 0 : _b.errors) ==
@@ -16973,9 +17057,9 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
               createElementBlock(
                 "p",
                 {
-                  key: 0,
+                  key: 2,
                   class:
-                    "sell-ml-1.5 sell-text-left sell-text-sm sell-text-red-600 dark:sell-text-red sell-w-full",
+                    "embed-mt-3 embed-ml-1.5 embed-text-left embed-text-sm embed-text-red-600 dark:embed-text-red embed-w-full",
                   textContent: toDisplayString(
                     (_f =
                       (_e = _ctx.context.error) == null ? void 0 : _e.errors) ==
@@ -16986,7 +17070,7 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
                 },
                 null,
                 8,
-                _hoisted_18
+                _hoisted_23
               ))
             : createCommentVNode("", true),
           _ctx.variant.coupon &&
@@ -17000,7 +17084,7 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
             ? (openBlock(),
               createElementBlock(
                 "p",
-                _hoisted_19,
+                _hoisted_24,
                 "A " +
                   toDisplayString(_ctx.variant.coupon) +
                   " coupon has successfully been applied!",
@@ -17008,86 +17092,92 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
               ))
             : createCommentVNode("", true),
         ]),
-        createBaseVNode("div", _hoisted_20, [
-          createBaseVNode("div", _hoisted_21, [
-            createVNode(
-              _component_NumberInput,
-              {
-                modelValue: _ctx.data.quantity,
-                "onUpdate:modelValue":
-                  _cache[5] ||
-                  (_cache[5] = ($event) => (_ctx.data.quantity = $event)),
-                min: _ctx.variant.minimum_purchase_quantity,
-                max: _ctx.variant.maximum_purchase_quantity,
-              },
-              null,
-              8,
-              ["modelValue", "min", "max"]
-            ),
-            createVNode(
-              _component_Button,
-              {
-                loading: _ctx.isLoading,
-                disabled: _ctx.isSoldOut,
-                style: normalizeStyle({
-                  "background-color": _ctx.context.customization.theme,
-                }),
-                class:
-                  "sell-w-full disabled:sell-bg-red-600 !sell-text-lg sell-text-white sell-font-medium sell-rounded-md disabled:focus:sell-ring-slate-500",
-                onClick:
-                  _cache[6] || (_cache[6] = ($event) => _ctx.send("NEXT")),
-                toffee: "",
-                textContent: toDisplayString(
-                  _ctx.isSoldOut ? "Sold out" : "Buy now"
+        _ctx.variant.visibility == "PUBLIC" ||
+        _ctx.variant.visibility == "HIDDEN"
+          ? (openBlock(),
+            createElementBlock("div", _hoisted_25, [
+              createBaseVNode("div", _hoisted_26, [
+                createVNode(
+                  _component_NumberInput,
+                  {
+                    modelValue: _ctx.data.quantity,
+                    "onUpdate:modelValue":
+                      _cache[6] ||
+                      (_cache[6] = ($event) => (_ctx.data.quantity = $event)),
+                    min: _ctx.variant.minimum_purchase_quantity,
+                    max: _ctx.variant.maximum_purchase_quantity,
+                  },
+                  null,
+                  8,
+                  ["modelValue", "min", "max"]
                 ),
-              },
-              null,
-              8,
-              ["loading", "disabled", "style", "textContent"]
-            ),
-          ]),
-          createBaseVNode("p", _hoisted_22, [
-            _hoisted_23,
-            !_ctx.variant.stock
-              ? (openBlock(), createElementBlock("span", _hoisted_24, "0"))
-              : (openBlock(),
-                createElementBlock(
-                  "span",
-                  _hoisted_25,
-                  toDisplayString(_ctx.variant.stock),
-                  1
-                )),
-          ]),
-          (
-            (_l =
-              (_k = (_j = _ctx.context.error) == null ? void 0 : _j.errors) ==
-              null
-                ? void 0
-                : _k.quantity) == null
-              ? void 0
-              : _l[0]
-          )
-            ? (openBlock(),
-              createElementBlock(
-                "p",
-                {
-                  key: 0,
-                  class:
-                    "sell-ml-1.5 sell-text-left sell-text-sm sell-text-red-600 dark:sell-text-red sell-w-full",
-                  textContent: toDisplayString(
-                    (_n2 =
-                      (_m = _ctx.context.error) == null ? void 0 : _m.errors) ==
-                      null
-                      ? void 0
-                      : _n2.quantity[0]
-                  ),
-                },
-                null,
-                8,
-                _hoisted_26
-              ))
-            : createCommentVNode("", true),
-        ]),
+                createVNode(
+                  _component_Button,
+                  {
+                    loading: _ctx.isLoading,
+                    disabled: _ctx.isSoldOut,
+                    style: normalizeStyle({
+                      "background-color": _ctx.context.customization.theme,
+                    }),
+                    class:
+                      "embed-w-full disabled:embed-bg-red-600 !embed-text-lg embed-text-white embed-font-medium embed-rounded-md disabled:focus:embed-ring-slate-500",
+                    onClick:
+                      _cache[7] || (_cache[7] = ($event) => _ctx.send("NEXT")),
+                    toffee: "",
+                    textContent: toDisplayString(
+                      _ctx.isSoldOut ? "Sold out" : "Buy now"
+                    ),
+                  },
+                  null,
+                  8,
+                  ["loading", "disabled", "style", "textContent"]
+                ),
+              ]),
+              createBaseVNode("p", _hoisted_27, [
+                !_ctx.variant.stock
+                  ? (openBlock(), createElementBlock("span", _hoisted_28, "0"))
+                  : (openBlock(),
+                    createElementBlock(
+                      "span",
+                      _hoisted_29,
+                      toDisplayString(_ctx.variant.stock),
+                      1
+                    )),
+                _hoisted_30,
+              ]),
+              (
+                (_l =
+                  (_k =
+                    (_j = _ctx.context.error) == null ? void 0 : _j.errors) ==
+                  null
+                    ? void 0
+                    : _k.quantity) == null
+                  ? void 0
+                  : _l[0]
+              )
+                ? (openBlock(),
+                  createElementBlock(
+                    "p",
+                    {
+                      key: 0,
+                      class:
+                        "embed-ml-1.5 embed-text-left embed-text-sm embed-text-red-600 dark:embed-text-red embed-w-full",
+                      textContent: toDisplayString(
+                        (_n2 =
+                          (_m = _ctx.context.error) == null
+                            ? void 0
+                            : _m.errors) == null
+                          ? void 0
+                          : _n2.quantity[0]
+                      ),
+                    },
+                    null,
+                    8,
+                    _hoisted_31
+                  ))
+                : createCommentVNode("", true),
+            ]))
+          : createCommentVNode("", true),
       ]),
     ])
   );
@@ -17095,6 +17185,3926 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
 var Overview = /* @__PURE__ */ _export_sfc(_sfc_main$8, [
   ["render", _sfc_render$8],
 ]);
+/*!
+ * Font Awesome Free 6.1.2 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ * Copyright 2022 Fonticons, Inc.
+ */
+function ownKeys$1(object, enumerableOnly) {
+  var keys = Object.keys(object);
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    enumerableOnly &&
+      (symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      })),
+      keys.push.apply(keys, symbols);
+  }
+  return keys;
+}
+function _objectSpread2$1(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+    i % 2
+      ? ownKeys$1(Object(source), true).forEach(function (key) {
+          _defineProperty$1(target, key, source[key]);
+        })
+      : Object.getOwnPropertyDescriptors
+      ? Object.defineProperties(
+          target,
+          Object.getOwnPropertyDescriptors(source)
+        )
+      : ownKeys$1(Object(source)).forEach(function (key) {
+          Object.defineProperty(
+            target,
+            key,
+            Object.getOwnPropertyDescriptor(source, key)
+          );
+        });
+  }
+  return target;
+}
+function _typeof$1(obj) {
+  "@babel/helpers - typeof";
+  return (
+    (_typeof$1 =
+      typeof Symbol == "function" && typeof Symbol.iterator == "symbol"
+        ? function (obj2) {
+            return typeof obj2;
+          }
+        : function (obj2) {
+            return obj2 &&
+              typeof Symbol == "function" &&
+              obj2.constructor === Symbol &&
+              obj2 !== Symbol.prototype
+              ? "symbol"
+              : typeof obj2;
+          }),
+    _typeof$1(obj)
+  );
+}
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  Object.defineProperty(Constructor, "prototype", {
+    writable: false,
+  });
+  return Constructor;
+}
+function _defineProperty$1(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value,
+      enumerable: true,
+      configurable: true,
+      writable: true,
+    });
+  } else {
+    obj[key] = value;
+  }
+  return obj;
+}
+function _slicedToArray(arr, i) {
+  return (
+    _arrayWithHoles(arr) ||
+    _iterableToArrayLimit(arr, i) ||
+    _unsupportedIterableToArray$1(arr, i) ||
+    _nonIterableRest()
+  );
+}
+function _toConsumableArray$1(arr) {
+  return (
+    _arrayWithoutHoles$1(arr) ||
+    _iterableToArray$1(arr) ||
+    _unsupportedIterableToArray$1(arr) ||
+    _nonIterableSpread$1()
+  );
+}
+function _arrayWithoutHoles$1(arr) {
+  if (Array.isArray(arr)) return _arrayLikeToArray$1(arr);
+}
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+function _iterableToArray$1(iter) {
+  if (
+    (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null) ||
+    iter["@@iterator"] != null
+  )
+    return Array.from(iter);
+}
+function _iterableToArrayLimit(arr, i) {
+  var _i =
+    arr == null
+      ? null
+      : (typeof Symbol !== "undefined" && arr[Symbol.iterator]) ||
+        arr["@@iterator"];
+  if (_i == null) return;
+  var _arr = [];
+  var _n2 = true;
+  var _d = false;
+  var _s, _e;
+  try {
+    for (_i = _i.call(arr); !(_n2 = (_s = _i.next()).done); _n2 = true) {
+      _arr.push(_s.value);
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n2 && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+  return _arr;
+}
+function _unsupportedIterableToArray$1(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray$1(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
+    return _arrayLikeToArray$1(o, minLen);
+}
+function _arrayLikeToArray$1(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+  return arr2;
+}
+function _nonIterableSpread$1() {
+  throw new TypeError(
+    "Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
+  );
+}
+function _nonIterableRest() {
+  throw new TypeError(
+    "Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
+  );
+}
+var noop = function noop2() {};
+var _WINDOW = {};
+var _DOCUMENT = {};
+var _MUTATION_OBSERVER = null;
+var _PERFORMANCE = {
+  mark: noop,
+  measure: noop,
+};
+try {
+  if (typeof window !== "undefined") _WINDOW = window;
+  if (typeof document !== "undefined") _DOCUMENT = document;
+  if (typeof MutationObserver !== "undefined")
+    _MUTATION_OBSERVER = MutationObserver;
+  if (typeof performance !== "undefined") _PERFORMANCE = performance;
+} catch (e) {}
+var _ref = _WINDOW.navigator || {},
+  _ref$userAgent = _ref.userAgent,
+  userAgent = _ref$userAgent === void 0 ? "" : _ref$userAgent;
+var WINDOW = _WINDOW;
+var DOCUMENT = _DOCUMENT;
+var MUTATION_OBSERVER = _MUTATION_OBSERVER;
+var PERFORMANCE = _PERFORMANCE;
+!!WINDOW.document;
+var IS_DOM =
+  !!DOCUMENT.documentElement &&
+  !!DOCUMENT.head &&
+  typeof DOCUMENT.addEventListener === "function" &&
+  typeof DOCUMENT.createElement === "function";
+var IS_IE = ~userAgent.indexOf("MSIE") || ~userAgent.indexOf("Trident/");
+var NAMESPACE_IDENTIFIER = "___FONT_AWESOME___";
+var UNITS_IN_GRID = 16;
+var DEFAULT_FAMILY_PREFIX = "fa";
+var DEFAULT_REPLACEMENT_CLASS = "svg-inline--fa";
+var DATA_FA_I2SVG = "data-fa-i2svg";
+var DATA_FA_PSEUDO_ELEMENT = "data-fa-pseudo-element";
+var DATA_FA_PSEUDO_ELEMENT_PENDING = "data-fa-pseudo-element-pending";
+var DATA_PREFIX = "data-prefix";
+var DATA_ICON = "data-icon";
+var HTML_CLASS_I2SVG_BASE_CLASS = "fontawesome-i2svg";
+var MUTATION_APPROACH_ASYNC = "async";
+var TAGNAMES_TO_SKIP_FOR_PSEUDOELEMENTS = ["HTML", "HEAD", "STYLE", "SCRIPT"];
+var PRODUCTION$1 = (function () {
+  try {
+    return true;
+  } catch (e) {
+    return false;
+  }
+})();
+var PREFIX_TO_STYLE = {
+  fas: "solid",
+  "fa-solid": "solid",
+  far: "regular",
+  "fa-regular": "regular",
+  fal: "light",
+  "fa-light": "light",
+  fat: "thin",
+  "fa-thin": "thin",
+  fad: "duotone",
+  "fa-duotone": "duotone",
+  fab: "brands",
+  "fa-brands": "brands",
+  fak: "kit",
+  "fa-kit": "kit",
+  fa: "solid",
+};
+var STYLE_TO_PREFIX = {
+  solid: "fas",
+  regular: "far",
+  light: "fal",
+  thin: "fat",
+  duotone: "fad",
+  brands: "fab",
+  kit: "fak",
+};
+var PREFIX_TO_LONG_STYLE = {
+  fab: "fa-brands",
+  fad: "fa-duotone",
+  fak: "fa-kit",
+  fal: "fa-light",
+  far: "fa-regular",
+  fas: "fa-solid",
+  fat: "fa-thin",
+};
+var LONG_STYLE_TO_PREFIX = {
+  "fa-brands": "fab",
+  "fa-duotone": "fad",
+  "fa-kit": "fak",
+  "fa-light": "fal",
+  "fa-regular": "far",
+  "fa-solid": "fas",
+  "fa-thin": "fat",
+};
+var ICON_SELECTION_SYNTAX_PATTERN = /fa[srltdbk]?[\-\ ]/;
+var LAYERS_TEXT_CLASSNAME = "fa-layers-text";
+var FONT_FAMILY_PATTERN =
+  /Font ?Awesome ?([56 ]*)(Solid|Regular|Light|Thin|Duotone|Brands|Free|Pro|Kit)?.*/i;
+var FONT_WEIGHT_TO_PREFIX = {
+  900: "fas",
+  400: "far",
+  normal: "far",
+  300: "fal",
+  100: "fat",
+};
+var oneToTen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+var oneToTwenty = oneToTen.concat([11, 12, 13, 14, 15, 16, 17, 18, 19, 20]);
+var ATTRIBUTES_WATCHED_FOR_MUTATION = [
+  "class",
+  "data-prefix",
+  "data-icon",
+  "data-fa-transform",
+  "data-fa-mask",
+];
+var DUOTONE_CLASSES = {
+  GROUP: "duotone-group",
+  SWAP_OPACITY: "swap-opacity",
+  PRIMARY: "primary",
+  SECONDARY: "secondary",
+};
+var RESERVED_CLASSES = []
+  .concat(_toConsumableArray$1(Object.keys(STYLE_TO_PREFIX)), [
+    "2xs",
+    "xs",
+    "sm",
+    "lg",
+    "xl",
+    "2xl",
+    "beat",
+    "border",
+    "fade",
+    "beat-fade",
+    "bounce",
+    "flip-both",
+    "flip-horizontal",
+    "flip-vertical",
+    "flip",
+    "fw",
+    "inverse",
+    "layers-counter",
+    "layers-text",
+    "layers",
+    "li",
+    "pull-left",
+    "pull-right",
+    "pulse",
+    "rotate-180",
+    "rotate-270",
+    "rotate-90",
+    "rotate-by",
+    "shake",
+    "spin-pulse",
+    "spin-reverse",
+    "spin",
+    "stack-1x",
+    "stack-2x",
+    "stack",
+    "ul",
+    DUOTONE_CLASSES.GROUP,
+    DUOTONE_CLASSES.SWAP_OPACITY,
+    DUOTONE_CLASSES.PRIMARY,
+    DUOTONE_CLASSES.SECONDARY,
+  ])
+  .concat(
+    oneToTen.map(function (n) {
+      return "".concat(n, "x");
+    })
+  )
+  .concat(
+    oneToTwenty.map(function (n) {
+      return "w-".concat(n);
+    })
+  );
+var initial = WINDOW.FontAwesomeConfig || {};
+function getAttrConfig(attr) {
+  var element = DOCUMENT.querySelector("script[" + attr + "]");
+  if (element) {
+    return element.getAttribute(attr);
+  }
+}
+function coerce(val) {
+  if (val === "") return true;
+  if (val === "false") return false;
+  if (val === "true") return true;
+  return val;
+}
+if (DOCUMENT && typeof DOCUMENT.querySelector === "function") {
+  var attrs = [
+    ["data-family-prefix", "familyPrefix"],
+    ["data-style-default", "styleDefault"],
+    ["data-replacement-class", "replacementClass"],
+    ["data-auto-replace-svg", "autoReplaceSvg"],
+    ["data-auto-add-css", "autoAddCss"],
+    ["data-auto-a11y", "autoA11y"],
+    ["data-search-pseudo-elements", "searchPseudoElements"],
+    ["data-observe-mutations", "observeMutations"],
+    ["data-mutate-approach", "mutateApproach"],
+    ["data-keep-original-source", "keepOriginalSource"],
+    ["data-measure-performance", "measurePerformance"],
+    ["data-show-missing-icons", "showMissingIcons"],
+  ];
+  attrs.forEach(function (_ref2) {
+    var _ref22 = _slicedToArray(_ref2, 2),
+      attr = _ref22[0],
+      key = _ref22[1];
+    var val = coerce(getAttrConfig(attr));
+    if (val !== void 0 && val !== null) {
+      initial[key] = val;
+    }
+  });
+}
+var _default = {
+  familyPrefix: DEFAULT_FAMILY_PREFIX,
+  styleDefault: "solid",
+  replacementClass: DEFAULT_REPLACEMENT_CLASS,
+  autoReplaceSvg: true,
+  autoAddCss: true,
+  autoA11y: true,
+  searchPseudoElements: false,
+  observeMutations: true,
+  mutateApproach: "async",
+  keepOriginalSource: true,
+  measurePerformance: false,
+  showMissingIcons: true,
+};
+var _config = _objectSpread2$1(_objectSpread2$1({}, _default), initial);
+if (!_config.autoReplaceSvg) _config.observeMutations = false;
+var config = {};
+Object.keys(_config).forEach(function (key) {
+  Object.defineProperty(config, key, {
+    enumerable: true,
+    set: function set2(val) {
+      _config[key] = val;
+      _onChangeCb.forEach(function (cb) {
+        return cb(config);
+      });
+    },
+    get: function get2() {
+      return _config[key];
+    },
+  });
+});
+WINDOW.FontAwesomeConfig = config;
+var _onChangeCb = [];
+function onChange(cb) {
+  _onChangeCb.push(cb);
+  return function () {
+    _onChangeCb.splice(_onChangeCb.indexOf(cb), 1);
+  };
+}
+var d = UNITS_IN_GRID;
+var meaninglessTransform = {
+  size: 16,
+  x: 0,
+  y: 0,
+  rotate: 0,
+  flipX: false,
+  flipY: false,
+};
+function insertCss(css2) {
+  if (!css2 || !IS_DOM) {
+    return;
+  }
+  var style = DOCUMENT.createElement("style");
+  style.setAttribute("type", "text/css");
+  style.innerHTML = css2;
+  var headChildren = DOCUMENT.head.childNodes;
+  var beforeChild = null;
+  for (var i = headChildren.length - 1; i > -1; i--) {
+    var child = headChildren[i];
+    var tagName = (child.tagName || "").toUpperCase();
+    if (["STYLE", "LINK"].indexOf(tagName) > -1) {
+      beforeChild = child;
+    }
+  }
+  DOCUMENT.head.insertBefore(style, beforeChild);
+  return css2;
+}
+var idPool = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+function nextUniqueId() {
+  var size2 = 12;
+  var id = "";
+  while (size2-- > 0) {
+    id += idPool[(Math.random() * 62) | 0];
+  }
+  return id;
+}
+function toArray(obj) {
+  var array = [];
+  for (var i = (obj || []).length >>> 0; i--; ) {
+    array[i] = obj[i];
+  }
+  return array;
+}
+function classArray(node) {
+  if (node.classList) {
+    return toArray(node.classList);
+  } else {
+    return (node.getAttribute("class") || "").split(" ").filter(function (i) {
+      return i;
+    });
+  }
+}
+function htmlEscape(str) {
+  return ""
+    .concat(str)
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+function joinAttributes(attributes) {
+  return Object.keys(attributes || {})
+    .reduce(function (acc, attributeName) {
+      return (
+        acc +
+        ""
+          .concat(attributeName, '="')
+          .concat(htmlEscape(attributes[attributeName]), '" ')
+      );
+    }, "")
+    .trim();
+}
+function joinStyles(styles2) {
+  return Object.keys(styles2 || {}).reduce(function (acc, styleName) {
+    return (
+      acc + "".concat(styleName, ": ").concat(styles2[styleName].trim(), ";")
+    );
+  }, "");
+}
+function transformIsMeaningful(transform) {
+  return (
+    transform.size !== meaninglessTransform.size ||
+    transform.x !== meaninglessTransform.x ||
+    transform.y !== meaninglessTransform.y ||
+    transform.rotate !== meaninglessTransform.rotate ||
+    transform.flipX ||
+    transform.flipY
+  );
+}
+function transformForSvg(_ref2) {
+  var transform = _ref2.transform,
+    containerWidth = _ref2.containerWidth,
+    iconWidth = _ref2.iconWidth;
+  var outer = {
+    transform: "translate(".concat(containerWidth / 2, " 256)"),
+  };
+  var innerTranslate = "translate("
+    .concat(transform.x * 32, ", ")
+    .concat(transform.y * 32, ") ");
+  var innerScale = "scale("
+    .concat((transform.size / 16) * (transform.flipX ? -1 : 1), ", ")
+    .concat((transform.size / 16) * (transform.flipY ? -1 : 1), ") ");
+  var innerRotate = "rotate(".concat(transform.rotate, " 0 0)");
+  var inner = {
+    transform: ""
+      .concat(innerTranslate, " ")
+      .concat(innerScale, " ")
+      .concat(innerRotate),
+  };
+  var path2 = {
+    transform: "translate(".concat((iconWidth / 2) * -1, " -256)"),
+  };
+  return {
+    outer,
+    inner,
+    path: path2,
+  };
+}
+function transformForCss(_ref2) {
+  var transform = _ref2.transform,
+    _ref2$width = _ref2.width,
+    width = _ref2$width === void 0 ? UNITS_IN_GRID : _ref2$width,
+    _ref2$height = _ref2.height,
+    height = _ref2$height === void 0 ? UNITS_IN_GRID : _ref2$height,
+    _ref2$startCentered = _ref2.startCentered,
+    startCentered =
+      _ref2$startCentered === void 0 ? false : _ref2$startCentered;
+  var val = "";
+  if (startCentered && IS_IE) {
+    val += "translate("
+      .concat(transform.x / d - width / 2, "em, ")
+      .concat(transform.y / d - height / 2, "em) ");
+  } else if (startCentered) {
+    val += "translate(calc(-50% + "
+      .concat(transform.x / d, "em), calc(-50% + ")
+      .concat(transform.y / d, "em)) ");
+  } else {
+    val += "translate("
+      .concat(transform.x / d, "em, ")
+      .concat(transform.y / d, "em) ");
+  }
+  val += "scale("
+    .concat((transform.size / d) * (transform.flipX ? -1 : 1), ", ")
+    .concat((transform.size / d) * (transform.flipY ? -1 : 1), ") ");
+  val += "rotate(".concat(transform.rotate, "deg) ");
+  return val;
+}
+var baseStyles =
+  ':root, :host {\n  --fa-font-solid: normal 900 1em/1 "Font Awesome 6 Solid";\n  --fa-font-regular: normal 400 1em/1 "Font Awesome 6 Regular";\n  --fa-font-light: normal 300 1em/1 "Font Awesome 6 Light";\n  --fa-font-thin: normal 100 1em/1 "Font Awesome 6 Thin";\n  --fa-font-duotone: normal 900 1em/1 "Font Awesome 6 Duotone";\n  --fa-font-brands: normal 400 1em/1 "Font Awesome 6 Brands";\n}\n\nsvg:not(:root).svg-inline--fa, svg:not(:host).svg-inline--fa {\n  overflow: visible;\n  box-sizing: content-box;\n}\n\n.svg-inline--fa {\n  display: var(--fa-display, inline-block);\n  height: 1em;\n  overflow: visible;\n  vertical-align: -0.125em;\n}\n.svg-inline--fa.fa-2xs {\n  vertical-align: 0.1em;\n}\n.svg-inline--fa.fa-xs {\n  vertical-align: 0em;\n}\n.svg-inline--fa.fa-sm {\n  vertical-align: -0.0714285705em;\n}\n.svg-inline--fa.fa-lg {\n  vertical-align: -0.2em;\n}\n.svg-inline--fa.fa-xl {\n  vertical-align: -0.25em;\n}\n.svg-inline--fa.fa-2xl {\n  vertical-align: -0.3125em;\n}\n.svg-inline--fa.fa-pull-left {\n  margin-right: var(--fa-pull-margin, 0.3em);\n  width: auto;\n}\n.svg-inline--fa.fa-pull-right {\n  margin-left: var(--fa-pull-margin, 0.3em);\n  width: auto;\n}\n.svg-inline--fa.fa-li {\n  width: var(--fa-li-width, 2em);\n  top: 0.25em;\n}\n.svg-inline--fa.fa-fw {\n  width: var(--fa-fw-width, 1.25em);\n}\n\n.fa-layers svg.svg-inline--fa {\n  bottom: 0;\n  left: 0;\n  margin: auto;\n  position: absolute;\n  right: 0;\n  top: 0;\n}\n\n.fa-layers-counter, .fa-layers-text {\n  display: inline-block;\n  position: absolute;\n  text-align: center;\n}\n\n.fa-layers {\n  display: inline-block;\n  height: 1em;\n  position: relative;\n  text-align: center;\n  vertical-align: -0.125em;\n  width: 1em;\n}\n.fa-layers svg.svg-inline--fa {\n  -webkit-transform-origin: center center;\n          transform-origin: center center;\n}\n\n.fa-layers-text {\n  left: 50%;\n  top: 50%;\n  -webkit-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%);\n  -webkit-transform-origin: center center;\n          transform-origin: center center;\n}\n\n.fa-layers-counter {\n  background-color: var(--fa-counter-background-color, #ff253a);\n  border-radius: var(--fa-counter-border-radius, 1em);\n  box-sizing: border-box;\n  color: var(--fa-inverse, #fff);\n  line-height: var(--fa-counter-line-height, 1);\n  max-width: var(--fa-counter-max-width, 5em);\n  min-width: var(--fa-counter-min-width, 1.5em);\n  overflow: hidden;\n  padding: var(--fa-counter-padding, 0.25em 0.5em);\n  right: var(--fa-right, 0);\n  text-overflow: ellipsis;\n  top: var(--fa-top, 0);\n  -webkit-transform: scale(var(--fa-counter-scale, 0.25));\n          transform: scale(var(--fa-counter-scale, 0.25));\n  -webkit-transform-origin: top right;\n          transform-origin: top right;\n}\n\n.fa-layers-bottom-right {\n  bottom: var(--fa-bottom, 0);\n  right: var(--fa-right, 0);\n  top: auto;\n  -webkit-transform: scale(var(--fa-layers-scale, 0.25));\n          transform: scale(var(--fa-layers-scale, 0.25));\n  -webkit-transform-origin: bottom right;\n          transform-origin: bottom right;\n}\n\n.fa-layers-bottom-left {\n  bottom: var(--fa-bottom, 0);\n  left: var(--fa-left, 0);\n  right: auto;\n  top: auto;\n  -webkit-transform: scale(var(--fa-layers-scale, 0.25));\n          transform: scale(var(--fa-layers-scale, 0.25));\n  -webkit-transform-origin: bottom left;\n          transform-origin: bottom left;\n}\n\n.fa-layers-top-right {\n  top: var(--fa-top, 0);\n  right: var(--fa-right, 0);\n  -webkit-transform: scale(var(--fa-layers-scale, 0.25));\n          transform: scale(var(--fa-layers-scale, 0.25));\n  -webkit-transform-origin: top right;\n          transform-origin: top right;\n}\n\n.fa-layers-top-left {\n  left: var(--fa-left, 0);\n  right: auto;\n  top: var(--fa-top, 0);\n  -webkit-transform: scale(var(--fa-layers-scale, 0.25));\n          transform: scale(var(--fa-layers-scale, 0.25));\n  -webkit-transform-origin: top left;\n          transform-origin: top left;\n}\n\n.fa-1x {\n  font-size: 1em;\n}\n\n.fa-2x {\n  font-size: 2em;\n}\n\n.fa-3x {\n  font-size: 3em;\n}\n\n.fa-4x {\n  font-size: 4em;\n}\n\n.fa-5x {\n  font-size: 5em;\n}\n\n.fa-6x {\n  font-size: 6em;\n}\n\n.fa-7x {\n  font-size: 7em;\n}\n\n.fa-8x {\n  font-size: 8em;\n}\n\n.fa-9x {\n  font-size: 9em;\n}\n\n.fa-10x {\n  font-size: 10em;\n}\n\n.fa-2xs {\n  font-size: 0.625em;\n  line-height: 0.1em;\n  vertical-align: 0.225em;\n}\n\n.fa-xs {\n  font-size: 0.75em;\n  line-height: 0.0833333337em;\n  vertical-align: 0.125em;\n}\n\n.fa-sm {\n  font-size: 0.875em;\n  line-height: 0.0714285718em;\n  vertical-align: 0.0535714295em;\n}\n\n.fa-lg {\n  font-size: 1.25em;\n  line-height: 0.05em;\n  vertical-align: -0.075em;\n}\n\n.fa-xl {\n  font-size: 1.5em;\n  line-height: 0.0416666682em;\n  vertical-align: -0.125em;\n}\n\n.fa-2xl {\n  font-size: 2em;\n  line-height: 0.03125em;\n  vertical-align: -0.1875em;\n}\n\n.fa-fw {\n  text-align: center;\n  width: 1.25em;\n}\n\n.fa-ul {\n  list-style-type: none;\n  margin-left: var(--fa-li-margin, 2.5em);\n  padding-left: 0;\n}\n.fa-ul > li {\n  position: relative;\n}\n\n.fa-li {\n  left: calc(var(--fa-li-width, 2em) * -1);\n  position: absolute;\n  text-align: center;\n  width: var(--fa-li-width, 2em);\n  line-height: inherit;\n}\n\n.fa-border {\n  border-color: var(--fa-border-color, #eee);\n  border-radius: var(--fa-border-radius, 0.1em);\n  border-style: var(--fa-border-style, solid);\n  border-width: var(--fa-border-width, 0.08em);\n  padding: var(--fa-border-padding, 0.2em 0.25em 0.15em);\n}\n\n.fa-pull-left {\n  float: left;\n  margin-right: var(--fa-pull-margin, 0.3em);\n}\n\n.fa-pull-right {\n  float: right;\n  margin-left: var(--fa-pull-margin, 0.3em);\n}\n\n.fa-beat {\n  -webkit-animation-name: fa-beat;\n          animation-name: fa-beat;\n  -webkit-animation-delay: var(--fa-animation-delay, 0);\n          animation-delay: var(--fa-animation-delay, 0);\n  -webkit-animation-direction: var(--fa-animation-direction, normal);\n          animation-direction: var(--fa-animation-direction, normal);\n  -webkit-animation-duration: var(--fa-animation-duration, 1s);\n          animation-duration: var(--fa-animation-duration, 1s);\n  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n          animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n  -webkit-animation-timing-function: var(--fa-animation-timing, ease-in-out);\n          animation-timing-function: var(--fa-animation-timing, ease-in-out);\n}\n\n.fa-bounce {\n  -webkit-animation-name: fa-bounce;\n          animation-name: fa-bounce;\n  -webkit-animation-delay: var(--fa-animation-delay, 0);\n          animation-delay: var(--fa-animation-delay, 0);\n  -webkit-animation-direction: var(--fa-animation-direction, normal);\n          animation-direction: var(--fa-animation-direction, normal);\n  -webkit-animation-duration: var(--fa-animation-duration, 1s);\n          animation-duration: var(--fa-animation-duration, 1s);\n  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n          animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n  -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.28, 0.84, 0.42, 1));\n          animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.28, 0.84, 0.42, 1));\n}\n\n.fa-fade {\n  -webkit-animation-name: fa-fade;\n          animation-name: fa-fade;\n  -webkit-animation-delay: var(--fa-animation-delay, 0);\n          animation-delay: var(--fa-animation-delay, 0);\n  -webkit-animation-direction: var(--fa-animation-direction, normal);\n          animation-direction: var(--fa-animation-direction, normal);\n  -webkit-animation-duration: var(--fa-animation-duration, 1s);\n          animation-duration: var(--fa-animation-duration, 1s);\n  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n          animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n  -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));\n          animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));\n}\n\n.fa-beat-fade {\n  -webkit-animation-name: fa-beat-fade;\n          animation-name: fa-beat-fade;\n  -webkit-animation-delay: var(--fa-animation-delay, 0);\n          animation-delay: var(--fa-animation-delay, 0);\n  -webkit-animation-direction: var(--fa-animation-direction, normal);\n          animation-direction: var(--fa-animation-direction, normal);\n  -webkit-animation-duration: var(--fa-animation-duration, 1s);\n          animation-duration: var(--fa-animation-duration, 1s);\n  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n          animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n  -webkit-animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));\n          animation-timing-function: var(--fa-animation-timing, cubic-bezier(0.4, 0, 0.6, 1));\n}\n\n.fa-flip {\n  -webkit-animation-name: fa-flip;\n          animation-name: fa-flip;\n  -webkit-animation-delay: var(--fa-animation-delay, 0);\n          animation-delay: var(--fa-animation-delay, 0);\n  -webkit-animation-direction: var(--fa-animation-direction, normal);\n          animation-direction: var(--fa-animation-direction, normal);\n  -webkit-animation-duration: var(--fa-animation-duration, 1s);\n          animation-duration: var(--fa-animation-duration, 1s);\n  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n          animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n  -webkit-animation-timing-function: var(--fa-animation-timing, ease-in-out);\n          animation-timing-function: var(--fa-animation-timing, ease-in-out);\n}\n\n.fa-shake {\n  -webkit-animation-name: fa-shake;\n          animation-name: fa-shake;\n  -webkit-animation-delay: var(--fa-animation-delay, 0);\n          animation-delay: var(--fa-animation-delay, 0);\n  -webkit-animation-direction: var(--fa-animation-direction, normal);\n          animation-direction: var(--fa-animation-direction, normal);\n  -webkit-animation-duration: var(--fa-animation-duration, 1s);\n          animation-duration: var(--fa-animation-duration, 1s);\n  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n          animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n  -webkit-animation-timing-function: var(--fa-animation-timing, linear);\n          animation-timing-function: var(--fa-animation-timing, linear);\n}\n\n.fa-spin {\n  -webkit-animation-name: fa-spin;\n          animation-name: fa-spin;\n  -webkit-animation-delay: var(--fa-animation-delay, 0);\n          animation-delay: var(--fa-animation-delay, 0);\n  -webkit-animation-direction: var(--fa-animation-direction, normal);\n          animation-direction: var(--fa-animation-direction, normal);\n  -webkit-animation-duration: var(--fa-animation-duration, 2s);\n          animation-duration: var(--fa-animation-duration, 2s);\n  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n          animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n  -webkit-animation-timing-function: var(--fa-animation-timing, linear);\n          animation-timing-function: var(--fa-animation-timing, linear);\n}\n\n.fa-spin-reverse {\n  --fa-animation-direction: reverse;\n}\n\n.fa-pulse,\n.fa-spin-pulse {\n  -webkit-animation-name: fa-spin;\n          animation-name: fa-spin;\n  -webkit-animation-direction: var(--fa-animation-direction, normal);\n          animation-direction: var(--fa-animation-direction, normal);\n  -webkit-animation-duration: var(--fa-animation-duration, 1s);\n          animation-duration: var(--fa-animation-duration, 1s);\n  -webkit-animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n          animation-iteration-count: var(--fa-animation-iteration-count, infinite);\n  -webkit-animation-timing-function: var(--fa-animation-timing, steps(8));\n          animation-timing-function: var(--fa-animation-timing, steps(8));\n}\n\n@media (prefers-reduced-motion: reduce) {\n  .fa-beat,\n.fa-bounce,\n.fa-fade,\n.fa-beat-fade,\n.fa-flip,\n.fa-pulse,\n.fa-shake,\n.fa-spin,\n.fa-spin-pulse {\n    -webkit-animation-delay: -1ms;\n            animation-delay: -1ms;\n    -webkit-animation-duration: 1ms;\n            animation-duration: 1ms;\n    -webkit-animation-iteration-count: 1;\n            animation-iteration-count: 1;\n    transition-delay: 0s;\n    transition-duration: 0s;\n  }\n}\n@-webkit-keyframes fa-beat {\n  0%, 90% {\n    -webkit-transform: scale(1);\n            transform: scale(1);\n  }\n  45% {\n    -webkit-transform: scale(var(--fa-beat-scale, 1.25));\n            transform: scale(var(--fa-beat-scale, 1.25));\n  }\n}\n@keyframes fa-beat {\n  0%, 90% {\n    -webkit-transform: scale(1);\n            transform: scale(1);\n  }\n  45% {\n    -webkit-transform: scale(var(--fa-beat-scale, 1.25));\n            transform: scale(var(--fa-beat-scale, 1.25));\n  }\n}\n@-webkit-keyframes fa-bounce {\n  0% {\n    -webkit-transform: scale(1, 1) translateY(0);\n            transform: scale(1, 1) translateY(0);\n  }\n  10% {\n    -webkit-transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);\n            transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);\n  }\n  30% {\n    -webkit-transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));\n            transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));\n  }\n  50% {\n    -webkit-transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);\n            transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);\n  }\n  57% {\n    -webkit-transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));\n            transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));\n  }\n  64% {\n    -webkit-transform: scale(1, 1) translateY(0);\n            transform: scale(1, 1) translateY(0);\n  }\n  100% {\n    -webkit-transform: scale(1, 1) translateY(0);\n            transform: scale(1, 1) translateY(0);\n  }\n}\n@keyframes fa-bounce {\n  0% {\n    -webkit-transform: scale(1, 1) translateY(0);\n            transform: scale(1, 1) translateY(0);\n  }\n  10% {\n    -webkit-transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);\n            transform: scale(var(--fa-bounce-start-scale-x, 1.1), var(--fa-bounce-start-scale-y, 0.9)) translateY(0);\n  }\n  30% {\n    -webkit-transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));\n            transform: scale(var(--fa-bounce-jump-scale-x, 0.9), var(--fa-bounce-jump-scale-y, 1.1)) translateY(var(--fa-bounce-height, -0.5em));\n  }\n  50% {\n    -webkit-transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);\n            transform: scale(var(--fa-bounce-land-scale-x, 1.05), var(--fa-bounce-land-scale-y, 0.95)) translateY(0);\n  }\n  57% {\n    -webkit-transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));\n            transform: scale(1, 1) translateY(var(--fa-bounce-rebound, -0.125em));\n  }\n  64% {\n    -webkit-transform: scale(1, 1) translateY(0);\n            transform: scale(1, 1) translateY(0);\n  }\n  100% {\n    -webkit-transform: scale(1, 1) translateY(0);\n            transform: scale(1, 1) translateY(0);\n  }\n}\n@-webkit-keyframes fa-fade {\n  50% {\n    opacity: var(--fa-fade-opacity, 0.4);\n  }\n}\n@keyframes fa-fade {\n  50% {\n    opacity: var(--fa-fade-opacity, 0.4);\n  }\n}\n@-webkit-keyframes fa-beat-fade {\n  0%, 100% {\n    opacity: var(--fa-beat-fade-opacity, 0.4);\n    -webkit-transform: scale(1);\n            transform: scale(1);\n  }\n  50% {\n    opacity: 1;\n    -webkit-transform: scale(var(--fa-beat-fade-scale, 1.125));\n            transform: scale(var(--fa-beat-fade-scale, 1.125));\n  }\n}\n@keyframes fa-beat-fade {\n  0%, 100% {\n    opacity: var(--fa-beat-fade-opacity, 0.4);\n    -webkit-transform: scale(1);\n            transform: scale(1);\n  }\n  50% {\n    opacity: 1;\n    -webkit-transform: scale(var(--fa-beat-fade-scale, 1.125));\n            transform: scale(var(--fa-beat-fade-scale, 1.125));\n  }\n}\n@-webkit-keyframes fa-flip {\n  50% {\n    -webkit-transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));\n            transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));\n  }\n}\n@keyframes fa-flip {\n  50% {\n    -webkit-transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));\n            transform: rotate3d(var(--fa-flip-x, 0), var(--fa-flip-y, 1), var(--fa-flip-z, 0), var(--fa-flip-angle, -180deg));\n  }\n}\n@-webkit-keyframes fa-shake {\n  0% {\n    -webkit-transform: rotate(-15deg);\n            transform: rotate(-15deg);\n  }\n  4% {\n    -webkit-transform: rotate(15deg);\n            transform: rotate(15deg);\n  }\n  8%, 24% {\n    -webkit-transform: rotate(-18deg);\n            transform: rotate(-18deg);\n  }\n  12%, 28% {\n    -webkit-transform: rotate(18deg);\n            transform: rotate(18deg);\n  }\n  16% {\n    -webkit-transform: rotate(-22deg);\n            transform: rotate(-22deg);\n  }\n  20% {\n    -webkit-transform: rotate(22deg);\n            transform: rotate(22deg);\n  }\n  32% {\n    -webkit-transform: rotate(-12deg);\n            transform: rotate(-12deg);\n  }\n  36% {\n    -webkit-transform: rotate(12deg);\n            transform: rotate(12deg);\n  }\n  40%, 100% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg);\n  }\n}\n@keyframes fa-shake {\n  0% {\n    -webkit-transform: rotate(-15deg);\n            transform: rotate(-15deg);\n  }\n  4% {\n    -webkit-transform: rotate(15deg);\n            transform: rotate(15deg);\n  }\n  8%, 24% {\n    -webkit-transform: rotate(-18deg);\n            transform: rotate(-18deg);\n  }\n  12%, 28% {\n    -webkit-transform: rotate(18deg);\n            transform: rotate(18deg);\n  }\n  16% {\n    -webkit-transform: rotate(-22deg);\n            transform: rotate(-22deg);\n  }\n  20% {\n    -webkit-transform: rotate(22deg);\n            transform: rotate(22deg);\n  }\n  32% {\n    -webkit-transform: rotate(-12deg);\n            transform: rotate(-12deg);\n  }\n  36% {\n    -webkit-transform: rotate(12deg);\n            transform: rotate(12deg);\n  }\n  40%, 100% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg);\n  }\n}\n@-webkit-keyframes fa-spin {\n  0% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg);\n  }\n  100% {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg);\n  }\n}\n@keyframes fa-spin {\n  0% {\n    -webkit-transform: rotate(0deg);\n            transform: rotate(0deg);\n  }\n  100% {\n    -webkit-transform: rotate(360deg);\n            transform: rotate(360deg);\n  }\n}\n.fa-rotate-90 {\n  -webkit-transform: rotate(90deg);\n          transform: rotate(90deg);\n}\n\n.fa-rotate-180 {\n  -webkit-transform: rotate(180deg);\n          transform: rotate(180deg);\n}\n\n.fa-rotate-270 {\n  -webkit-transform: rotate(270deg);\n          transform: rotate(270deg);\n}\n\n.fa-flip-horizontal {\n  -webkit-transform: scale(-1, 1);\n          transform: scale(-1, 1);\n}\n\n.fa-flip-vertical {\n  -webkit-transform: scale(1, -1);\n          transform: scale(1, -1);\n}\n\n.fa-flip-both,\n.fa-flip-horizontal.fa-flip-vertical {\n  -webkit-transform: scale(-1, -1);\n          transform: scale(-1, -1);\n}\n\n.fa-rotate-by {\n  -webkit-transform: rotate(var(--fa-rotate-angle, none));\n          transform: rotate(var(--fa-rotate-angle, none));\n}\n\n.fa-stack {\n  display: inline-block;\n  vertical-align: middle;\n  height: 2em;\n  position: relative;\n  width: 2.5em;\n}\n\n.fa-stack-1x,\n.fa-stack-2x {\n  bottom: 0;\n  left: 0;\n  margin: auto;\n  position: absolute;\n  right: 0;\n  top: 0;\n  z-index: var(--fa-stack-z-index, auto);\n}\n\n.svg-inline--fa.fa-stack-1x {\n  height: 1em;\n  width: 1.25em;\n}\n.svg-inline--fa.fa-stack-2x {\n  height: 2em;\n  width: 2.5em;\n}\n\n.fa-inverse {\n  color: var(--fa-inverse, #fff);\n}\n\n.sr-only,\n.fa-sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  white-space: nowrap;\n  border-width: 0;\n}\n\n.sr-only-focusable:not(:focus),\n.fa-sr-only-focusable:not(:focus) {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  white-space: nowrap;\n  border-width: 0;\n}\n\n.svg-inline--fa .fa-primary {\n  fill: var(--fa-primary-color, currentColor);\n  opacity: var(--fa-primary-opacity, 1);\n}\n\n.svg-inline--fa .fa-secondary {\n  fill: var(--fa-secondary-color, currentColor);\n  opacity: var(--fa-secondary-opacity, 0.4);\n}\n\n.svg-inline--fa.fa-swap-opacity .fa-primary {\n  opacity: var(--fa-secondary-opacity, 0.4);\n}\n\n.svg-inline--fa.fa-swap-opacity .fa-secondary {\n  opacity: var(--fa-primary-opacity, 1);\n}\n\n.svg-inline--fa mask .fa-primary,\n.svg-inline--fa mask .fa-secondary {\n  fill: black;\n}\n\n.fad.fa-inverse,\n.fa-duotone.fa-inverse {\n  color: var(--fa-inverse, #fff);\n}';
+function css() {
+  var dfp = DEFAULT_FAMILY_PREFIX;
+  var drc = DEFAULT_REPLACEMENT_CLASS;
+  var fp = config.familyPrefix;
+  var rc = config.replacementClass;
+  var s = baseStyles;
+  if (fp !== dfp || rc !== drc) {
+    var dPatt = new RegExp("\\.".concat(dfp, "\\-"), "g");
+    var customPropPatt = new RegExp("\\--".concat(dfp, "\\-"), "g");
+    var rPatt = new RegExp("\\.".concat(drc), "g");
+    s = s
+      .replace(dPatt, ".".concat(fp, "-"))
+      .replace(customPropPatt, "--".concat(fp, "-"))
+      .replace(rPatt, ".".concat(rc));
+  }
+  return s;
+}
+var _cssInserted = false;
+function ensureCss() {
+  if (config.autoAddCss && !_cssInserted) {
+    insertCss(css());
+    _cssInserted = true;
+  }
+}
+var InjectCSS = {
+  mixout: function mixout() {
+    return {
+      dom: {
+        css,
+        insertCss: ensureCss,
+      },
+    };
+  },
+  hooks: function hooks() {
+    return {
+      beforeDOMElementCreation: function beforeDOMElementCreation() {
+        ensureCss();
+      },
+      beforeI2svg: function beforeI2svg() {
+        ensureCss();
+      },
+    };
+  },
+};
+var w = WINDOW || {};
+if (!w[NAMESPACE_IDENTIFIER]) w[NAMESPACE_IDENTIFIER] = {};
+if (!w[NAMESPACE_IDENTIFIER].styles) w[NAMESPACE_IDENTIFIER].styles = {};
+if (!w[NAMESPACE_IDENTIFIER].hooks) w[NAMESPACE_IDENTIFIER].hooks = {};
+if (!w[NAMESPACE_IDENTIFIER].shims) w[NAMESPACE_IDENTIFIER].shims = [];
+var namespace = w[NAMESPACE_IDENTIFIER];
+var functions = [];
+var listener = function listener2() {
+  DOCUMENT.removeEventListener("DOMContentLoaded", listener2);
+  loaded = 1;
+  functions.map(function (fn) {
+    return fn();
+  });
+};
+var loaded = false;
+if (IS_DOM) {
+  loaded = (
+    DOCUMENT.documentElement.doScroll ? /^loaded|^c/ : /^loaded|^i|^c/
+  ).test(DOCUMENT.readyState);
+  if (!loaded) DOCUMENT.addEventListener("DOMContentLoaded", listener);
+}
+function domready(fn) {
+  if (!IS_DOM) return;
+  loaded ? setTimeout(fn, 0) : functions.push(fn);
+}
+function toHtml(abstractNodes) {
+  var tag = abstractNodes.tag,
+    _abstractNodes$attrib = abstractNodes.attributes,
+    attributes = _abstractNodes$attrib === void 0 ? {} : _abstractNodes$attrib,
+    _abstractNodes$childr = abstractNodes.children,
+    children2 = _abstractNodes$childr === void 0 ? [] : _abstractNodes$childr;
+  if (typeof abstractNodes === "string") {
+    return htmlEscape(abstractNodes);
+  } else {
+    return "<"
+      .concat(tag, " ")
+      .concat(joinAttributes(attributes), ">")
+      .concat(children2.map(toHtml).join(""), "</")
+      .concat(tag, ">");
+  }
+}
+function iconFromMapping(mapping, prefix, iconName) {
+  if (mapping && mapping[prefix] && mapping[prefix][iconName]) {
+    return {
+      prefix,
+      iconName,
+      icon: mapping[prefix][iconName],
+    };
+  }
+}
+var bindInternal4 = function bindInternal42(func, thisContext) {
+  return function (a, b, c, d2) {
+    return func.call(thisContext, a, b, c, d2);
+  };
+};
+var reduce = function fastReduceObject(subject, fn, initialValue, thisContext) {
+  var keys = Object.keys(subject),
+    length = keys.length,
+    iterator = thisContext !== void 0 ? bindInternal4(fn, thisContext) : fn,
+    i,
+    key,
+    result;
+  if (initialValue === void 0) {
+    i = 1;
+    result = subject[keys[0]];
+  } else {
+    i = 0;
+    result = initialValue;
+  }
+  for (; i < length; i++) {
+    key = keys[i];
+    result = iterator(result, subject[key], key, subject);
+  }
+  return result;
+};
+function ucs2decode(string) {
+  var output = [];
+  var counter = 0;
+  var length = string.length;
+  while (counter < length) {
+    var value = string.charCodeAt(counter++);
+    if (value >= 55296 && value <= 56319 && counter < length) {
+      var extra = string.charCodeAt(counter++);
+      if ((extra & 64512) == 56320) {
+        output.push(((value & 1023) << 10) + (extra & 1023) + 65536);
+      } else {
+        output.push(value);
+        counter--;
+      }
+    } else {
+      output.push(value);
+    }
+  }
+  return output;
+}
+function toHex(unicode) {
+  var decoded = ucs2decode(unicode);
+  return decoded.length === 1 ? decoded[0].toString(16) : null;
+}
+function codePointAt(string, index) {
+  var size2 = string.length;
+  var first = string.charCodeAt(index);
+  var second;
+  if (first >= 55296 && first <= 56319 && size2 > index + 1) {
+    second = string.charCodeAt(index + 1);
+    if (second >= 56320 && second <= 57343) {
+      return (first - 55296) * 1024 + second - 56320 + 65536;
+    }
+  }
+  return first;
+}
+function normalizeIcons(icons) {
+  return Object.keys(icons).reduce(function (acc, iconName) {
+    var icon3 = icons[iconName];
+    var expanded = !!icon3.icon;
+    if (expanded) {
+      acc[icon3.iconName] = icon3.icon;
+    } else {
+      acc[iconName] = icon3;
+    }
+    return acc;
+  }, {});
+}
+function defineIcons(prefix, icons) {
+  var params =
+    arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
+  var _params$skipHooks = params.skipHooks,
+    skipHooks = _params$skipHooks === void 0 ? false : _params$skipHooks;
+  var normalized = normalizeIcons(icons);
+  if (typeof namespace.hooks.addPack === "function" && !skipHooks) {
+    namespace.hooks.addPack(prefix, normalizeIcons(icons));
+  } else {
+    namespace.styles[prefix] = _objectSpread2$1(
+      _objectSpread2$1({}, namespace.styles[prefix] || {}),
+      normalized
+    );
+  }
+  if (prefix === "fas") {
+    defineIcons("fa", icons);
+  }
+}
+var styles$1 = namespace.styles,
+  shims = namespace.shims;
+var LONG_STYLE = Object.values(PREFIX_TO_LONG_STYLE);
+var _defaultUsablePrefix = null;
+var _byUnicode = {};
+var _byLigature = {};
+var _byOldName = {};
+var _byOldUnicode = {};
+var _byAlias = {};
+var PREFIXES = Object.keys(PREFIX_TO_STYLE);
+function isReserved(name) {
+  return ~RESERVED_CLASSES.indexOf(name);
+}
+function getIconName(familyPrefix, cls) {
+  var parts = cls.split("-");
+  var prefix = parts[0];
+  var iconName = parts.slice(1).join("-");
+  if (prefix === familyPrefix && iconName !== "" && !isReserved(iconName)) {
+    return iconName;
+  } else {
+    return null;
+  }
+}
+var build = function build2() {
+  var lookup = function lookup2(reducer) {
+    return reduce(
+      styles$1,
+      function (o, style, prefix) {
+        o[prefix] = reduce(style, reducer, {});
+        return o;
+      },
+      {}
+    );
+  };
+  _byUnicode = lookup(function (acc, icon3, iconName) {
+    if (icon3[3]) {
+      acc[icon3[3]] = iconName;
+    }
+    if (icon3[2]) {
+      var aliases = icon3[2].filter(function (a) {
+        return typeof a === "number";
+      });
+      aliases.forEach(function (alias) {
+        acc[alias.toString(16)] = iconName;
+      });
+    }
+    return acc;
+  });
+  _byLigature = lookup(function (acc, icon3, iconName) {
+    acc[iconName] = iconName;
+    if (icon3[2]) {
+      var aliases = icon3[2].filter(function (a) {
+        return typeof a === "string";
+      });
+      aliases.forEach(function (alias) {
+        acc[alias] = iconName;
+      });
+    }
+    return acc;
+  });
+  _byAlias = lookup(function (acc, icon3, iconName) {
+    var aliases = icon3[2];
+    acc[iconName] = iconName;
+    aliases.forEach(function (alias) {
+      acc[alias] = iconName;
+    });
+    return acc;
+  });
+  var hasRegular = "far" in styles$1 || config.autoFetchSvg;
+  var shimLookups = reduce(
+    shims,
+    function (acc, shim) {
+      var maybeNameMaybeUnicode = shim[0];
+      var prefix = shim[1];
+      var iconName = shim[2];
+      if (prefix === "far" && !hasRegular) {
+        prefix = "fas";
+      }
+      if (typeof maybeNameMaybeUnicode === "string") {
+        acc.names[maybeNameMaybeUnicode] = {
+          prefix,
+          iconName,
+        };
+      }
+      if (typeof maybeNameMaybeUnicode === "number") {
+        acc.unicodes[maybeNameMaybeUnicode.toString(16)] = {
+          prefix,
+          iconName,
+        };
+      }
+      return acc;
+    },
+    {
+      names: {},
+      unicodes: {},
+    }
+  );
+  _byOldName = shimLookups.names;
+  _byOldUnicode = shimLookups.unicodes;
+  _defaultUsablePrefix = getCanonicalPrefix(config.styleDefault);
+};
+onChange(function (c) {
+  _defaultUsablePrefix = getCanonicalPrefix(c.styleDefault);
+});
+build();
+function byUnicode(prefix, unicode) {
+  return (_byUnicode[prefix] || {})[unicode];
+}
+function byLigature(prefix, ligature) {
+  return (_byLigature[prefix] || {})[ligature];
+}
+function byAlias(prefix, alias) {
+  return (_byAlias[prefix] || {})[alias];
+}
+function byOldName(name) {
+  return (
+    _byOldName[name] || {
+      prefix: null,
+      iconName: null,
+    }
+  );
+}
+function byOldUnicode(unicode) {
+  var oldUnicode = _byOldUnicode[unicode];
+  var newUnicode = byUnicode("fas", unicode);
+  return (
+    oldUnicode ||
+    (newUnicode
+      ? {
+          prefix: "fas",
+          iconName: newUnicode,
+        }
+      : null) || {
+      prefix: null,
+      iconName: null,
+    }
+  );
+}
+function getDefaultUsablePrefix() {
+  return _defaultUsablePrefix;
+}
+var emptyCanonicalIcon = function emptyCanonicalIcon2() {
+  return {
+    prefix: null,
+    iconName: null,
+    rest: [],
+  };
+};
+function getCanonicalPrefix(styleOrPrefix) {
+  var style = PREFIX_TO_STYLE[styleOrPrefix];
+  var prefix = STYLE_TO_PREFIX[styleOrPrefix] || STYLE_TO_PREFIX[style];
+  var defined = styleOrPrefix in namespace.styles ? styleOrPrefix : null;
+  return prefix || defined || null;
+}
+function getCanonicalIcon(values) {
+  var params =
+    arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+  var _params$skipLookups = params.skipLookups,
+    skipLookups = _params$skipLookups === void 0 ? false : _params$skipLookups;
+  var givenPrefix = null;
+  var canonical = values.reduce(function (acc, cls) {
+    var iconName = getIconName(config.familyPrefix, cls);
+    if (styles$1[cls]) {
+      cls = LONG_STYLE.includes(cls) ? LONG_STYLE_TO_PREFIX[cls] : cls;
+      givenPrefix = cls;
+      acc.prefix = cls;
+    } else if (PREFIXES.indexOf(cls) > -1) {
+      givenPrefix = cls;
+      acc.prefix = getCanonicalPrefix(cls);
+    } else if (iconName) {
+      acc.iconName = iconName;
+    } else if (cls !== config.replacementClass) {
+      acc.rest.push(cls);
+    }
+    if (!skipLookups && acc.prefix && acc.iconName) {
+      var shim = givenPrefix === "fa" ? byOldName(acc.iconName) : {};
+      var aliasIconName = byAlias(acc.prefix, acc.iconName);
+      if (shim.prefix) {
+        givenPrefix = null;
+      }
+      acc.iconName = shim.iconName || aliasIconName || acc.iconName;
+      acc.prefix = shim.prefix || acc.prefix;
+      if (
+        acc.prefix === "far" &&
+        !styles$1["far"] &&
+        styles$1["fas"] &&
+        !config.autoFetchSvg
+      ) {
+        acc.prefix = "fas";
+      }
+    }
+    return acc;
+  }, emptyCanonicalIcon());
+  if (canonical.prefix === "fa" || givenPrefix === "fa") {
+    canonical.prefix = getDefaultUsablePrefix() || "fas";
+  }
+  return canonical;
+}
+var Library = /* @__PURE__ */ (function () {
+  function Library2() {
+    _classCallCheck(this, Library2);
+    this.definitions = {};
+  }
+  _createClass(Library2, [
+    {
+      key: "add",
+      value: function add2() {
+        var _this = this;
+        for (
+          var _len = arguments.length, definitions = new Array(_len), _key = 0;
+          _key < _len;
+          _key++
+        ) {
+          definitions[_key] = arguments[_key];
+        }
+        var additions = definitions.reduce(this._pullDefinitions, {});
+        Object.keys(additions).forEach(function (key) {
+          _this.definitions[key] = _objectSpread2$1(
+            _objectSpread2$1({}, _this.definitions[key] || {}),
+            additions[key]
+          );
+          defineIcons(key, additions[key]);
+          var longPrefix = PREFIX_TO_LONG_STYLE[key];
+          if (longPrefix) defineIcons(longPrefix, additions[key]);
+          build();
+        });
+      },
+    },
+    {
+      key: "reset",
+      value: function reset2() {
+        this.definitions = {};
+      },
+    },
+    {
+      key: "_pullDefinitions",
+      value: function _pullDefinitions(additions, definition) {
+        var normalized =
+          definition.prefix && definition.iconName && definition.icon
+            ? {
+                0: definition,
+              }
+            : definition;
+        Object.keys(normalized).map(function (key) {
+          var _normalized$key = normalized[key],
+            prefix = _normalized$key.prefix,
+            iconName = _normalized$key.iconName,
+            icon3 = _normalized$key.icon;
+          var aliases = icon3[2];
+          if (!additions[prefix]) additions[prefix] = {};
+          if (aliases.length > 0) {
+            aliases.forEach(function (alias) {
+              if (typeof alias === "string") {
+                additions[prefix][alias] = icon3;
+              }
+            });
+          }
+          additions[prefix][iconName] = icon3;
+        });
+        return additions;
+      },
+    },
+  ]);
+  return Library2;
+})();
+var _plugins = [];
+var _hooks = {};
+var providers = {};
+var defaultProviderKeys = Object.keys(providers);
+function registerPlugins(nextPlugins, _ref2) {
+  var obj = _ref2.mixoutsTo;
+  _plugins = nextPlugins;
+  _hooks = {};
+  Object.keys(providers).forEach(function (k) {
+    if (defaultProviderKeys.indexOf(k) === -1) {
+      delete providers[k];
+    }
+  });
+  _plugins.forEach(function (plugin) {
+    var mixout8 = plugin.mixout ? plugin.mixout() : {};
+    Object.keys(mixout8).forEach(function (tk) {
+      if (typeof mixout8[tk] === "function") {
+        obj[tk] = mixout8[tk];
+      }
+      if (_typeof$1(mixout8[tk]) === "object") {
+        Object.keys(mixout8[tk]).forEach(function (sk) {
+          if (!obj[tk]) {
+            obj[tk] = {};
+          }
+          obj[tk][sk] = mixout8[tk][sk];
+        });
+      }
+    });
+    if (plugin.hooks) {
+      var hooks8 = plugin.hooks();
+      Object.keys(hooks8).forEach(function (hook) {
+        if (!_hooks[hook]) {
+          _hooks[hook] = [];
+        }
+        _hooks[hook].push(hooks8[hook]);
+      });
+    }
+    if (plugin.provides) {
+      plugin.provides(providers);
+    }
+  });
+  return obj;
+}
+function chainHooks(hook, accumulator) {
+  for (
+    var _len = arguments.length,
+      args = new Array(_len > 2 ? _len - 2 : 0),
+      _key = 2;
+    _key < _len;
+    _key++
+  ) {
+    args[_key - 2] = arguments[_key];
+  }
+  var hookFns = _hooks[hook] || [];
+  hookFns.forEach(function (hookFn) {
+    accumulator = hookFn.apply(null, [accumulator].concat(args));
+  });
+  return accumulator;
+}
+function callHooks(hook) {
+  for (
+    var _len2 = arguments.length,
+      args = new Array(_len2 > 1 ? _len2 - 1 : 0),
+      _key2 = 1;
+    _key2 < _len2;
+    _key2++
+  ) {
+    args[_key2 - 1] = arguments[_key2];
+  }
+  var hookFns = _hooks[hook] || [];
+  hookFns.forEach(function (hookFn) {
+    hookFn.apply(null, args);
+  });
+  return void 0;
+}
+function callProvided() {
+  var hook = arguments[0];
+  var args = Array.prototype.slice.call(arguments, 1);
+  return providers[hook] ? providers[hook].apply(null, args) : void 0;
+}
+function findIconDefinition(iconLookup) {
+  if (iconLookup.prefix === "fa") {
+    iconLookup.prefix = "fas";
+  }
+  var iconName = iconLookup.iconName;
+  var prefix = iconLookup.prefix || getDefaultUsablePrefix();
+  if (!iconName) return;
+  iconName = byAlias(prefix, iconName) || iconName;
+  return (
+    iconFromMapping(library.definitions, prefix, iconName) ||
+    iconFromMapping(namespace.styles, prefix, iconName)
+  );
+}
+var library = new Library();
+var noAuto = function noAuto2() {
+  config.autoReplaceSvg = false;
+  config.observeMutations = false;
+  callHooks("noAuto");
+};
+var dom = {
+  i2svg: function i2svg() {
+    var params =
+      arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
+    if (IS_DOM) {
+      callHooks("beforeI2svg", params);
+      callProvided("pseudoElements2svg", params);
+      return callProvided("i2svg", params);
+    } else {
+      return Promise.reject("Operation requires a DOM of some kind.");
+    }
+  },
+  watch: function watch2() {
+    var params =
+      arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
+    var autoReplaceSvgRoot = params.autoReplaceSvgRoot;
+    if (config.autoReplaceSvg === false) {
+      config.autoReplaceSvg = true;
+    }
+    config.observeMutations = true;
+    domready(function () {
+      autoReplace({
+        autoReplaceSvgRoot,
+      });
+      callHooks("watch", params);
+    });
+  },
+};
+var parse = {
+  icon: function icon2(_icon) {
+    if (_icon === null) {
+      return null;
+    }
+    if (_typeof$1(_icon) === "object" && _icon.prefix && _icon.iconName) {
+      return {
+        prefix: _icon.prefix,
+        iconName: byAlias(_icon.prefix, _icon.iconName) || _icon.iconName,
+      };
+    }
+    if (Array.isArray(_icon) && _icon.length === 2) {
+      var iconName =
+        _icon[1].indexOf("fa-") === 0 ? _icon[1].slice(3) : _icon[1];
+      var prefix = getCanonicalPrefix(_icon[0]);
+      return {
+        prefix,
+        iconName: byAlias(prefix, iconName) || iconName,
+      };
+    }
+    if (
+      typeof _icon === "string" &&
+      (_icon.indexOf("".concat(config.familyPrefix, "-")) > -1 ||
+        _icon.match(ICON_SELECTION_SYNTAX_PATTERN))
+    ) {
+      var canonicalIcon = getCanonicalIcon(_icon.split(" "), {
+        skipLookups: true,
+      });
+      return {
+        prefix: canonicalIcon.prefix || getDefaultUsablePrefix(),
+        iconName:
+          byAlias(canonicalIcon.prefix, canonicalIcon.iconName) ||
+          canonicalIcon.iconName,
+      };
+    }
+    if (typeof _icon === "string") {
+      var _prefix = getDefaultUsablePrefix();
+      return {
+        prefix: _prefix,
+        iconName: byAlias(_prefix, _icon) || _icon,
+      };
+    }
+  },
+};
+var api = {
+  noAuto,
+  config,
+  dom,
+  parse,
+  library,
+  findIconDefinition,
+  toHtml,
+};
+var autoReplace = function autoReplace2() {
+  var params =
+    arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
+  var _params$autoReplaceSv = params.autoReplaceSvgRoot,
+    autoReplaceSvgRoot =
+      _params$autoReplaceSv === void 0 ? DOCUMENT : _params$autoReplaceSv;
+  if (
+    (Object.keys(namespace.styles).length > 0 || config.autoFetchSvg) &&
+    IS_DOM &&
+    config.autoReplaceSvg
+  )
+    api.dom.i2svg({
+      node: autoReplaceSvgRoot,
+    });
+};
+function domVariants(val, abstractCreator) {
+  Object.defineProperty(val, "abstract", {
+    get: abstractCreator,
+  });
+  Object.defineProperty(val, "html", {
+    get: function get2() {
+      return val.abstract.map(function (a) {
+        return toHtml(a);
+      });
+    },
+  });
+  Object.defineProperty(val, "node", {
+    get: function get2() {
+      if (!IS_DOM) return;
+      var container2 = DOCUMENT.createElement("div");
+      container2.innerHTML = val.html;
+      return container2.children;
+    },
+  });
+  return val;
+}
+function asIcon(_ref2) {
+  var children2 = _ref2.children,
+    main = _ref2.main,
+    mask = _ref2.mask,
+    attributes = _ref2.attributes,
+    styles2 = _ref2.styles,
+    transform = _ref2.transform;
+  if (transformIsMeaningful(transform) && main.found && !mask.found) {
+    var width = main.width,
+      height = main.height;
+    var offset = {
+      x: width / height / 2,
+      y: 0.5,
+    };
+    attributes["style"] = joinStyles(
+      _objectSpread2$1(
+        _objectSpread2$1({}, styles2),
+        {},
+        {
+          "transform-origin": ""
+            .concat(offset.x + transform.x / 16, "em ")
+            .concat(offset.y + transform.y / 16, "em"),
+        }
+      )
+    );
+  }
+  return [
+    {
+      tag: "svg",
+      attributes,
+      children: children2,
+    },
+  ];
+}
+function asSymbol(_ref2) {
+  var prefix = _ref2.prefix,
+    iconName = _ref2.iconName,
+    children2 = _ref2.children,
+    attributes = _ref2.attributes,
+    symbol = _ref2.symbol;
+  var id =
+    symbol === true
+      ? "".concat(prefix, "-").concat(config.familyPrefix, "-").concat(iconName)
+      : symbol;
+  return [
+    {
+      tag: "svg",
+      attributes: {
+        style: "display: none;",
+      },
+      children: [
+        {
+          tag: "symbol",
+          attributes: _objectSpread2$1(
+            _objectSpread2$1({}, attributes),
+            {},
+            {
+              id,
+            }
+          ),
+          children: children2,
+        },
+      ],
+    },
+  ];
+}
+function makeInlineSvgAbstract(params) {
+  var _params$icons = params.icons,
+    main = _params$icons.main,
+    mask = _params$icons.mask,
+    prefix = params.prefix,
+    iconName = params.iconName,
+    transform = params.transform,
+    symbol = params.symbol,
+    title = params.title,
+    maskId = params.maskId,
+    titleId = params.titleId,
+    extra = params.extra,
+    _params$watchable = params.watchable,
+    watchable = _params$watchable === void 0 ? false : _params$watchable;
+  var _ref2 = mask.found ? mask : main,
+    width = _ref2.width,
+    height = _ref2.height;
+  var isUploadedIcon = prefix === "fak";
+  var attrClass = [
+    config.replacementClass,
+    iconName ? "".concat(config.familyPrefix, "-").concat(iconName) : "",
+  ]
+    .filter(function (c) {
+      return extra.classes.indexOf(c) === -1;
+    })
+    .filter(function (c) {
+      return c !== "" || !!c;
+    })
+    .concat(extra.classes)
+    .join(" ");
+  var content = {
+    children: [],
+    attributes: _objectSpread2$1(
+      _objectSpread2$1({}, extra.attributes),
+      {},
+      {
+        "data-prefix": prefix,
+        "data-icon": iconName,
+        class: attrClass,
+        role: extra.attributes.role || "img",
+        xmlns: "http://www.w3.org/2000/svg",
+        viewBox: "0 0 ".concat(width, " ").concat(height),
+      }
+    ),
+  };
+  var uploadedIconWidthStyle =
+    isUploadedIcon && !~extra.classes.indexOf("fa-fw")
+      ? {
+          width: "".concat((width / height) * 16 * 0.0625, "em"),
+        }
+      : {};
+  if (watchable) {
+    content.attributes[DATA_FA_I2SVG] = "";
+  }
+  if (title) {
+    content.children.push({
+      tag: "title",
+      attributes: {
+        id:
+          content.attributes["aria-labelledby"] ||
+          "title-".concat(titleId || nextUniqueId()),
+      },
+      children: [title],
+    });
+    delete content.attributes.title;
+  }
+  var args = _objectSpread2$1(
+    _objectSpread2$1({}, content),
+    {},
+    {
+      prefix,
+      iconName,
+      main,
+      mask,
+      maskId,
+      transform,
+      symbol,
+      styles: _objectSpread2$1(
+        _objectSpread2$1({}, uploadedIconWidthStyle),
+        extra.styles
+      ),
+    }
+  );
+  var _ref22 =
+      mask.found && main.found
+        ? callProvided("generateAbstractMask", args) || {
+            children: [],
+            attributes: {},
+          }
+        : callProvided("generateAbstractIcon", args) || {
+            children: [],
+            attributes: {},
+          },
+    children2 = _ref22.children,
+    attributes = _ref22.attributes;
+  args.children = children2;
+  args.attributes = attributes;
+  if (symbol) {
+    return asSymbol(args);
+  } else {
+    return asIcon(args);
+  }
+}
+function makeLayersTextAbstract(params) {
+  var content = params.content,
+    width = params.width,
+    height = params.height,
+    transform = params.transform,
+    title = params.title,
+    extra = params.extra,
+    _params$watchable2 = params.watchable,
+    watchable = _params$watchable2 === void 0 ? false : _params$watchable2;
+  var attributes = _objectSpread2$1(
+    _objectSpread2$1(
+      _objectSpread2$1({}, extra.attributes),
+      title
+        ? {
+            title: title,
+          }
+        : {}
+    ),
+    {},
+    {
+      class: extra.classes.join(" "),
+    }
+  );
+  if (watchable) {
+    attributes[DATA_FA_I2SVG] = "";
+  }
+  var styles2 = _objectSpread2$1({}, extra.styles);
+  if (transformIsMeaningful(transform)) {
+    styles2["transform"] = transformForCss({
+      transform,
+      startCentered: true,
+      width,
+      height,
+    });
+    styles2["-webkit-transform"] = styles2["transform"];
+  }
+  var styleString = joinStyles(styles2);
+  if (styleString.length > 0) {
+    attributes["style"] = styleString;
+  }
+  var val = [];
+  val.push({
+    tag: "span",
+    attributes,
+    children: [content],
+  });
+  if (title) {
+    val.push({
+      tag: "span",
+      attributes: {
+        class: "sr-only",
+      },
+      children: [title],
+    });
+  }
+  return val;
+}
+function makeLayersCounterAbstract(params) {
+  var content = params.content,
+    title = params.title,
+    extra = params.extra;
+  var attributes = _objectSpread2$1(
+    _objectSpread2$1(
+      _objectSpread2$1({}, extra.attributes),
+      title
+        ? {
+            title: title,
+          }
+        : {}
+    ),
+    {},
+    {
+      class: extra.classes.join(" "),
+    }
+  );
+  var styleString = joinStyles(extra.styles);
+  if (styleString.length > 0) {
+    attributes["style"] = styleString;
+  }
+  var val = [];
+  val.push({
+    tag: "span",
+    attributes,
+    children: [content],
+  });
+  if (title) {
+    val.push({
+      tag: "span",
+      attributes: {
+        class: "sr-only",
+      },
+      children: [title],
+    });
+  }
+  return val;
+}
+var styles$1$1 = namespace.styles;
+function asFoundIcon(icon3) {
+  var width = icon3[0];
+  var height = icon3[1];
+  var _icon$slice = icon3.slice(4),
+    _icon$slice2 = _slicedToArray(_icon$slice, 1),
+    vectorData = _icon$slice2[0];
+  var element = null;
+  if (Array.isArray(vectorData)) {
+    element = {
+      tag: "g",
+      attributes: {
+        class: ""
+          .concat(config.familyPrefix, "-")
+          .concat(DUOTONE_CLASSES.GROUP),
+      },
+      children: [
+        {
+          tag: "path",
+          attributes: {
+            class: ""
+              .concat(config.familyPrefix, "-")
+              .concat(DUOTONE_CLASSES.SECONDARY),
+            fill: "currentColor",
+            d: vectorData[0],
+          },
+        },
+        {
+          tag: "path",
+          attributes: {
+            class: ""
+              .concat(config.familyPrefix, "-")
+              .concat(DUOTONE_CLASSES.PRIMARY),
+            fill: "currentColor",
+            d: vectorData[1],
+          },
+        },
+      ],
+    };
+  } else {
+    element = {
+      tag: "path",
+      attributes: {
+        fill: "currentColor",
+        d: vectorData,
+      },
+    };
+  }
+  return {
+    found: true,
+    width,
+    height,
+    icon: element,
+  };
+}
+var missingIconResolutionMixin = {
+  found: false,
+  width: 512,
+  height: 512,
+};
+function maybeNotifyMissing(iconName, prefix) {
+  if (!PRODUCTION$1 && !config.showMissingIcons && iconName) {
+    console.error(
+      'Icon with name "'
+        .concat(iconName, '" and prefix "')
+        .concat(prefix, '" is missing.')
+    );
+  }
+}
+function findIcon(iconName, prefix) {
+  var givenPrefix = prefix;
+  if (prefix === "fa" && config.styleDefault !== null) {
+    prefix = getDefaultUsablePrefix();
+  }
+  return new Promise(function (resolve2, reject) {
+    ({
+      found: false,
+      width: 512,
+      height: 512,
+      icon: callProvided("missingIconAbstract") || {},
+    });
+    if (givenPrefix === "fa") {
+      var shim = byOldName(iconName) || {};
+      iconName = shim.iconName || iconName;
+      prefix = shim.prefix || prefix;
+    }
+    if (
+      iconName &&
+      prefix &&
+      styles$1$1[prefix] &&
+      styles$1$1[prefix][iconName]
+    ) {
+      var icon3 = styles$1$1[prefix][iconName];
+      return resolve2(asFoundIcon(icon3));
+    }
+    maybeNotifyMissing(iconName, prefix);
+    resolve2(
+      _objectSpread2$1(
+        _objectSpread2$1({}, missingIconResolutionMixin),
+        {},
+        {
+          icon:
+            config.showMissingIcons && iconName
+              ? callProvided("missingIconAbstract") || {}
+              : {},
+        }
+      )
+    );
+  });
+}
+var noop$1 = function noop3() {};
+var p =
+  config.measurePerformance &&
+  PERFORMANCE &&
+  PERFORMANCE.mark &&
+  PERFORMANCE.measure
+    ? PERFORMANCE
+    : {
+        mark: noop$1,
+        measure: noop$1,
+      };
+var preamble = 'FA "6.1.2"';
+var begin = function begin2(name) {
+  p.mark("".concat(preamble, " ").concat(name, " begins"));
+  return function () {
+    return end(name);
+  };
+};
+var end = function end2(name) {
+  p.mark("".concat(preamble, " ").concat(name, " ends"));
+  p.measure(
+    "".concat(preamble, " ").concat(name),
+    "".concat(preamble, " ").concat(name, " begins"),
+    "".concat(preamble, " ").concat(name, " ends")
+  );
+};
+var perf = {
+  begin,
+  end,
+};
+var noop$2 = function noop4() {};
+function isWatched(node) {
+  var i2svg2 = node.getAttribute ? node.getAttribute(DATA_FA_I2SVG) : null;
+  return typeof i2svg2 === "string";
+}
+function hasPrefixAndIcon(node) {
+  var prefix = node.getAttribute ? node.getAttribute(DATA_PREFIX) : null;
+  var icon3 = node.getAttribute ? node.getAttribute(DATA_ICON) : null;
+  return prefix && icon3;
+}
+function hasBeenReplaced(node) {
+  return (
+    node &&
+    node.classList &&
+    node.classList.contains &&
+    node.classList.contains(config.replacementClass)
+  );
+}
+function getMutator() {
+  if (config.autoReplaceSvg === true) {
+    return mutators.replace;
+  }
+  var mutator = mutators[config.autoReplaceSvg];
+  return mutator || mutators.replace;
+}
+function createElementNS(tag) {
+  return DOCUMENT.createElementNS("http://www.w3.org/2000/svg", tag);
+}
+function createElement(tag) {
+  return DOCUMENT.createElement(tag);
+}
+function convertSVG(abstractObj) {
+  var params =
+    arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+  var _params$ceFn = params.ceFn,
+    ceFn =
+      _params$ceFn === void 0
+        ? abstractObj.tag === "svg"
+          ? createElementNS
+          : createElement
+        : _params$ceFn;
+  if (typeof abstractObj === "string") {
+    return DOCUMENT.createTextNode(abstractObj);
+  }
+  var tag = ceFn(abstractObj.tag);
+  Object.keys(abstractObj.attributes || []).forEach(function (key) {
+    tag.setAttribute(key, abstractObj.attributes[key]);
+  });
+  var children2 = abstractObj.children || [];
+  children2.forEach(function (child) {
+    tag.appendChild(
+      convertSVG(child, {
+        ceFn,
+      })
+    );
+  });
+  return tag;
+}
+function nodeAsComment(node) {
+  var comment = " ".concat(node.outerHTML, " ");
+  comment = "".concat(comment, "Font Awesome fontawesome.com ");
+  return comment;
+}
+var mutators = {
+  replace: function replace2(mutation) {
+    var node = mutation[0];
+    if (node.parentNode) {
+      mutation[1].forEach(function (abstract) {
+        node.parentNode.insertBefore(convertSVG(abstract), node);
+      });
+      if (
+        node.getAttribute(DATA_FA_I2SVG) === null &&
+        config.keepOriginalSource
+      ) {
+        var comment = DOCUMENT.createComment(nodeAsComment(node));
+        node.parentNode.replaceChild(comment, node);
+      } else {
+        node.remove();
+      }
+    }
+  },
+  nest: function nest(mutation) {
+    var node = mutation[0];
+    var abstract = mutation[1];
+    if (~classArray(node).indexOf(config.replacementClass)) {
+      return mutators.replace(mutation);
+    }
+    var forSvg = new RegExp("".concat(config.familyPrefix, "-.*"));
+    delete abstract[0].attributes.id;
+    if (abstract[0].attributes.class) {
+      var splitClasses = abstract[0].attributes.class.split(" ").reduce(
+        function (acc, cls) {
+          if (cls === config.replacementClass || cls.match(forSvg)) {
+            acc.toSvg.push(cls);
+          } else {
+            acc.toNode.push(cls);
+          }
+          return acc;
+        },
+        {
+          toNode: [],
+          toSvg: [],
+        }
+      );
+      abstract[0].attributes.class = splitClasses.toSvg.join(" ");
+      if (splitClasses.toNode.length === 0) {
+        node.removeAttribute("class");
+      } else {
+        node.setAttribute("class", splitClasses.toNode.join(" "));
+      }
+    }
+    var newInnerHTML = abstract
+      .map(function (a) {
+        return toHtml(a);
+      })
+      .join("\n");
+    node.setAttribute(DATA_FA_I2SVG, "");
+    node.innerHTML = newInnerHTML;
+  },
+};
+function performOperationSync(op) {
+  op();
+}
+function perform(mutations, callback) {
+  var callbackFunction = typeof callback === "function" ? callback : noop$2;
+  if (mutations.length === 0) {
+    callbackFunction();
+  } else {
+    var frame = performOperationSync;
+    if (config.mutateApproach === MUTATION_APPROACH_ASYNC) {
+      frame = WINDOW.requestAnimationFrame || performOperationSync;
+    }
+    frame(function () {
+      var mutator = getMutator();
+      var mark = perf.begin("mutate");
+      mutations.map(mutator);
+      mark();
+      callbackFunction();
+    });
+  }
+}
+var disabled = false;
+function disableObservation() {
+  disabled = true;
+}
+function enableObservation() {
+  disabled = false;
+}
+var mo = null;
+function observe(options) {
+  if (!MUTATION_OBSERVER) {
+    return;
+  }
+  if (!config.observeMutations) {
+    return;
+  }
+  var _options$treeCallback = options.treeCallback,
+    treeCallback =
+      _options$treeCallback === void 0 ? noop$2 : _options$treeCallback,
+    _options$nodeCallback = options.nodeCallback,
+    nodeCallback =
+      _options$nodeCallback === void 0 ? noop$2 : _options$nodeCallback,
+    _options$pseudoElemen = options.pseudoElementsCallback,
+    pseudoElementsCallback =
+      _options$pseudoElemen === void 0 ? noop$2 : _options$pseudoElemen,
+    _options$observeMutat = options.observeMutationsRoot,
+    observeMutationsRoot =
+      _options$observeMutat === void 0 ? DOCUMENT : _options$observeMutat;
+  mo = new MUTATION_OBSERVER(function (objects) {
+    if (disabled) return;
+    var defaultPrefix = getDefaultUsablePrefix();
+    toArray(objects).forEach(function (mutationRecord) {
+      if (
+        mutationRecord.type === "childList" &&
+        mutationRecord.addedNodes.length > 0 &&
+        !isWatched(mutationRecord.addedNodes[0])
+      ) {
+        if (config.searchPseudoElements) {
+          pseudoElementsCallback(mutationRecord.target);
+        }
+        treeCallback(mutationRecord.target);
+      }
+      if (
+        mutationRecord.type === "attributes" &&
+        mutationRecord.target.parentNode &&
+        config.searchPseudoElements
+      ) {
+        pseudoElementsCallback(mutationRecord.target.parentNode);
+      }
+      if (
+        mutationRecord.type === "attributes" &&
+        isWatched(mutationRecord.target) &&
+        ~ATTRIBUTES_WATCHED_FOR_MUTATION.indexOf(mutationRecord.attributeName)
+      ) {
+        if (
+          mutationRecord.attributeName === "class" &&
+          hasPrefixAndIcon(mutationRecord.target)
+        ) {
+          var _getCanonicalIcon = getCanonicalIcon(
+              classArray(mutationRecord.target)
+            ),
+            prefix = _getCanonicalIcon.prefix,
+            iconName = _getCanonicalIcon.iconName;
+          mutationRecord.target.setAttribute(
+            DATA_PREFIX,
+            prefix || defaultPrefix
+          );
+          if (iconName) mutationRecord.target.setAttribute(DATA_ICON, iconName);
+        } else if (hasBeenReplaced(mutationRecord.target)) {
+          nodeCallback(mutationRecord.target);
+        }
+      }
+    });
+  });
+  if (!IS_DOM) return;
+  mo.observe(observeMutationsRoot, {
+    childList: true,
+    attributes: true,
+    characterData: true,
+    subtree: true,
+  });
+}
+function disconnect() {
+  if (!mo) return;
+  mo.disconnect();
+}
+function styleParser(node) {
+  var style = node.getAttribute("style");
+  var val = [];
+  if (style) {
+    val = style.split(";").reduce(function (acc, style2) {
+      var styles2 = style2.split(":");
+      var prop = styles2[0];
+      var value = styles2.slice(1);
+      if (prop && value.length > 0) {
+        acc[prop] = value.join(":").trim();
+      }
+      return acc;
+    }, {});
+  }
+  return val;
+}
+function classParser(node) {
+  var existingPrefix = node.getAttribute("data-prefix");
+  var existingIconName = node.getAttribute("data-icon");
+  var innerText = node.innerText !== void 0 ? node.innerText.trim() : "";
+  var val = getCanonicalIcon(classArray(node));
+  if (!val.prefix) {
+    val.prefix = getDefaultUsablePrefix();
+  }
+  if (existingPrefix && existingIconName) {
+    val.prefix = existingPrefix;
+    val.iconName = existingIconName;
+  }
+  if (val.iconName && val.prefix) {
+    return val;
+  }
+  if (val.prefix && innerText.length > 0) {
+    val.iconName =
+      byLigature(val.prefix, node.innerText) ||
+      byUnicode(val.prefix, toHex(node.innerText));
+  }
+  if (
+    !val.iconName &&
+    config.autoFetchSvg &&
+    node.firstChild &&
+    node.firstChild.nodeType === Node.TEXT_NODE
+  ) {
+    val.iconName = node.firstChild.data;
+  }
+  return val;
+}
+function attributesParser(node) {
+  var extraAttributes = toArray(node.attributes).reduce(function (acc, attr) {
+    if (acc.name !== "class" && acc.name !== "style") {
+      acc[attr.name] = attr.value;
+    }
+    return acc;
+  }, {});
+  var title = node.getAttribute("title");
+  var titleId = node.getAttribute("data-fa-title-id");
+  if (config.autoA11y) {
+    if (title) {
+      extraAttributes["aria-labelledby"] = ""
+        .concat(config.replacementClass, "-title-")
+        .concat(titleId || nextUniqueId());
+    } else {
+      extraAttributes["aria-hidden"] = "true";
+      extraAttributes["focusable"] = "false";
+    }
+  }
+  return extraAttributes;
+}
+function blankMeta() {
+  return {
+    iconName: null,
+    title: null,
+    titleId: null,
+    prefix: null,
+    transform: meaninglessTransform,
+    symbol: false,
+    mask: {
+      iconName: null,
+      prefix: null,
+      rest: [],
+    },
+    maskId: null,
+    extra: {
+      classes: [],
+      styles: {},
+      attributes: {},
+    },
+  };
+}
+function parseMeta(node) {
+  var parser =
+    arguments.length > 1 && arguments[1] !== void 0
+      ? arguments[1]
+      : {
+          styleParser: true,
+        };
+  var _classParser = classParser(node),
+    iconName = _classParser.iconName,
+    prefix = _classParser.prefix,
+    extraClasses = _classParser.rest;
+  var extraAttributes = attributesParser(node);
+  var pluginMeta = chainHooks("parseNodeAttributes", {}, node);
+  var extraStyles = parser.styleParser ? styleParser(node) : [];
+  return _objectSpread2$1(
+    {
+      iconName,
+      title: node.getAttribute("title"),
+      titleId: node.getAttribute("data-fa-title-id"),
+      prefix,
+      transform: meaninglessTransform,
+      mask: {
+        iconName: null,
+        prefix: null,
+        rest: [],
+      },
+      maskId: null,
+      symbol: false,
+      extra: {
+        classes: extraClasses,
+        styles: extraStyles,
+        attributes: extraAttributes,
+      },
+    },
+    pluginMeta
+  );
+}
+var styles$2 = namespace.styles;
+function generateMutation(node) {
+  var nodeMeta =
+    config.autoReplaceSvg === "nest"
+      ? parseMeta(node, {
+          styleParser: false,
+        })
+      : parseMeta(node);
+  if (~nodeMeta.extra.classes.indexOf(LAYERS_TEXT_CLASSNAME)) {
+    return callProvided("generateLayersText", node, nodeMeta);
+  } else {
+    return callProvided("generateSvgReplacementMutation", node, nodeMeta);
+  }
+}
+function onTree(root) {
+  var callback =
+    arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
+  if (!IS_DOM) return Promise.resolve();
+  var htmlClassList = DOCUMENT.documentElement.classList;
+  var hclAdd = function hclAdd2(suffix) {
+    return htmlClassList.add(
+      "".concat(HTML_CLASS_I2SVG_BASE_CLASS, "-").concat(suffix)
+    );
+  };
+  var hclRemove = function hclRemove2(suffix) {
+    return htmlClassList.remove(
+      "".concat(HTML_CLASS_I2SVG_BASE_CLASS, "-").concat(suffix)
+    );
+  };
+  var prefixes2 = config.autoFetchSvg
+    ? Object.keys(PREFIX_TO_STYLE)
+    : Object.keys(styles$2);
+  if (!prefixes2.includes("fa")) {
+    prefixes2.push("fa");
+  }
+  var prefixesDomQuery = [
+    ".".concat(LAYERS_TEXT_CLASSNAME, ":not([").concat(DATA_FA_I2SVG, "])"),
+  ]
+    .concat(
+      prefixes2.map(function (p2) {
+        return ".".concat(p2, ":not([").concat(DATA_FA_I2SVG, "])");
+      })
+    )
+    .join(", ");
+  if (prefixesDomQuery.length === 0) {
+    return Promise.resolve();
+  }
+  var candidates = [];
+  try {
+    candidates = toArray(root.querySelectorAll(prefixesDomQuery));
+  } catch (e) {}
+  if (candidates.length > 0) {
+    hclAdd("pending");
+    hclRemove("complete");
+  } else {
+    return Promise.resolve();
+  }
+  var mark = perf.begin("onTree");
+  var mutations = candidates.reduce(function (acc, node) {
+    try {
+      var mutation = generateMutation(node);
+      if (mutation) {
+        acc.push(mutation);
+      }
+    } catch (e) {
+      if (!PRODUCTION$1) {
+        if (e.name === "MissingIcon") {
+          console.error(e);
+        }
+      }
+    }
+    return acc;
+  }, []);
+  return new Promise(function (resolve2, reject) {
+    Promise.all(mutations)
+      .then(function (resolvedMutations) {
+        perform(resolvedMutations, function () {
+          hclAdd("active");
+          hclAdd("complete");
+          hclRemove("pending");
+          if (typeof callback === "function") callback();
+          mark();
+          resolve2();
+        });
+      })
+      .catch(function (e) {
+        mark();
+        reject(e);
+      });
+  });
+}
+function onNode(node) {
+  var callback =
+    arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : null;
+  generateMutation(node).then(function (mutation) {
+    if (mutation) {
+      perform([mutation], callback);
+    }
+  });
+}
+function resolveIcons(next) {
+  return function (maybeIconDefinition) {
+    var params =
+      arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+    var iconDefinition = (maybeIconDefinition || {}).icon
+      ? maybeIconDefinition
+      : findIconDefinition(maybeIconDefinition || {});
+    var mask = params.mask;
+    if (mask) {
+      mask = (mask || {}).icon ? mask : findIconDefinition(mask || {});
+    }
+    return next(
+      iconDefinition,
+      _objectSpread2$1(
+        _objectSpread2$1({}, params),
+        {},
+        {
+          mask,
+        }
+      )
+    );
+  };
+}
+var render = function render2(iconDefinition) {
+  var params =
+    arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+  var _params$transform = params.transform,
+    transform =
+      _params$transform === void 0 ? meaninglessTransform : _params$transform,
+    _params$symbol = params.symbol,
+    symbol = _params$symbol === void 0 ? false : _params$symbol,
+    _params$mask = params.mask,
+    mask = _params$mask === void 0 ? null : _params$mask,
+    _params$maskId = params.maskId,
+    maskId = _params$maskId === void 0 ? null : _params$maskId,
+    _params$title = params.title,
+    title = _params$title === void 0 ? null : _params$title,
+    _params$titleId = params.titleId,
+    titleId = _params$titleId === void 0 ? null : _params$titleId,
+    _params$classes = params.classes,
+    classes = _params$classes === void 0 ? [] : _params$classes,
+    _params$attributes = params.attributes,
+    attributes = _params$attributes === void 0 ? {} : _params$attributes,
+    _params$styles = params.styles,
+    styles2 = _params$styles === void 0 ? {} : _params$styles;
+  if (!iconDefinition) return;
+  var prefix = iconDefinition.prefix,
+    iconName = iconDefinition.iconName,
+    icon3 = iconDefinition.icon;
+  return domVariants(
+    _objectSpread2$1(
+      {
+        type: "icon",
+      },
+      iconDefinition
+    ),
+    function () {
+      callHooks("beforeDOMElementCreation", {
+        iconDefinition,
+        params,
+      });
+      if (config.autoA11y) {
+        if (title) {
+          attributes["aria-labelledby"] = ""
+            .concat(config.replacementClass, "-title-")
+            .concat(titleId || nextUniqueId());
+        } else {
+          attributes["aria-hidden"] = "true";
+          attributes["focusable"] = "false";
+        }
+      }
+      return makeInlineSvgAbstract({
+        icons: {
+          main: asFoundIcon(icon3),
+          mask: mask
+            ? asFoundIcon(mask.icon)
+            : {
+                found: false,
+                width: null,
+                height: null,
+                icon: {},
+              },
+        },
+        prefix,
+        iconName,
+        transform: _objectSpread2$1(
+          _objectSpread2$1({}, meaninglessTransform),
+          transform
+        ),
+        symbol,
+        title,
+        maskId,
+        titleId,
+        extra: {
+          attributes,
+          styles: styles2,
+          classes,
+        },
+      });
+    }
+  );
+};
+var ReplaceElements = {
+  mixout: function mixout2() {
+    return {
+      icon: resolveIcons(render),
+    };
+  },
+  hooks: function hooks2() {
+    return {
+      mutationObserverCallbacks: function mutationObserverCallbacks(
+        accumulator
+      ) {
+        accumulator.treeCallback = onTree;
+        accumulator.nodeCallback = onNode;
+        return accumulator;
+      },
+    };
+  },
+  provides: function provides(providers$$1) {
+    providers$$1.i2svg = function (params) {
+      var _params$node = params.node,
+        node = _params$node === void 0 ? DOCUMENT : _params$node,
+        _params$callback = params.callback,
+        callback =
+          _params$callback === void 0 ? function () {} : _params$callback;
+      return onTree(node, callback);
+    };
+    providers$$1.generateSvgReplacementMutation = function (node, nodeMeta) {
+      var iconName = nodeMeta.iconName,
+        title = nodeMeta.title,
+        titleId = nodeMeta.titleId,
+        prefix = nodeMeta.prefix,
+        transform = nodeMeta.transform,
+        symbol = nodeMeta.symbol,
+        mask = nodeMeta.mask,
+        maskId = nodeMeta.maskId,
+        extra = nodeMeta.extra;
+      return new Promise(function (resolve2, reject) {
+        Promise.all([
+          findIcon(iconName, prefix),
+          mask.iconName
+            ? findIcon(mask.iconName, mask.prefix)
+            : Promise.resolve({
+                found: false,
+                width: 512,
+                height: 512,
+                icon: {},
+              }),
+        ])
+          .then(function (_ref2) {
+            var _ref22 = _slicedToArray(_ref2, 2),
+              main = _ref22[0],
+              mask2 = _ref22[1];
+            resolve2([
+              node,
+              makeInlineSvgAbstract({
+                icons: {
+                  main,
+                  mask: mask2,
+                },
+                prefix,
+                iconName,
+                transform,
+                symbol,
+                maskId,
+                title,
+                titleId,
+                extra,
+                watchable: true,
+              }),
+            ]);
+          })
+          .catch(reject);
+      });
+    };
+    providers$$1.generateAbstractIcon = function (_ref3) {
+      var children2 = _ref3.children,
+        attributes = _ref3.attributes,
+        main = _ref3.main,
+        transform = _ref3.transform,
+        styles2 = _ref3.styles;
+      var styleString = joinStyles(styles2);
+      if (styleString.length > 0) {
+        attributes["style"] = styleString;
+      }
+      var nextChild;
+      if (transformIsMeaningful(transform)) {
+        nextChild = callProvided("generateAbstractTransformGrouping", {
+          main,
+          transform,
+          containerWidth: main.width,
+          iconWidth: main.width,
+        });
+      }
+      children2.push(nextChild || main.icon);
+      return {
+        children: children2,
+        attributes,
+      };
+    };
+  },
+};
+var Layers = {
+  mixout: function mixout3() {
+    return {
+      layer: function layer(assembler) {
+        var params =
+          arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+        var _params$classes = params.classes,
+          classes = _params$classes === void 0 ? [] : _params$classes;
+        return domVariants(
+          {
+            type: "layer",
+          },
+          function () {
+            callHooks("beforeDOMElementCreation", {
+              assembler,
+              params,
+            });
+            var children2 = [];
+            assembler(function (args) {
+              Array.isArray(args)
+                ? args.map(function (a) {
+                    children2 = children2.concat(a.abstract);
+                  })
+                : (children2 = children2.concat(args.abstract));
+            });
+            return [
+              {
+                tag: "span",
+                attributes: {
+                  class: ["".concat(config.familyPrefix, "-layers")]
+                    .concat(_toConsumableArray$1(classes))
+                    .join(" "),
+                },
+                children: children2,
+              },
+            ];
+          }
+        );
+      },
+    };
+  },
+};
+var LayersCounter = {
+  mixout: function mixout4() {
+    return {
+      counter: function counter(content) {
+        var params =
+          arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+        var _params$title = params.title,
+          title = _params$title === void 0 ? null : _params$title,
+          _params$classes = params.classes,
+          classes = _params$classes === void 0 ? [] : _params$classes,
+          _params$attributes = params.attributes,
+          attributes = _params$attributes === void 0 ? {} : _params$attributes,
+          _params$styles = params.styles,
+          styles2 = _params$styles === void 0 ? {} : _params$styles;
+        return domVariants(
+          {
+            type: "counter",
+            content,
+          },
+          function () {
+            callHooks("beforeDOMElementCreation", {
+              content,
+              params,
+            });
+            return makeLayersCounterAbstract({
+              content: content.toString(),
+              title,
+              extra: {
+                attributes,
+                styles: styles2,
+                classes: [
+                  "".concat(config.familyPrefix, "-layers-counter"),
+                ].concat(_toConsumableArray$1(classes)),
+              },
+            });
+          }
+        );
+      },
+    };
+  },
+};
+var LayersText = {
+  mixout: function mixout5() {
+    return {
+      text: function text2(content) {
+        var params =
+          arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+        var _params$transform = params.transform,
+          transform =
+            _params$transform === void 0
+              ? meaninglessTransform
+              : _params$transform,
+          _params$title = params.title,
+          title = _params$title === void 0 ? null : _params$title,
+          _params$classes = params.classes,
+          classes = _params$classes === void 0 ? [] : _params$classes,
+          _params$attributes = params.attributes,
+          attributes = _params$attributes === void 0 ? {} : _params$attributes,
+          _params$styles = params.styles,
+          styles2 = _params$styles === void 0 ? {} : _params$styles;
+        return domVariants(
+          {
+            type: "text",
+            content,
+          },
+          function () {
+            callHooks("beforeDOMElementCreation", {
+              content,
+              params,
+            });
+            return makeLayersTextAbstract({
+              content,
+              transform: _objectSpread2$1(
+                _objectSpread2$1({}, meaninglessTransform),
+                transform
+              ),
+              title,
+              extra: {
+                attributes,
+                styles: styles2,
+                classes: [
+                  "".concat(config.familyPrefix, "-layers-text"),
+                ].concat(_toConsumableArray$1(classes)),
+              },
+            });
+          }
+        );
+      },
+    };
+  },
+  provides: function provides2(providers$$1) {
+    providers$$1.generateLayersText = function (node, nodeMeta) {
+      var title = nodeMeta.title,
+        transform = nodeMeta.transform,
+        extra = nodeMeta.extra;
+      var width = null;
+      var height = null;
+      if (IS_IE) {
+        var computedFontSize = parseInt(getComputedStyle(node).fontSize, 10);
+        var boundingClientRect = node.getBoundingClientRect();
+        width = boundingClientRect.width / computedFontSize;
+        height = boundingClientRect.height / computedFontSize;
+      }
+      if (config.autoA11y && !title) {
+        extra.attributes["aria-hidden"] = "true";
+      }
+      return Promise.resolve([
+        node,
+        makeLayersTextAbstract({
+          content: node.innerHTML,
+          width,
+          height,
+          transform,
+          title,
+          extra,
+          watchable: true,
+        }),
+      ]);
+    };
+  },
+};
+var CLEAN_CONTENT_PATTERN = new RegExp('"', "ug");
+var SECONDARY_UNICODE_RANGE = [1105920, 1112319];
+function hexValueFromContent(content) {
+  var cleaned = content.replace(CLEAN_CONTENT_PATTERN, "");
+  var codePoint = codePointAt(cleaned, 0);
+  var isPrependTen =
+    codePoint >= SECONDARY_UNICODE_RANGE[0] &&
+    codePoint <= SECONDARY_UNICODE_RANGE[1];
+  var isDoubled = cleaned.length === 2 ? cleaned[0] === cleaned[1] : false;
+  return {
+    value: isDoubled ? toHex(cleaned[0]) : toHex(cleaned),
+    isSecondary: isPrependTen || isDoubled,
+  };
+}
+function replaceForPosition(node, position) {
+  var pendingAttribute = ""
+    .concat(DATA_FA_PSEUDO_ELEMENT_PENDING)
+    .concat(position.replace(":", "-"));
+  return new Promise(function (resolve2, reject) {
+    if (node.getAttribute(pendingAttribute) !== null) {
+      return resolve2();
+    }
+    var children2 = toArray(node.children);
+    var alreadyProcessedPseudoElement = children2.filter(function (c) {
+      return c.getAttribute(DATA_FA_PSEUDO_ELEMENT) === position;
+    })[0];
+    var styles2 = WINDOW.getComputedStyle(node, position);
+    var fontFamily = styles2
+      .getPropertyValue("font-family")
+      .match(FONT_FAMILY_PATTERN);
+    var fontWeight = styles2.getPropertyValue("font-weight");
+    var content = styles2.getPropertyValue("content");
+    if (alreadyProcessedPseudoElement && !fontFamily) {
+      node.removeChild(alreadyProcessedPseudoElement);
+      return resolve2();
+    } else if (fontFamily && content !== "none" && content !== "") {
+      var _content = styles2.getPropertyValue("content");
+      var prefix = ~[
+        "Solid",
+        "Regular",
+        "Light",
+        "Thin",
+        "Duotone",
+        "Brands",
+        "Kit",
+      ].indexOf(fontFamily[2])
+        ? STYLE_TO_PREFIX[fontFamily[2].toLowerCase()]
+        : FONT_WEIGHT_TO_PREFIX[fontWeight];
+      var _hexValueFromContent = hexValueFromContent(_content),
+        hexValue = _hexValueFromContent.value,
+        isSecondary = _hexValueFromContent.isSecondary;
+      var isV4 = fontFamily[0].startsWith("FontAwesome");
+      var iconName = byUnicode(prefix, hexValue);
+      var iconIdentifier = iconName;
+      if (isV4) {
+        var iconName4 = byOldUnicode(hexValue);
+        if (iconName4.iconName && iconName4.prefix) {
+          iconName = iconName4.iconName;
+          prefix = iconName4.prefix;
+        }
+      }
+      if (
+        iconName &&
+        !isSecondary &&
+        (!alreadyProcessedPseudoElement ||
+          alreadyProcessedPseudoElement.getAttribute(DATA_PREFIX) !== prefix ||
+          alreadyProcessedPseudoElement.getAttribute(DATA_ICON) !==
+            iconIdentifier)
+      ) {
+        node.setAttribute(pendingAttribute, iconIdentifier);
+        if (alreadyProcessedPseudoElement) {
+          node.removeChild(alreadyProcessedPseudoElement);
+        }
+        var meta = blankMeta();
+        var extra = meta.extra;
+        extra.attributes[DATA_FA_PSEUDO_ELEMENT] = position;
+        findIcon(iconName, prefix)
+          .then(function (main) {
+            var abstract = makeInlineSvgAbstract(
+              _objectSpread2$1(
+                _objectSpread2$1({}, meta),
+                {},
+                {
+                  icons: {
+                    main,
+                    mask: emptyCanonicalIcon(),
+                  },
+                  prefix,
+                  iconName: iconIdentifier,
+                  extra,
+                  watchable: true,
+                }
+              )
+            );
+            var element = DOCUMENT.createElement("svg");
+            if (position === "::before") {
+              node.insertBefore(element, node.firstChild);
+            } else {
+              node.appendChild(element);
+            }
+            element.outerHTML = abstract
+              .map(function (a) {
+                return toHtml(a);
+              })
+              .join("\n");
+            node.removeAttribute(pendingAttribute);
+            resolve2();
+          })
+          .catch(reject);
+      } else {
+        resolve2();
+      }
+    } else {
+      resolve2();
+    }
+  });
+}
+function replace(node) {
+  return Promise.all([
+    replaceForPosition(node, "::before"),
+    replaceForPosition(node, "::after"),
+  ]);
+}
+function processable(node) {
+  return (
+    node.parentNode !== document.head &&
+    !~TAGNAMES_TO_SKIP_FOR_PSEUDOELEMENTS.indexOf(node.tagName.toUpperCase()) &&
+    !node.getAttribute(DATA_FA_PSEUDO_ELEMENT) &&
+    (!node.parentNode || node.parentNode.tagName !== "svg")
+  );
+}
+function searchPseudoElements(root) {
+  if (!IS_DOM) return;
+  return new Promise(function (resolve2, reject) {
+    var operations = toArray(root.querySelectorAll("*"))
+      .filter(processable)
+      .map(replace);
+    var end3 = perf.begin("searchPseudoElements");
+    disableObservation();
+    Promise.all(operations)
+      .then(function () {
+        end3();
+        enableObservation();
+        resolve2();
+      })
+      .catch(function () {
+        end3();
+        enableObservation();
+        reject();
+      });
+  });
+}
+var PseudoElements = {
+  hooks: function hooks3() {
+    return {
+      mutationObserverCallbacks: function mutationObserverCallbacks(
+        accumulator
+      ) {
+        accumulator.pseudoElementsCallback = searchPseudoElements;
+        return accumulator;
+      },
+    };
+  },
+  provides: function provides3(providers$$1) {
+    providers$$1.pseudoElements2svg = function (params) {
+      var _params$node = params.node,
+        node = _params$node === void 0 ? DOCUMENT : _params$node;
+      if (config.searchPseudoElements) {
+        searchPseudoElements(node);
+      }
+    };
+  },
+};
+var _unwatched = false;
+var MutationObserver$1 = {
+  mixout: function mixout6() {
+    return {
+      dom: {
+        unwatch: function unwatch() {
+          disableObservation();
+          _unwatched = true;
+        },
+      },
+    };
+  },
+  hooks: function hooks4() {
+    return {
+      bootstrap: function bootstrap() {
+        observe(chainHooks("mutationObserverCallbacks", {}));
+      },
+      noAuto: function noAuto3() {
+        disconnect();
+      },
+      watch: function watch3(params) {
+        var observeMutationsRoot = params.observeMutationsRoot;
+        if (_unwatched) {
+          enableObservation();
+        } else {
+          observe(
+            chainHooks("mutationObserverCallbacks", {
+              observeMutationsRoot,
+            })
+          );
+        }
+      },
+    };
+  },
+};
+var parseTransformString = function parseTransformString2(transformString) {
+  var transform = {
+    size: 16,
+    x: 0,
+    y: 0,
+    flipX: false,
+    flipY: false,
+    rotate: 0,
+  };
+  return transformString
+    .toLowerCase()
+    .split(" ")
+    .reduce(function (acc, n) {
+      var parts = n.toLowerCase().split("-");
+      var first = parts[0];
+      var rest = parts.slice(1).join("-");
+      if (first && rest === "h") {
+        acc.flipX = true;
+        return acc;
+      }
+      if (first && rest === "v") {
+        acc.flipY = true;
+        return acc;
+      }
+      rest = parseFloat(rest);
+      if (isNaN(rest)) {
+        return acc;
+      }
+      switch (first) {
+        case "grow":
+          acc.size = acc.size + rest;
+          break;
+        case "shrink":
+          acc.size = acc.size - rest;
+          break;
+        case "left":
+          acc.x = acc.x - rest;
+          break;
+        case "right":
+          acc.x = acc.x + rest;
+          break;
+        case "up":
+          acc.y = acc.y - rest;
+          break;
+        case "down":
+          acc.y = acc.y + rest;
+          break;
+        case "rotate":
+          acc.rotate = acc.rotate + rest;
+          break;
+      }
+      return acc;
+    }, transform);
+};
+var PowerTransforms = {
+  mixout: function mixout7() {
+    return {
+      parse: {
+        transform: function transform(transformString) {
+          return parseTransformString(transformString);
+        },
+      },
+    };
+  },
+  hooks: function hooks5() {
+    return {
+      parseNodeAttributes: function parseNodeAttributes(accumulator, node) {
+        var transformString = node.getAttribute("data-fa-transform");
+        if (transformString) {
+          accumulator.transform = parseTransformString(transformString);
+        }
+        return accumulator;
+      },
+    };
+  },
+  provides: function provides4(providers2) {
+    providers2.generateAbstractTransformGrouping = function (_ref2) {
+      var main = _ref2.main,
+        transform = _ref2.transform,
+        containerWidth = _ref2.containerWidth,
+        iconWidth = _ref2.iconWidth;
+      var outer = {
+        transform: "translate(".concat(containerWidth / 2, " 256)"),
+      };
+      var innerTranslate = "translate("
+        .concat(transform.x * 32, ", ")
+        .concat(transform.y * 32, ") ");
+      var innerScale = "scale("
+        .concat((transform.size / 16) * (transform.flipX ? -1 : 1), ", ")
+        .concat((transform.size / 16) * (transform.flipY ? -1 : 1), ") ");
+      var innerRotate = "rotate(".concat(transform.rotate, " 0 0)");
+      var inner = {
+        transform: ""
+          .concat(innerTranslate, " ")
+          .concat(innerScale, " ")
+          .concat(innerRotate),
+      };
+      var path2 = {
+        transform: "translate(".concat((iconWidth / 2) * -1, " -256)"),
+      };
+      var operations = {
+        outer,
+        inner,
+        path: path2,
+      };
+      return {
+        tag: "g",
+        attributes: _objectSpread2$1({}, operations.outer),
+        children: [
+          {
+            tag: "g",
+            attributes: _objectSpread2$1({}, operations.inner),
+            children: [
+              {
+                tag: main.icon.tag,
+                children: main.icon.children,
+                attributes: _objectSpread2$1(
+                  _objectSpread2$1({}, main.icon.attributes),
+                  operations.path
+                ),
+              },
+            ],
+          },
+        ],
+      };
+    };
+  },
+};
+var ALL_SPACE = {
+  x: 0,
+  y: 0,
+  width: "100%",
+  height: "100%",
+};
+function fillBlack(abstract) {
+  var force =
+    arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : true;
+  if (abstract.attributes && (abstract.attributes.fill || force)) {
+    abstract.attributes.fill = "black";
+  }
+  return abstract;
+}
+function deGroup(abstract) {
+  if (abstract.tag === "g") {
+    return abstract.children;
+  } else {
+    return [abstract];
+  }
+}
+var Masks = {
+  hooks: function hooks6() {
+    return {
+      parseNodeAttributes: function parseNodeAttributes(accumulator, node) {
+        var maskData = node.getAttribute("data-fa-mask");
+        var mask = !maskData
+          ? emptyCanonicalIcon()
+          : getCanonicalIcon(
+              maskData.split(" ").map(function (i) {
+                return i.trim();
+              })
+            );
+        if (!mask.prefix) {
+          mask.prefix = getDefaultUsablePrefix();
+        }
+        accumulator.mask = mask;
+        accumulator.maskId = node.getAttribute("data-fa-mask-id");
+        return accumulator;
+      },
+    };
+  },
+  provides: function provides5(providers2) {
+    providers2.generateAbstractMask = function (_ref2) {
+      var children2 = _ref2.children,
+        attributes = _ref2.attributes,
+        main = _ref2.main,
+        mask = _ref2.mask,
+        explicitMaskId = _ref2.maskId,
+        transform = _ref2.transform;
+      var mainWidth = main.width,
+        mainPath = main.icon;
+      var maskWidth = mask.width,
+        maskPath = mask.icon;
+      var trans = transformForSvg({
+        transform,
+        containerWidth: maskWidth,
+        iconWidth: mainWidth,
+      });
+      var maskRect = {
+        tag: "rect",
+        attributes: _objectSpread2$1(
+          _objectSpread2$1({}, ALL_SPACE),
+          {},
+          {
+            fill: "white",
+          }
+        ),
+      };
+      var maskInnerGroupChildrenMixin = mainPath.children
+        ? {
+            children: mainPath.children.map(fillBlack),
+          }
+        : {};
+      var maskInnerGroup = {
+        tag: "g",
+        attributes: _objectSpread2$1({}, trans.inner),
+        children: [
+          fillBlack(
+            _objectSpread2$1(
+              {
+                tag: mainPath.tag,
+                attributes: _objectSpread2$1(
+                  _objectSpread2$1({}, mainPath.attributes),
+                  trans.path
+                ),
+              },
+              maskInnerGroupChildrenMixin
+            )
+          ),
+        ],
+      };
+      var maskOuterGroup = {
+        tag: "g",
+        attributes: _objectSpread2$1({}, trans.outer),
+        children: [maskInnerGroup],
+      };
+      var maskId = "mask-".concat(explicitMaskId || nextUniqueId());
+      var clipId = "clip-".concat(explicitMaskId || nextUniqueId());
+      var maskTag = {
+        tag: "mask",
+        attributes: _objectSpread2$1(
+          _objectSpread2$1({}, ALL_SPACE),
+          {},
+          {
+            id: maskId,
+            maskUnits: "userSpaceOnUse",
+            maskContentUnits: "userSpaceOnUse",
+          }
+        ),
+        children: [maskRect, maskOuterGroup],
+      };
+      var defs = {
+        tag: "defs",
+        children: [
+          {
+            tag: "clipPath",
+            attributes: {
+              id: clipId,
+            },
+            children: deGroup(maskPath),
+          },
+          maskTag,
+        ],
+      };
+      children2.push(defs, {
+        tag: "rect",
+        attributes: _objectSpread2$1(
+          {
+            fill: "currentColor",
+            "clip-path": "url(#".concat(clipId, ")"),
+            mask: "url(#".concat(maskId, ")"),
+          },
+          ALL_SPACE
+        ),
+      });
+      return {
+        children: children2,
+        attributes,
+      };
+    };
+  },
+};
+var MissingIconIndicator = {
+  provides: function provides6(providers2) {
+    var reduceMotion = false;
+    if (WINDOW.matchMedia) {
+      reduceMotion = WINDOW.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+    }
+    providers2.missingIconAbstract = function () {
+      var gChildren = [];
+      var FILL = {
+        fill: "currentColor",
+      };
+      var ANIMATION_BASE = {
+        attributeType: "XML",
+        repeatCount: "indefinite",
+        dur: "2s",
+      };
+      gChildren.push({
+        tag: "path",
+        attributes: _objectSpread2$1(
+          _objectSpread2$1({}, FILL),
+          {},
+          {
+            d: "M156.5,447.7l-12.6,29.5c-18.7-9.5-35.9-21.2-51.5-34.9l22.7-22.7C127.6,430.5,141.5,440,156.5,447.7z M40.6,272H8.5 c1.4,21.2,5.4,41.7,11.7,61.1L50,321.2C45.1,305.5,41.8,289,40.6,272z M40.6,240c1.4-18.8,5.2-37,11.1-54.1l-29.5-12.6 C14.7,194.3,10,216.7,8.5,240H40.6z M64.3,156.5c7.8-14.9,17.2-28.8,28.1-41.5L69.7,92.3c-13.7,15.6-25.5,32.8-34.9,51.5 L64.3,156.5z M397,419.6c-13.9,12-29.4,22.3-46.1,30.4l11.9,29.8c20.7-9.9,39.8-22.6,56.9-37.6L397,419.6z M115,92.4 c13.9-12,29.4-22.3,46.1-30.4l-11.9-29.8c-20.7,9.9-39.8,22.6-56.8,37.6L115,92.4z M447.7,355.5c-7.8,14.9-17.2,28.8-28.1,41.5 l22.7,22.7c13.7-15.6,25.5-32.9,34.9-51.5L447.7,355.5z M471.4,272c-1.4,18.8-5.2,37-11.1,54.1l29.5,12.6 c7.5-21.1,12.2-43.5,13.6-66.8H471.4z M321.2,462c-15.7,5-32.2,8.2-49.2,9.4v32.1c21.2-1.4,41.7-5.4,61.1-11.7L321.2,462z M240,471.4c-18.8-1.4-37-5.2-54.1-11.1l-12.6,29.5c21.1,7.5,43.5,12.2,66.8,13.6V471.4z M462,190.8c5,15.7,8.2,32.2,9.4,49.2h32.1 c-1.4-21.2-5.4-41.7-11.7-61.1L462,190.8z M92.4,397c-12-13.9-22.3-29.4-30.4-46.1l-29.8,11.9c9.9,20.7,22.6,39.8,37.6,56.9 L92.4,397z M272,40.6c18.8,1.4,36.9,5.2,54.1,11.1l12.6-29.5C317.7,14.7,295.3,10,272,8.5V40.6z M190.8,50 c15.7-5,32.2-8.2,49.2-9.4V8.5c-21.2,1.4-41.7,5.4-61.1,11.7L190.8,50z M442.3,92.3L419.6,115c12,13.9,22.3,29.4,30.5,46.1 l29.8-11.9C470,128.5,457.3,109.4,442.3,92.3z M397,92.4l22.7-22.7c-15.6-13.7-32.8-25.5-51.5-34.9l-12.6,29.5 C370.4,72.1,384.4,81.5,397,92.4z",
+          }
+        ),
+      });
+      var OPACITY_ANIMATE = _objectSpread2$1(
+        _objectSpread2$1({}, ANIMATION_BASE),
+        {},
+        {
+          attributeName: "opacity",
+        }
+      );
+      var dot = {
+        tag: "circle",
+        attributes: _objectSpread2$1(
+          _objectSpread2$1({}, FILL),
+          {},
+          {
+            cx: "256",
+            cy: "364",
+            r: "28",
+          }
+        ),
+        children: [],
+      };
+      if (!reduceMotion) {
+        dot.children.push(
+          {
+            tag: "animate",
+            attributes: _objectSpread2$1(
+              _objectSpread2$1({}, ANIMATION_BASE),
+              {},
+              {
+                attributeName: "r",
+                values: "28;14;28;28;14;28;",
+              }
+            ),
+          },
+          {
+            tag: "animate",
+            attributes: _objectSpread2$1(
+              _objectSpread2$1({}, OPACITY_ANIMATE),
+              {},
+              {
+                values: "1;0;1;1;0;1;",
+              }
+            ),
+          }
+        );
+      }
+      gChildren.push(dot);
+      gChildren.push({
+        tag: "path",
+        attributes: _objectSpread2$1(
+          _objectSpread2$1({}, FILL),
+          {},
+          {
+            opacity: "1",
+            d: "M263.7,312h-16c-6.6,0-12-5.4-12-12c0-71,77.4-63.9,77.4-107.8c0-20-17.8-40.2-57.4-40.2c-29.1,0-44.3,9.6-59.2,28.7 c-3.9,5-11.1,6-16.2,2.4l-13.1-9.2c-5.6-3.9-6.9-11.8-2.6-17.2c21.2-27.2,46.4-44.7,91.2-44.7c52.3,0,97.4,29.8,97.4,80.2 c0,67.6-77.4,63.5-77.4,107.8C275.7,306.6,270.3,312,263.7,312z",
+          }
+        ),
+        children: reduceMotion
+          ? []
+          : [
+              {
+                tag: "animate",
+                attributes: _objectSpread2$1(
+                  _objectSpread2$1({}, OPACITY_ANIMATE),
+                  {},
+                  {
+                    values: "1;0;0;0;0;1;",
+                  }
+                ),
+              },
+            ],
+      });
+      if (!reduceMotion) {
+        gChildren.push({
+          tag: "path",
+          attributes: _objectSpread2$1(
+            _objectSpread2$1({}, FILL),
+            {},
+            {
+              opacity: "0",
+              d: "M232.5,134.5l7,168c0.3,6.4,5.6,11.5,12,11.5h9c6.4,0,11.7-5.1,12-11.5l7-168c0.3-6.8-5.2-12.5-12-12.5h-23 C237.7,122,232.2,127.7,232.5,134.5z",
+            }
+          ),
+          children: [
+            {
+              tag: "animate",
+              attributes: _objectSpread2$1(
+                _objectSpread2$1({}, OPACITY_ANIMATE),
+                {},
+                {
+                  values: "0;0;1;1;0;0;",
+                }
+              ),
+            },
+          ],
+        });
+      }
+      return {
+        tag: "g",
+        attributes: {
+          class: "missing",
+        },
+        children: gChildren,
+      };
+    };
+  },
+};
+var SvgSymbols = {
+  hooks: function hooks7() {
+    return {
+      parseNodeAttributes: function parseNodeAttributes(accumulator, node) {
+        var symbolData = node.getAttribute("data-fa-symbol");
+        var symbol =
+          symbolData === null ? false : symbolData === "" ? true : symbolData;
+        accumulator["symbol"] = symbol;
+        return accumulator;
+      },
+    };
+  },
+};
+var plugins = [
+  InjectCSS,
+  ReplaceElements,
+  Layers,
+  LayersCounter,
+  LayersText,
+  PseudoElements,
+  MutationObserver$1,
+  PowerTransforms,
+  Masks,
+  MissingIconIndicator,
+  SvgSymbols,
+];
+registerPlugins(plugins, {
+  mixoutsTo: api,
+});
+api.noAuto;
+var config$1 = api.config;
+var library$1 = api.library;
+api.dom;
+var parse$1 = api.parse;
+api.findIconDefinition;
+api.toHtml;
+var icon = api.icon;
+api.layer;
+var text = api.text;
+api.counter;
+function ownKeys(object, enumerableOnly) {
+  var keys = Object.keys(object);
+  if (Object.getOwnPropertySymbols) {
+    var symbols = Object.getOwnPropertySymbols(object);
+    enumerableOnly &&
+      (symbols = symbols.filter(function (sym) {
+        return Object.getOwnPropertyDescriptor(object, sym).enumerable;
+      })),
+      keys.push.apply(keys, symbols);
+  }
+  return keys;
+}
+function _objectSpread2(target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i] != null ? arguments[i] : {};
+    i % 2
+      ? ownKeys(Object(source), true).forEach(function (key) {
+          _defineProperty(target, key, source[key]);
+        })
+      : Object.getOwnPropertyDescriptors
+      ? Object.defineProperties(
+          target,
+          Object.getOwnPropertyDescriptors(source)
+        )
+      : ownKeys(Object(source)).forEach(function (key) {
+          Object.defineProperty(
+            target,
+            key,
+            Object.getOwnPropertyDescriptor(source, key)
+          );
+        });
+  }
+  return target;
+}
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+  return (
+    (_typeof =
+      typeof Symbol == "function" && typeof Symbol.iterator == "symbol"
+        ? function (obj2) {
+            return typeof obj2;
+          }
+        : function (obj2) {
+            return obj2 &&
+              typeof Symbol == "function" &&
+              obj2.constructor === Symbol &&
+              obj2 !== Symbol.prototype
+              ? "symbol"
+              : typeof obj2;
+          }),
+    _typeof(obj)
+  );
+}
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value,
+      enumerable: true,
+      configurable: true,
+      writable: true,
+    });
+  } else {
+    obj[key] = value;
+  }
+  return obj;
+}
+function _objectWithoutPropertiesLoose(source, excluded) {
+  if (source == null) return {};
+  var target = {};
+  var sourceKeys = Object.keys(source);
+  var key, i;
+  for (i = 0; i < sourceKeys.length; i++) {
+    key = sourceKeys[i];
+    if (excluded.indexOf(key) >= 0) continue;
+    target[key] = source[key];
+  }
+  return target;
+}
+function _objectWithoutProperties(source, excluded) {
+  if (source == null) return {};
+  var target = _objectWithoutPropertiesLoose(source, excluded);
+  var key, i;
+  if (Object.getOwnPropertySymbols) {
+    var sourceSymbolKeys = Object.getOwnPropertySymbols(source);
+    for (i = 0; i < sourceSymbolKeys.length; i++) {
+      key = sourceSymbolKeys[i];
+      if (excluded.indexOf(key) >= 0) continue;
+      if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue;
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+function _toConsumableArray(arr) {
+  return (
+    _arrayWithoutHoles(arr) ||
+    _iterableToArray(arr) ||
+    _unsupportedIterableToArray(arr) ||
+    _nonIterableSpread()
+  );
+}
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+}
+function _iterableToArray(iter) {
+  if (
+    (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null) ||
+    iter["@@iterator"] != null
+  )
+    return Array.from(iter);
+}
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
+    return _arrayLikeToArray(o, minLen);
+}
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+  return arr2;
+}
+function _nonIterableSpread() {
+  throw new TypeError(
+    "Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
+  );
+}
+var commonjsGlobal =
+  typeof globalThis !== "undefined"
+    ? globalThis
+    : typeof window !== "undefined"
+    ? window
+    : typeof global !== "undefined"
+    ? global
+    : typeof self !== "undefined"
+    ? self
+    : {};
+var humps$1 = { exports: {} };
+(function (module) {
+  (function (global2) {
+    var _processKeys = function (convert2, obj, options) {
+      if (
+        !_isObject(obj) ||
+        _isDate(obj) ||
+        _isRegExp(obj) ||
+        _isBoolean(obj) ||
+        _isFunction(obj)
+      ) {
+        return obj;
+      }
+      var output,
+        i = 0,
+        l = 0;
+      if (_isArray(obj)) {
+        output = [];
+        for (l = obj.length; i < l; i++) {
+          output.push(_processKeys(convert2, obj[i], options));
+        }
+      } else {
+        output = {};
+        for (var key in obj) {
+          if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            output[convert2(key, options)] = _processKeys(
+              convert2,
+              obj[key],
+              options
+            );
+          }
+        }
+      }
+      return output;
+    };
+    var separateWords = function (string, options) {
+      options = options || {};
+      var separator = options.separator || "_";
+      var split = options.split || /(?=[A-Z])/;
+      return string.split(split).join(separator);
+    };
+    var camelize2 = function (string) {
+      if (_isNumerical(string)) {
+        return string;
+      }
+      string = string.replace(/[\-_\s]+(.)?/g, function (match, chr) {
+        return chr ? chr.toUpperCase() : "";
+      });
+      return string.substr(0, 1).toLowerCase() + string.substr(1);
+    };
+    var pascalize = function (string) {
+      var camelized = camelize2(string);
+      return camelized.substr(0, 1).toUpperCase() + camelized.substr(1);
+    };
+    var decamelize = function (string, options) {
+      return separateWords(string, options).toLowerCase();
+    };
+    var toString = Object.prototype.toString;
+    var _isFunction = function (obj) {
+      return typeof obj === "function";
+    };
+    var _isObject = function (obj) {
+      return obj === Object(obj);
+    };
+    var _isArray = function (obj) {
+      return toString.call(obj) == "[object Array]";
+    };
+    var _isDate = function (obj) {
+      return toString.call(obj) == "[object Date]";
+    };
+    var _isRegExp = function (obj) {
+      return toString.call(obj) == "[object RegExp]";
+    };
+    var _isBoolean = function (obj) {
+      return toString.call(obj) == "[object Boolean]";
+    };
+    var _isNumerical = function (obj) {
+      obj = obj - 0;
+      return obj === obj;
+    };
+    var _processor = function (convert2, options) {
+      var callback =
+        options && "process" in options ? options.process : options;
+      if (typeof callback !== "function") {
+        return convert2;
+      }
+      return function (string, options2) {
+        return callback(string, convert2, options2);
+      };
+    };
+    var humps2 = {
+      camelize: camelize2,
+      decamelize,
+      pascalize,
+      depascalize: decamelize,
+      camelizeKeys: function (object, options) {
+        return _processKeys(_processor(camelize2, options), object);
+      },
+      decamelizeKeys: function (object, options) {
+        return _processKeys(_processor(decamelize, options), object, options);
+      },
+      pascalizeKeys: function (object, options) {
+        return _processKeys(_processor(pascalize, options), object);
+      },
+      depascalizeKeys: function () {
+        return this.decamelizeKeys.apply(this, arguments);
+      },
+    };
+    if (module.exports) {
+      module.exports = humps2;
+    } else {
+      global2.humps = humps2;
+    }
+  })(commonjsGlobal);
+})(humps$1);
+var humps = humps$1.exports;
+var _excluded = ["class", "style"];
+function styleToObject(style) {
+  return style
+    .split(";")
+    .map(function (s) {
+      return s.trim();
+    })
+    .filter(function (s) {
+      return s;
+    })
+    .reduce(function (output, pair) {
+      var idx = pair.indexOf(":");
+      var prop = humps.camelize(pair.slice(0, idx));
+      var value = pair.slice(idx + 1).trim();
+      output[prop] = value;
+      return output;
+    }, {});
+}
+function classToObject(classes) {
+  return classes.split(/\s+/).reduce(function (output, className) {
+    output[className] = true;
+    return output;
+  }, {});
+}
+function convert(abstractElement) {
+  var props =
+    arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
+  var attrs2 =
+    arguments.length > 2 && arguments[2] !== void 0 ? arguments[2] : {};
+  if (typeof abstractElement === "string") {
+    return abstractElement;
+  }
+  var children2 = (abstractElement.children || []).map(function (child) {
+    return convert(child);
+  });
+  var mixins = Object.keys(abstractElement.attributes || {}).reduce(
+    function (mixins2, key) {
+      var value = abstractElement.attributes[key];
+      switch (key) {
+        case "class":
+          mixins2.class = classToObject(value);
+          break;
+        case "style":
+          mixins2.style = styleToObject(value);
+          break;
+        default:
+          mixins2.attrs[key] = value;
+      }
+      return mixins2;
+    },
+    {
+      attrs: {},
+      class: {},
+      style: {},
+    }
+  );
+  attrs2.class;
+  var _attrs$style = attrs2.style,
+    aStyle = _attrs$style === void 0 ? {} : _attrs$style,
+    otherAttrs = _objectWithoutProperties(attrs2, _excluded);
+  return h$1(
+    abstractElement.tag,
+    _objectSpread2(
+      _objectSpread2(
+        _objectSpread2({}, props),
+        {},
+        {
+          class: mixins.class,
+          style: _objectSpread2(_objectSpread2({}, mixins.style), aStyle),
+        },
+        mixins.attrs
+      ),
+      otherAttrs
+    ),
+    children2
+  );
+}
+var PRODUCTION = false;
+try {
+  PRODUCTION = true;
+} catch (e) {}
+function log() {
+  if (!PRODUCTION && console && typeof console.error === "function") {
+    var _console;
+    (_console = console).error.apply(_console, arguments);
+  }
+}
+function objectWithKey(key, value) {
+  return (Array.isArray(value) && value.length > 0) ||
+    (!Array.isArray(value) && value)
+    ? _defineProperty({}, key, value)
+    : {};
+}
+function classList(props) {
+  var _classes;
+  var classes =
+    ((_classes = {
+      "fa-spin": props.spin,
+      "fa-pulse": props.pulse,
+      "fa-fw": props.fixedWidth,
+      "fa-border": props.border,
+      "fa-li": props.listItem,
+      "fa-inverse": props.inverse,
+      "fa-flip": props.flip === true,
+      "fa-flip-horizontal":
+        props.flip === "horizontal" || props.flip === "both",
+      "fa-flip-vertical": props.flip === "vertical" || props.flip === "both",
+    }),
+    _defineProperty(_classes, "fa-".concat(props.size), props.size !== null),
+    _defineProperty(
+      _classes,
+      "fa-rotate-".concat(props.rotation),
+      props.rotation !== null
+    ),
+    _defineProperty(
+      _classes,
+      "fa-pull-".concat(props.pull),
+      props.pull !== null
+    ),
+    _defineProperty(_classes, "fa-swap-opacity", props.swapOpacity),
+    _defineProperty(_classes, "fa-bounce", props.bounce),
+    _defineProperty(_classes, "fa-shake", props.shake),
+    _defineProperty(_classes, "fa-beat", props.beat),
+    _defineProperty(_classes, "fa-fade", props.fade),
+    _defineProperty(_classes, "fa-beat-fade", props.beatFade),
+    _defineProperty(_classes, "fa-flash", props.flash),
+    _defineProperty(_classes, "fa-spin-pulse", props.spinPulse),
+    _defineProperty(_classes, "fa-spin-reverse", props.spinReverse),
+    _classes);
+  return Object.keys(classes)
+    .map(function (key) {
+      return classes[key] ? key : null;
+    })
+    .filter(function (key) {
+      return key;
+    });
+}
+function normalizeIconArgs(icon3) {
+  if (
+    icon3 &&
+    _typeof(icon3) === "object" &&
+    icon3.prefix &&
+    icon3.iconName &&
+    icon3.icon
+  ) {
+    return icon3;
+  }
+  if (parse$1.icon) {
+    return parse$1.icon(icon3);
+  }
+  if (icon3 === null) {
+    return null;
+  }
+  if (_typeof(icon3) === "object" && icon3.prefix && icon3.iconName) {
+    return icon3;
+  }
+  if (Array.isArray(icon3) && icon3.length === 2) {
+    return {
+      prefix: icon3[0],
+      iconName: icon3[1],
+    };
+  }
+  if (typeof icon3 === "string") {
+    return {
+      prefix: "fas",
+      iconName: icon3,
+    };
+  }
+}
+var FontAwesomeIcon = defineComponent({
+  name: "FontAwesomeIcon",
+  props: {
+    border: {
+      type: Boolean,
+      default: false,
+    },
+    fixedWidth: {
+      type: Boolean,
+      default: false,
+    },
+    flip: {
+      type: [Boolean, String],
+      default: false,
+      validator: function validator(value) {
+        return (
+          [true, false, "horizontal", "vertical", "both"].indexOf(value) > -1
+        );
+      },
+    },
+    icon: {
+      type: [Object, Array, String],
+      required: true,
+    },
+    mask: {
+      type: [Object, Array, String],
+      default: null,
+    },
+    listItem: {
+      type: Boolean,
+      default: false,
+    },
+    pull: {
+      type: String,
+      default: null,
+      validator: function validator2(value) {
+        return ["right", "left"].indexOf(value) > -1;
+      },
+    },
+    pulse: {
+      type: Boolean,
+      default: false,
+    },
+    rotation: {
+      type: [String, Number],
+      default: null,
+      validator: function validator3(value) {
+        return [90, 180, 270].indexOf(Number.parseInt(value, 10)) > -1;
+      },
+    },
+    swapOpacity: {
+      type: Boolean,
+      default: false,
+    },
+    size: {
+      type: String,
+      default: null,
+      validator: function validator4(value) {
+        return (
+          [
+            "2xs",
+            "xs",
+            "sm",
+            "lg",
+            "xl",
+            "2xl",
+            "1x",
+            "2x",
+            "3x",
+            "4x",
+            "5x",
+            "6x",
+            "7x",
+            "8x",
+            "9x",
+            "10x",
+          ].indexOf(value) > -1
+        );
+      },
+    },
+    spin: {
+      type: Boolean,
+      default: false,
+    },
+    transform: {
+      type: [String, Object],
+      default: null,
+    },
+    symbol: {
+      type: [Boolean, String],
+      default: false,
+    },
+    title: {
+      type: String,
+      default: null,
+    },
+    inverse: {
+      type: Boolean,
+      default: false,
+    },
+    bounce: {
+      type: Boolean,
+      default: false,
+    },
+    shake: {
+      type: Boolean,
+      default: false,
+    },
+    beat: {
+      type: Boolean,
+      default: false,
+    },
+    fade: {
+      type: Boolean,
+      default: false,
+    },
+    beatFade: {
+      type: Boolean,
+      default: false,
+    },
+    flash: {
+      type: Boolean,
+      default: false,
+    },
+    spinPulse: {
+      type: Boolean,
+      default: false,
+    },
+    spinReverse: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup: function setup(props, _ref2) {
+    var attrs2 = _ref2.attrs;
+    var icon$1 = computed(function () {
+      return normalizeIconArgs(props.icon);
+    });
+    var classes = computed(function () {
+      return objectWithKey("classes", classList(props));
+    });
+    var transform = computed(function () {
+      return objectWithKey(
+        "transform",
+        typeof props.transform === "string"
+          ? parse$1.transform(props.transform)
+          : props.transform
+      );
+    });
+    var mask = computed(function () {
+      return objectWithKey("mask", normalizeIconArgs(props.mask));
+    });
+    var renderedIcon = computed(function () {
+      return icon(
+        icon$1.value,
+        _objectSpread2(
+          _objectSpread2(
+            _objectSpread2(_objectSpread2({}, classes.value), transform.value),
+            mask.value
+          ),
+          {},
+          {
+            symbol: props.symbol,
+            title: props.title,
+          }
+        )
+      );
+    });
+    watch(
+      renderedIcon,
+      function (value) {
+        if (!value) {
+          return log(
+            "Could not find one or more icon(s)",
+            icon$1.value,
+            mask.value
+          );
+        }
+      },
+      {
+        immediate: true,
+      }
+    );
+    var vnode = computed(function () {
+      return renderedIcon.value
+        ? convert(renderedIcon.value.abstract[0], {}, attrs2)
+        : null;
+    });
+    return function () {
+      return vnode.value;
+    };
+  },
+});
+defineComponent({
+  name: "FontAwesomeLayers",
+  props: {
+    fixedWidth: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup: function setup2(props, _ref2) {
+    var slots = _ref2.slots;
+    var familyPrefix = config$1.familyPrefix;
+    var className = computed(function () {
+      return ["".concat(familyPrefix, "-layers")].concat(
+        _toConsumableArray(
+          props.fixedWidth ? ["".concat(familyPrefix, "-fw")] : []
+        )
+      );
+    });
+    return function () {
+      return h$1(
+        "div",
+        {
+          class: className.value,
+        },
+        slots.default ? slots.default() : []
+      );
+    };
+  },
+});
+defineComponent({
+  name: "FontAwesomeLayersText",
+  props: {
+    value: {
+      type: [String, Number],
+      default: "",
+    },
+    transform: {
+      type: [String, Object],
+      default: null,
+    },
+    counter: {
+      type: Boolean,
+      default: false,
+    },
+    position: {
+      type: String,
+      default: null,
+      validator: function validator5(value) {
+        return (
+          ["bottom-left", "bottom-right", "top-left", "top-right"].indexOf(
+            value
+          ) > -1
+        );
+      },
+    },
+  },
+  setup: function setup3(props, _ref2) {
+    var attrs2 = _ref2.attrs;
+    var familyPrefix = config$1.familyPrefix;
+    var classes = computed(function () {
+      return objectWithKey(
+        "classes",
+        [].concat(
+          _toConsumableArray(
+            props.counter ? ["".concat(familyPrefix, "-layers-counter")] : []
+          ),
+          _toConsumableArray(
+            props.position
+              ? ["".concat(familyPrefix, "-layers-").concat(props.position)]
+              : []
+          )
+        )
+      );
+    });
+    var transform = computed(function () {
+      return objectWithKey(
+        "transform",
+        typeof props.transform === "string"
+          ? parse$1.transform(props.transform)
+          : props.transform
+      );
+    });
+    var abstractElement = computed(function () {
+      var _text = text(
+          props.value.toString(),
+          _objectSpread2(_objectSpread2({}, transform.value), classes.value)
+        ),
+        abstract = _text.abstract;
+      if (props.counter) {
+        abstract[0].attributes.class = abstract[0].attributes.class.replace(
+          "fa-layers-text",
+          ""
+        );
+      }
+      return abstract[0];
+    });
+    var vnode = computed(function () {
+      return convert(abstractElement.value, {}, attrs2);
+    });
+    return function () {
+      return vnode.value;
+    };
+  },
+});
+/*!
+ * Font Awesome Free 6.1.2 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ * Copyright 2022 Fonticons, Inc.
+ */
+var faBitcoin = {
+  prefix: "fab",
+  iconName: "bitcoin",
+  icon: [
+    512,
+    512,
+    [],
+    "f379",
+    "M504 256c0 136.1-111 248-248 248S8 392.1 8 256 119 8 256 8s248 111 248 248zm-141.7-35.33c4.937-32.1-20.19-50.74-54.55-62.57l11.15-44.7-27.21-6.781-10.85 43.52c-7.154-1.783-14.5-3.464-21.8-5.13l10.93-43.81-27.2-6.781-11.15 44.69c-5.922-1.349-11.73-2.682-17.38-4.084l.031-.14-37.53-9.37-7.239 29.06s20.19 4.627 19.76 4.913c11.02 2.751 13.01 10.04 12.68 15.82l-12.7 50.92c.76 .194 1.744 .473 2.829 .907-.907-.225-1.876-.473-2.876-.713l-17.8 71.34c-1.349 3.348-4.767 8.37-12.47 6.464 .271 .395-19.78-4.937-19.78-4.937l-13.51 31.15 35.41 8.827c6.588 1.651 13.05 3.379 19.4 5.006l-11.26 45.21 27.18 6.781 11.15-44.73a1038 1038 0 0 0 21.69 5.627l-11.11 44.52 27.21 6.781 11.26-45.13c46.4 8.781 81.3 5.239 95.99-36.73 11.84-33.79-.589-53.28-25-65.99 17.78-4.098 31.17-15.79 34.75-39.95zm-62.18 87.18c-8.41 33.79-65.31 15.52-83.75 10.94l14.94-59.9c18.45 4.603 77.6 13.72 68.81 48.96zm8.417-87.67c-7.673 30.74-55.03 15.12-70.39 11.29l13.55-54.33c15.36 3.828 64.84 10.97 56.85 43.03z",
+  ],
+};
+var faCcStripe = {
+  prefix: "fab",
+  iconName: "cc-stripe",
+  icon: [
+    576,
+    512,
+    [],
+    "f1f5",
+    "M492.4 220.8c-8.9 0-18.7 6.7-18.7 22.7h36.7c0-16-9.3-22.7-18-22.7zM375 223.4c-8.2 0-13.3 2.9-17 7l.2 52.8c3.5 3.7 8.5 6.7 16.8 6.7 13.1 0 21.9-14.3 21.9-33.4 0-18.6-9-33.2-21.9-33.1zM528 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h480c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zM122.2 281.1c0 25.6-20.3 40.1-49.9 40.3-12.2 0-25.6-2.4-38.8-8.1v-33.9c12 6.4 27.1 11.3 38.9 11.3 7.9 0 13.6-2.1 13.6-8.7 0-17-54-10.6-54-49.9 0-25.2 19.2-40.2 48-40.2 11.8 0 23.5 1.8 35.3 6.5v33.4c-10.8-5.8-24.5-9.1-35.3-9.1-7.5 0-12.1 2.2-12.1 7.7 0 16 54.3 8.4 54.3 50.7zm68.8-56.6h-27V275c0 20.9 22.5 14.4 27 12.6v28.9c-4.7 2.6-13.3 4.7-24.9 4.7-21.1 0-36.9-15.5-36.9-36.5l.2-113.9 34.7-7.4v30.8H191zm74 2.4c-4.5-1.5-18.7-3.6-27.1 7.4v84.4h-35.5V194.2h30.7l2.2 10.5c8.3-15.3 24.9-12.2 29.6-10.5h.1zm44.1 91.8h-35.7V194.2h35.7zm0-142.9l-35.7 7.6v-28.9l35.7-7.6zm74.1 145.5c-12.4 0-20-5.3-25.1-9l-.1 40.2-35.5 7.5V194.2h31.3l1.8 8.8c4.9-4.5 13.9-11.1 27.8-11.1 24.9 0 48.4 22.5 48.4 63.8 0 45.1-23.2 65.5-48.6 65.6zm160.4-51.5h-69.5c1.6 16.6 13.8 21.5 27.6 21.5 14.1 0 25.2-3 34.9-7.9V312c-9.7 5.3-22.4 9.2-39.4 9.2-34.6 0-58.8-21.7-58.8-64.5 0-36.2 20.5-64.9 54.3-64.9 33.7 0 51.3 28.7 51.3 65.1 0 3.5-.3 10.9-.4 12.9z",
+  ],
+};
+var faPaypal = {
+  prefix: "fab",
+  iconName: "paypal",
+  icon: [
+    384,
+    512,
+    [],
+    "f1ed",
+    "M111.4 295.9c-3.5 19.2-17.4 108.7-21.5 134-.3 1.8-1 2.5-3 2.5H12.3c-7.6 0-13.1-6.6-12.1-13.9L58.8 46.6c1.5-9.6 10.1-16.9 20-16.9 152.3 0 165.1-3.7 204 11.4 60.1 23.3 65.6 79.5 44 140.3-21.5 62.6-72.5 89.5-140.1 90.3-43.4 .7-69.5-7-75.3 24.2zM357.1 152c-1.8-1.3-2.5-1.8-3 1.3-2 11.4-5.1 22.5-8.8 33.6-39.9 113.8-150.5 103.9-204.5 103.9-6.1 0-10.1 3.3-10.9 9.4-22.6 140.4-27.1 169.7-27.1 169.7-1 7.1 3.5 12.9 10.6 12.9h63.5c8.6 0 15.7-6.3 17.4-14.9 .7-5.4-1.1 6.1 14.4-91.3 4.6-22 14.3-19.7 29.3-19.7 71 0 126.4-28.8 142.9-112.3 6.5-34.8 4.6-71.4-23.8-92.6z",
+  ],
+};
+/*!
+ * Font Awesome Free 6.1.2 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ * Copyright 2022 Fonticons, Inc.
+ */
+var faBitcoinSign = {
+  prefix: "fas",
+  iconName: "bitcoin-sign",
+  icon: [
+    320,
+    512,
+    [],
+    "e0b4",
+    "M48 32C48 14.33 62.33 0 80 0C97.67 0 112 14.33 112 32V64H144V32C144 14.33 158.3 0 176 0C193.7 0 208 14.33 208 32V64C208 65.54 207.9 67.06 207.7 68.54C254.1 82.21 288 125.1 288 176C288 200.2 280.3 222.6 267.3 240.9C298.9 260.7 320 295.9 320 336C320 397.9 269.9 448 208 448V480C208 497.7 193.7 512 176 512C158.3 512 144 497.7 144 480V448H112V480C112 497.7 97.67 512 80 512C62.33 512 48 497.7 48 480V448H41.74C18.69 448 0 429.3 0 406.3V101.6C0 80.82 16.82 64 37.57 64H48V32zM176 224C202.5 224 224 202.5 224 176C224 149.5 202.5 128 176 128H64V224H176zM64 288V384H208C234.5 384 256 362.5 256 336C256 309.5 234.5 288 208 288H64z",
+  ],
+};
+var faCreditCard = {
+  prefix: "fas",
+  iconName: "credit-card",
+  icon: [
+    576,
+    512,
+    [62083, 128179, "credit-card-alt"],
+    "f09d",
+    "M512 32C547.3 32 576 60.65 576 96V128H0V96C0 60.65 28.65 32 64 32H512zM576 416C576 451.3 547.3 480 512 480H64C28.65 480 0 451.3 0 416V224H576V416zM112 352C103.2 352 96 359.2 96 368C96 376.8 103.2 384 112 384H176C184.8 384 192 376.8 192 368C192 359.2 184.8 352 176 352H112zM240 384H368C376.8 384 384 376.8 384 368C384 359.2 376.8 352 368 352H240C231.2 352 224 359.2 224 368C224 376.8 231.2 384 240 384z",
+  ],
+};
+var faMoneyBillWave = {
+  prefix: "fas",
+  iconName: "money-bill-wave",
+  icon: [
+    576,
+    512,
+    [],
+    "f53a",
+    "M48.66 79.13C128.4 100.9 208.2 80.59 288 60.25C375 38.08 462 15.9 549 48.38C565.9 54.69 576 71.62 576 89.66V399.5C576 423.4 550.4 439.2 527.3 432.9C447.6 411.1 367.8 431.4 288 451.7C200.1 473.9 113.1 496.1 26.97 463.6C10.06 457.3 0 440.4 0 422.3V112.5C0 88.59 25.61 72.83 48.66 79.13L48.66 79.13zM287.1 352C332.2 352 368 309 368 255.1C368 202.1 332.2 159.1 287.1 159.1C243.8 159.1 207.1 202.1 207.1 255.1C207.1 309 243.8 352 287.1 352zM63.1 416H127.1C127.1 380.7 99.35 352 63.1 352V416zM63.1 143.1V207.1C99.35 207.1 127.1 179.3 127.1 143.1H63.1zM512 303.1C476.7 303.1 448 332.7 448 368H512V303.1zM448 95.1C448 131.3 476.7 159.1 512 159.1V95.1H448z",
+  ],
+};
+library$1.add(
+  faPaypal,
+  faBitcoinSign,
+  faBitcoin,
+  faCcStripe,
+  faMoneyBillWave,
+  faCreditCard
+);
 const _sfc_main$7 = defineComponent({
   name: "PaymentMethod",
   components: {
@@ -17104,21 +21114,42 @@ const _sfc_main$7 = defineComponent({
     RadioGroupLabel: Mi,
     RadioGroupOption: Li,
     DialogTitle: qr,
+    FontAwesomeIcon,
   },
   setup() {
     const { context } = useOverlay();
     const getDescription = (method) => {
       switch (method) {
         case "COINBASE":
-          return "Pay using crypto: BTC, ETH, and more";
+          return "Pay with crypto: BTC, ETH, and more";
         case "PAYPAL":
           return "Checkout with your PayPal account";
         case "PAYSTACK":
-          return "The Stripe of Africa";
+          return "Pay with credit and debit card";
         case "STRIPE":
           return "Pay with credit card, debit card, and more";
         case "CASHAPP":
           return "Checkout with your CashApp account";
+        case "BTCPAY":
+          return "Pay with bitcoin and other cryptocurrencies";
+        default:
+          return null;
+      }
+    };
+    const getIcon = (method) => {
+      switch (method) {
+        case "COINBASE":
+          return "fa-solid fa-bitcoin-sign";
+        case "PAYPAL":
+          return "fa-brands fa-paypal";
+        case "PAYSTACK":
+          return "fa-solid fa-money-bill-wave";
+        case "STRIPE":
+          return "fa-brands fa-cc-stripe";
+        case "CASHAPP":
+          return "fa-solid fa-credit-card";
+        case "BTCPAY":
+          return "fa-brands fa-bitcoin";
         default:
           return null;
       }
@@ -17127,40 +21158,45 @@ const _sfc_main$7 = defineComponent({
       checkout_information,
       context,
       getDescription,
+      getIcon,
     };
   },
 });
 const _hoisted_1$7 = {
-  class: "sell-flex sell-flex-col sell-px-4 sell-pt-5 sell-pb-4 sm:sell-p-6",
+  class:
+    "embed-flex embed-flex-col embed-px-4 embed-pt-5 embed-pb-4 sm:embed-p-6",
 };
 const _hoisted_2$6 = /* @__PURE__ */ createTextVNode("Payment");
 const _hoisted_3$4 = /* @__PURE__ */ createTextVNode("Payment Method");
-const _hoisted_4$2 = { class: "sell-space-y-4" };
-const _hoisted_5$1 = {
+const _hoisted_4$2 = /* @__PURE__ */ createTextVNode("Select a payment method");
+const _hoisted_5$2 = { class: "embed-space-y-4" };
+const _hoisted_6 = {
   class:
-    "sell-flex sell-flex-col sm:sell-flex-row sm:sell-justify-between sell-text-left",
+    "embed-flex embed-flex-col sm:embed-flex-row sm:embed-justify-between embed-text-left",
 };
-const _hoisted_6$1 = { class: "sell-flex sell-items-center sell-flex-grow-0" };
-const _hoisted_7 = { class: "sell-text-sm" };
-const _hoisted_8 = {
+const _hoisted_7 = { class: "embed-flex embed-items-center embed-flex-grow-0" };
+const _hoisted_8 = { class: "embed-text-sm" };
+const _hoisted_9 = { class: "embed-mr-1" };
+const _hoisted_10 = { class: "embed-capitalize" };
+const _hoisted_11 = {
   class:
-    "sell-mt-2 sell-flex sell-text-sm sm:sell-mt-0 sm:sell-block sm:sell-ml-4 sm:sell-text-right sell-w-auto sell-flex-shrink-0",
+    "embed-mt-2 embed-flex embed-text-sm sm:embed-mt-0 sm:embed-block sm:embed-ml-4 sm:embed-text-right embed-w-auto embed-flex-shrink-0",
 };
-const _hoisted_9 = {
-  class: "sell-font-medium sell-text-slate-900 dark:sell-text-white",
+const _hoisted_12 = {
+  class: "embed-font-medium text-slate-900 dark:embed-text-white",
 };
-const _hoisted_10 = /* @__PURE__ */ createBaseVNode(
+const _hoisted_13 = /* @__PURE__ */ createBaseVNode(
   "div",
   {
     class:
-      "sell-absolute -sell-inset-px sell-rounded-lg sell-pointer-events-none",
+      "embed-absolute embed--inset-px embed-rounded-lg embed-pointer-events-none",
     "aria-hidden": "true",
   },
   null,
   -1
 );
-const _hoisted_11 = ["textContent"];
-const _hoisted_12 = ["textContent"];
+const _hoisted_14 = ["textContent"];
+const _hoisted_15 = ["textContent"];
 function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
   var _a2, _b, _c, _d, _e, _f, _g, _h, _i, _j;
   const _component_DialogTitle = resolveComponent("DialogTitle");
@@ -17168,6 +21204,7 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_RadioGroupDescription = resolveComponent(
     "RadioGroupDescription"
   );
+  const _component_font_awesome_icon = resolveComponent("font-awesome-icon");
   const _component_RadioGroupOption = resolveComponent("RadioGroupOption");
   const _component_RadioGroup = resolveComponent("RadioGroup");
   const _component_Navigator = resolveComponent("Navigator");
@@ -17180,7 +21217,7 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
           {
             as: "h2",
             class:
-              "sell-mb-4 sell-font-bold sell-text-center dark:sell-text-white sell-text-xl",
+              "embed-font-bold embed-text-center dark:embed-text-white embed-text-xl",
           },
           {
             default: withCtx(() => [_hoisted_2$6]),
@@ -17200,13 +21237,24 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
             default: withCtx(() => [
               createVNode(
                 _component_RadioGroupLabel,
-                { class: "sell-sr-only" },
+                { class: "embed-sr-only" },
                 {
                   default: withCtx(() => [_hoisted_3$4]),
                   _: 1,
                 }
               ),
-              createBaseVNode("div", _hoisted_4$2, [
+              createVNode(
+                _component_RadioGroupDescription,
+                {
+                  class:
+                    "dark:embed-text-white embed-mb-4 embed-italic embed-text-sm",
+                },
+                {
+                  default: withCtx(() => [_hoisted_4$2]),
+                  _: 1,
+                }
+              ),
+              createBaseVNode("div", _hoisted_5$2, [
                 (openBlock(true),
                 createElementBlock(
                   Fragment,
@@ -17227,32 +21275,46 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
                               "div",
                               {
                                 class: normalizeClass([
-                                  "sell-flex sell-flex-col",
+                                  "embed-flex embed-flex-col",
                                   [
                                     checked
-                                      ? "sell-shadow-lg dark:sell-shadow-black sell-shadow-slate-500 sell-bg-white dark:sell-bg-slate-900 sell-shadow-slate-400 dark:sell-shadow-black"
-                                      : "sell-bg-slate-50 dark:sell-bg-slate-800 sell-shadow dark:sell-shadow-black/20 dark:hover:sell-bg-slate-900 hover:sell-bg-white hover:sell-shadow-slate-400 dark:hover:sell-shadow-black",
-                                    "sell-transition sell-duration-200 ease-in-out sell-relative sell-block sell-rounded-lg sell-px-6 sell-py-4 sell-cursor-pointer sm:sell-flex sm:sell-justify-between focus:sell-outline-none",
+                                      ? "embed-shadow-lg dark:embed-shadow-black embed-shadow-slate-500 embed-bg-white dark:embed-bg-slate-900 embed-shadow-slate-400 dark:embed-shadow-black"
+                                      : "bg-slate-50 dark:embed-bg-slate-800 embed-shadow dark:embed-shadow-black/20 dark:hover:embed-bg-slate-900 hover:embed-bg-white hover:embed-shadow-slate-400 dark:hover:embed-shadow-black",
+                                    "embed-transition embed-duration-200 embed-ease-in-out embed-relative embed-block embed-rounded-lg embed-px-6 embed-py-4 embed-cursor-pointer sm:embed-flex sm:embed-justify-between focus:embed-outline-none",
                                   ],
                                 ]),
                               },
                               [
-                                createBaseVNode("div", _hoisted_5$1, [
-                                  createBaseVNode("div", _hoisted_6$1, [
-                                    createBaseVNode("div", _hoisted_7, [
+                                createBaseVNode("div", _hoisted_6, [
+                                  createBaseVNode("div", _hoisted_7, [
+                                    createBaseVNode("div", _hoisted_8, [
                                       createVNode(
                                         _component_RadioGroupLabel,
                                         {
                                           as: "p",
                                           class:
-                                            "sell-font-medium sell-text-slate-900 dark:sell-text-white",
-                                          style: {
-                                            "text-transform": "capitalize",
-                                          },
+                                            "embed-font-medium text-slate-900 dark:embed-text-white",
                                         },
                                         {
                                           default: withCtx(() => [
-                                            createTextVNode(
+                                            createBaseVNode(
+                                              "span",
+                                              _hoisted_9,
+                                              [
+                                                createVNode(
+                                                  _component_font_awesome_icon,
+                                                  {
+                                                    icon: _ctx.getIcon(method),
+                                                  },
+                                                  null,
+                                                  8,
+                                                  ["icon"]
+                                                ),
+                                              ]
+                                            ),
+                                            createBaseVNode(
+                                              "span",
+                                              _hoisted_10,
                                               toDisplayString(
                                                 method.toLowerCase()
                                               ),
@@ -17265,10 +21327,10 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
                                       ),
                                     ]),
                                   ]),
-                                  createBaseVNode("div", _hoisted_8, [
+                                  createBaseVNode("div", _hoisted_11, [
                                     createBaseVNode(
                                       "div",
-                                      _hoisted_9,
+                                      _hoisted_12,
                                       toDisplayString(
                                         _ctx.context.variant.total
                                       ),
@@ -17281,7 +21343,7 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
                                   {
                                     as: "div",
                                     class:
-                                      "sell-flex sell-text-xs sell-text-left dark:sell-text-slate-100 sell-mt-2",
+                                      "embed-flex embed-text-xs embed-text-left dark:embed-text-slate-100 embed-mt-2",
                                   },
                                   {
                                     default: withCtx(() => [
@@ -17296,7 +21358,7 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
                                   },
                                   1024
                                 ),
-                                _hoisted_10,
+                                _hoisted_13,
                               ],
                               2
                             ),
@@ -17330,7 +21392,7 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
               {
                 key: 0,
                 class:
-                  "sell-ml-1.5 sell-mt-1 sell-text-left sell-text-sm sell-text-red-600 dark:sell-text-red sell-w-full",
+                  "embed-ml-1.5 embed-mt-1 embed-text-left embed-text-sm embed-text-red-600 dark:embed-text-red embed-w-full",
                 textContent: toDisplayString(
                   (_e =
                     (_d = _ctx.context.error) == null ? void 0 : _d.errors) ==
@@ -17341,7 +21403,7 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
               },
               null,
               8,
-              _hoisted_11
+              _hoisted_14
             ))
           : createCommentVNode("", true),
         !!((_h =
@@ -17356,7 +21418,7 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
               {
                 key: 1,
                 class:
-                  "sell-ml-1.5 sell-mt-1 sell-text-left sell-text-sm sell-text-red-600 dark:sell-text-red sell-w-full",
+                  "embed-ml-1.5 embed-mt-1 embed-text-left embed-text-sm embed-text-red-600 dark:embed-text-red embed-w-full",
                 textContent: toDisplayString(
                   (_j =
                     (_i = _ctx.context.error) == null ? void 0 : _i.errors) ==
@@ -17367,10 +21429,22 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
               },
               null,
               8,
-              _hoisted_12
+              _hoisted_15
             ))
           : createCommentVNode("", true),
-        createVNode(_component_Navigator),
+        createVNode(
+          _component_Navigator,
+          {
+            class: normalizeClass(
+              _ctx.checkout_information.payment_method == ""
+                ? "embed-hidden"
+                : ""
+            ),
+          },
+          null,
+          8,
+          ["class"]
+        ),
       ]),
     ])
   );
@@ -17381,8 +21455,8 @@ var PaymentMethod = /* @__PURE__ */ _export_sfc(_sfc_main$7, [
 const _sfc_main$6 = defineComponent({
   name: "AdditionalInformation",
   components: {
-    ArrowLeftIcon: render$8,
-    ArrowRightIcon: render$7,
+    ArrowLeftIcon: render$9,
+    ArrowRightIcon: render$8,
     InputGroup,
   },
   setup() {
@@ -17426,7 +21500,7 @@ const _sfc_main$6 = defineComponent({
     };
   },
 });
-const _hoisted_1$6 = { class: "sell-space-y-3" };
+const _hoisted_1$6 = { class: "embed-space-y-6" };
 function _sfc_render$6(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_InputGroup = resolveComponent("InputGroup");
   return (
@@ -17554,7 +21628,7 @@ const _sfc_main$5 = defineComponent({
     Button,
     InputGroup,
     AdditionalInformation,
-    MailIcon: render$4,
+    MailIcon: render$5,
     DialogTitle: qr,
   },
   setup() {
@@ -17566,14 +21640,16 @@ const _sfc_main$5 = defineComponent({
   },
 });
 const _hoisted_1$5 = {
-  class: "sell-flex sell-flex-col sell-px-4 sell-pt-5 sell-pb-4 sm:sell-p-6",
+  class:
+    "embed-flex embed-flex-col embed-px-4 embed-pt-5 embed-pb-4 sm:embed-p-6",
 };
 const _hoisted_2$5 = /* @__PURE__ */ createTextVNode("Product delivery");
-const _hoisted_3$3 = { class: "sell-p-3 sell-text-left" };
+const _hoisted_3$3 = { class: "embed-p-3 embed-text-left" };
 const _hoisted_4$1 = {
   key: 0,
-  class: "sell-p-3 sell-text-left",
+  class: "embed-p-3 embed-text-left",
 };
+const _hoisted_5$1 = { class: "embed-px-3 embed-text-left" };
 function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_DialogTitle = resolveComponent("DialogTitle");
   const _component_MailIcon = resolveComponent("MailIcon");
@@ -17590,7 +21666,7 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
         {
           as: "h1",
           class:
-            "sell-font-bold sell-text-center sell-text-xl dark:sell-text-white",
+            "embed-font-bold embed-text-center embed-text-xl dark:embed-text-white",
         },
         {
           default: withCtx(() => [_hoisted_2$5]),
@@ -17614,7 +21690,7 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
           {
             icon: withCtx(() => [
               createVNode(_component_MailIcon, {
-                class: "sell-h-5 sell-w-5 sell-text-slate-400",
+                class: "embed-h-5 embed-w-5 text-slate-400",
                 "aria-hidden": "true",
               }),
             ]),
@@ -17630,6 +21706,26 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
             createVNode(_component_AdditionalInformation),
           ]))
         : createCommentVNode("", true),
+      createBaseVNode("div", _hoisted_5$1, [
+        createVNode(
+          _component_InputGroup,
+          {
+            "error-key": "terms_of_service",
+            id: "terms_of_service",
+            name: "terms_of_service",
+            type: "checkbox",
+            label: "By making this purchase, you agree to the terms of service",
+            modelValue: _ctx.checkout_information.terms_of_service,
+            "onUpdate:modelValue":
+              _cache[1] ||
+              (_cache[1] = ($event) =>
+                (_ctx.checkout_information.terms_of_service = $event)),
+          },
+          null,
+          8,
+          ["modelValue"]
+        ),
+      ]),
       createVNode(_component_Navigator, {
         next: { type: "CHECKOUT" },
         "loading-state": "checkout.step.customer_email.checkout_product",
@@ -17656,12 +21752,12 @@ const _sfc_main$4 = defineComponent({
 });
 const _hoisted_1$4 = {
   class:
-    "sell-flex sell-flex-col sell-items-center sell-justify-evenly sell-h-4/6 sell-w-full sell-p-6",
+    "embed-flex embed-flex-col embed-items-center embed-justify-evenly embed-h-4/6 embed-w-full embed-p-6",
 };
-const _hoisted_2$4 = { class: "sell-flex sell-flex-col sell-items-center" };
+const _hoisted_2$4 = { class: "embed-flex embed-flex-col embed-items-center" };
 const _hoisted_3$2 = {
   class:
-    "sell-bg-slate-100 sell-p-4 sell-rounded-lg sell-w-11/12 sell-rounded sell-mt-4 dark:sell-bg-slate-800 dark:sell-text-white",
+    "bg-slate-100 embed-p-4 embed-rounded-lg embed-w-11/12 embed-rounded embed-mt-4 dark:embed-bg-slate-800 dark:embed-text-white",
 };
 function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_DialogTitle = resolveComponent("DialogTitle");
@@ -17675,7 +21771,7 @@ function _sfc_render$4(_ctx, _cache, $props, $setup, $data, $options) {
           {
             as: "h2",
             class:
-              "sell-mb-0 sell-mt-3 sell-font-bold sell-text-2xl dark:sell-text-white",
+              "embed-mb-0 embed-mt-3 embed-font-bold embed-text-2xl dark:embed-text-white",
           },
           {
             default: withCtx(() => [
@@ -17701,13 +21797,13 @@ const _sfc_main$3 = {
 };
 const _hoisted_1$3 = {
   class:
-    "sell-absolute sell-flex sell-justify-center sell-items-center sell-w-full sell-h-full sell-z-50 sell-bg-opacity-70",
+    "embed-absolute embed-flex embed-justify-center embed-items-center embed-w-full embed-h-full embed-z-50 embed-bg-opacity-70",
 };
 const _hoisted_2$3 = /* @__PURE__ */ createBaseVNode(
   "span",
   {
     class:
-      "sell-animate-ping sell-absolute sell-inline-flex sell-h-24 sell-w-24 sell-rounded-full sell-bg-slate-700 sell-opacity-75",
+      "embed-animate-ping embed-absolute embed-inline-flex embed-h-24 embed-w-24 embed-rounded-full embed-bg-slate-700 embed-opacity-75",
   },
   null,
   -1
@@ -17723,7 +21819,7 @@ const _sfc_main$2 = defineComponent({
   name: "SuccessDialog",
   components: {
     DialogMessage,
-    CheckCircleIcon: render,
+    CheckCircleIcon: render$1,
   },
   setup: function () {
     const { context } = useOverlay();
@@ -17745,7 +21841,7 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
       _component_DialogMessage,
       {
         class:
-          "sell-bg-white sell-text-center dark:sell-bg-ultra sell-rounded-2xl sell-shadow-xl",
+          "embed-bg-white embed-text-center dark:embed-bg-ultra embed-rounded-2xl embed-shadow-xl",
         title: "Order Created",
       },
       {
@@ -17756,6 +21852,7 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
               "a",
               {
                 href: _ctx.context.order,
+                class: "embed-font-bold embed-underline",
                 target: "_blank",
               },
               "click here to open it.",
@@ -17766,7 +21863,7 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
         ]),
         default: withCtx(() => [
           createVNode(_component_CheckCircleIcon, {
-            class: "sell-h-24 sell-w-24 sell-text-green-600",
+            class: "embed-h-24 embed-w-24 embed-text-green-600",
           }),
         ]),
         _: 1,
@@ -17785,13 +21882,13 @@ const _sfc_main$1 = defineComponent({
 });
 const _hoisted_1$1 = /* @__PURE__ */ createBaseVNode(
   "p",
-  { class: "sell-mb-4" },
+  { class: "embed-mb-4" },
   "Once paid, the order will instantly be sent to your entered email. That's it!",
   -1
 );
 const _hoisted_2$1 = /* @__PURE__ */ createBaseVNode(
   "p",
-  { class: "sell-text-xs" },
+  { class: "embed-text-xs" },
   "Note: If you paid with PayPal, we will send the product to your PayPal email for security reasons.",
   -1
 );
@@ -17803,7 +21900,7 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
       _component_DialogMessage,
       {
         class:
-          "sell-bg-white sell-text-center dark:sell-bg-ultra sell-rounded-2xl sell-shadow-xl",
+          "embed-bg-white embed-text-center dark:embed-bg-ultra embed-rounded-2xl embed-shadow-xl",
         title: "What's Next?",
       },
       {
@@ -17832,14 +21929,14 @@ const _sfc_main = defineComponent({
     DialogTitle: qr,
     TransitionChild: Qn,
     TransitionRoot: Yn,
-    ExclamationCircleIcon: render$6,
+    ExclamationCircleIcon: render$7,
     VariantSelection,
     Overview,
     PaymentMethod,
     CustomerEmail,
     Navigator,
     DialogMessage,
-    CheckCircleIcon: render,
+    CheckCircleIcon: render$1,
     SuccessDialog,
     HeadsUpDialog,
   },
@@ -17858,12 +21955,15 @@ const _sfc_main = defineComponent({
     };
   },
 });
-const _hoisted_1 = { class: "sell-fixed sell-z-10 sell-inset-0" };
+const _hoisted_1 = {
+  id: "embed-modal",
+  class: "embed-fixed embed-z-10 embed-inset-0",
+};
 const _hoisted_2 = /* @__PURE__ */ createBaseVNode(
   "span",
   {
     class:
-      "sell-hidden sm:sell-inline-block sm:sell-align-middle sm:sell-h-screen",
+      "embed-hidden sm:embed-inline-block sm:embed-align-middle sm:embed-h-screen",
     "aria-hidden": "true",
   },
   "\u200B",
@@ -17871,50 +21971,16 @@ const _hoisted_2 = /* @__PURE__ */ createBaseVNode(
 );
 const _hoisted_3 = {
   class:
-    "sell-relative sell-z-50 sell-max-w-sm sell-w-full sell-inline-block sell-align-middle",
+    "embed-relative embed-z-50 embed-max-w-lg embed-w-full embed-inline-block embed-align-middle embed-px-4",
 };
 const _hoisted_4 = {
   key: 1,
-  class: "sell-space-y-4",
+  class: "embed-space-y-4",
 };
 const _hoisted_5 = {
   key: 1,
-  class: "sell-space-y-6",
+  class: "embed-space-y-6",
 };
-const _hoisted_6 = /* @__PURE__ */ createBaseVNode(
-  "div",
-  {
-    class:
-      "sell-flex sell-w-full sell-justify-center sell-p-2 sell-bg-opacity-0 sell-absolute sell-bottom-0 sell-z-10",
-  },
-  [
-    /* @__PURE__ */ createBaseVNode(
-      "div",
-      {
-        class:
-          "sell-flex sell-filter sell-drop-shadow-lg sell-blur-sm hover:sell-blur-none sell-transition sell-duration-500",
-      },
-      [
-        /* @__PURE__ */ createBaseVNode("img", {
-          class: "sell-h-6 sell-w-6",
-          loading: "lazy",
-          src: "https://sell.app/img/logo.png",
-          alt: "Sell Logo",
-        }),
-        /* @__PURE__ */ createBaseVNode(
-          "a",
-          {
-            href: "https://sell.app",
-            target: "_blank",
-            class: "sell-text-sm sell-font-semibold sell-pl-1 sell-text-white",
-          },
-          "Powered by Sell.app"
-        ),
-      ]
-    ),
-  ],
-  -1
-);
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_DialogOverlay = resolveComponent("DialogOverlay");
   const _component_TransitionChild = resolveComponent("TransitionChild");
@@ -17951,8 +22017,8 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                     "div",
                     {
                       class: normalizeClass([
-                        "sell-flex sell-items-center sell-justify-center sell-min-h-screen sell-text-center",
-                        { "sell-dark": _ctx.context.customization.darkMode },
+                        "embed-absolute embed-inset-0 embed-overflow-y-auto embed-flex embed-items-center embed-justify-center embed-p-4 sm:embed-p-6",
+                        { "embed-dark": _ctx.context.customization.darkMode },
                       ]),
                     },
                     [
@@ -17960,18 +22026,18 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                         _component_TransitionChild,
                         {
                           as: "template",
-                          enter: "sell-ease-out sell-duration-300",
-                          "enter-from": "sell-opacity-0",
-                          "enter-to": "sell-opacity-100",
-                          leave: "sell-ease-in sell-duration-200",
-                          "leave-from": "sell-opacity-100",
-                          "leave-to": "sell-opacity-0",
+                          enter: "embed-ease-out embed-duration-300",
+                          "enter-from": "embed-opacity-0",
+                          "enter-to": "embed-opacity-100",
+                          leave: "embed-ease-in embed-duration-200",
+                          "leave-from": "embed-opacity-100",
+                          "leave-to": "embed-opacity-0",
                         },
                         {
                           default: withCtx(() => [
                             createVNode(_component_DialogOverlay, {
                               class:
-                                "sell-fixed sell-inset-0 sell-bg-slate-500 dark:sell-bg-black sell-bg-opacity-75 dark:sell-bg-opacity-80 sell-transition-opacity",
+                                "embed-fixed embed-inset-0 embed-bg-slate-500 dark:embed-bg-black embed-bg-opacity-75 dark:embed-bg-opacity-80 embed-transition-opacity",
                             }),
                           ]),
                           _: 1,
@@ -17982,16 +22048,16 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                         _component_TransitionChild,
                         {
                           as: "template",
-                          enter: "sell-ease-out sell-duration-300",
+                          enter: "embed-ease-out embed-duration-300",
                           "enter-from":
-                            "sell-opacity-0 sell-translate-y-4 sm:sell-translate-y-0 sm:sell-scale-95",
+                            "embed-opacity-0 embed-translate-y-4 sm:embed-translate-y-0 sm:embed-scale-95",
                           "enter-to":
-                            "sell-opacity-100 sell-translate-y-0 sm:sell-scale-100",
-                          leave: "sell-ease-in sell-duration-200",
+                            "embed-opacity-100 embed-translate-y-0 sm:embed-scale-100",
+                          leave: "embed-ease-in embed-duration-200",
                           "leave-from":
-                            "sell-opacity-100 sell-translate-y-0 sm:sell-scale-100",
+                            "embed-opacity-100 embed-translate-y-0 sm:embed-scale-100",
                           "leave-to":
-                            "sell-opacity-0 sell-translate-y-4 sm:sell-translate-y-0 sm:sell-scale-95",
+                            "embed-opacity-0 embed-translate-y-4 sm:embed-translate-y-0 sm:embed-scale-95",
                         },
                         {
                           default: withCtx(() => [
@@ -18010,17 +22076,17 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                                           {
                                             key: 0,
                                             "enter-active-class":
-                                              "sell-duration-500 sell-ease-out",
+                                              "embed-duration-500 embed-ease-out",
                                             "enter-from-class":
-                                              "sell-opacity-0 -sell-translate-x-full md:sell-translate-x-full",
+                                              "embed-opacity-0 embed--translate-x-full md:embed-translate-x-full",
                                             "enter-to-class":
-                                              "sell-opacity-100 sell-translate-x-0",
+                                              "embed-opacity-100 embed-translate-x-0",
                                             "leave-active-class":
-                                              "sell-duration-500 sell-ease-out",
+                                              "embed-duration-500 embed-ease-out",
                                             "leave-from-class":
-                                              "sell-opacity-100 sell-translate-x-0",
+                                              "embed-opacity-100 embed-translate-x-0",
                                             "leave-to-class":
-                                              "sell-opacity-0 -sell-translate-x-full",
+                                              "embed-opacity-0 embed--translate-x-full",
                                             mode: "out-in",
                                           },
                                           {
@@ -18032,7 +22098,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                                                 ),
                                                 {
                                                   class:
-                                                    "sell-bg-white sell-text-center dark:sell-bg-ultra sell-rounded-2xl sell-shadow-xl",
+                                                    "embed-bg-white embed-text-center dark:embed-bg-ultra embed-rounded-2xl embed-shadow-xl",
                                                 }
                                               )),
                                             ]),
@@ -18052,7 +22118,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                                           {
                                             key: 2,
                                             class:
-                                              "sell-bg-white sell-text-center dark:sell-bg-ultra sell-rounded-2xl sell-shadow-xl",
+                                              "embed-bg-white embed-text-center dark:embed-bg-ultra embed-rounded-2xl embed-shadow-xl",
                                             title: "Whoops",
                                             message: _ctx.context.error.message,
                                           },
@@ -18062,7 +22128,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                                                 _component_ExclamationCircleIcon,
                                                 {
                                                   class:
-                                                    "sell-h-24 sell-w-24 sell-text-slate-600",
+                                                    "embed-h-24 embed-w-24 text-slate-600",
                                                 }
                                               ),
                                             ]),
@@ -18078,7 +22144,6 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                           _: 1,
                         }
                       ),
-                      _hoisted_6,
                     ],
                     2
                   ),
@@ -18132,7 +22197,8 @@ var Embed = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
 var styles = "";
 const app = createApp(Embed);
 let container;
-"undefined" != typeof window &&
-  ((container = document.createElement("div")),
-  document.body.append(container)),
+"undefined" != typeof window ||
+  ("undefined" != typeof document &&
+    ((container = document.createElement("div")),
+    document.body.append(container))),
   app.mount(container);
