@@ -24,7 +24,7 @@ yarn add react-sellapp
 import SellButton from "react-sellapp";
 
 const App = () => {
-  return <SellButton store={3003} product={11453} darkmode={false} />;
+  return <SellButton store={store_id} product={product_id} darkmode={false} />;
 };
 
 export default App;
