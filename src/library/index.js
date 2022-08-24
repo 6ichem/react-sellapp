@@ -22194,11 +22194,20 @@ export function onClickCheckout(data) {
 }
 
 var Embed = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render]]);
-var styles = "";
-const app = createApp(Embed);
 let container;
-"undefined" != typeof window ||
-  ("undefined" != typeof document &&
-    ((container = document.createElement("div")),
-    document.body.append(container))),
-  app.mount(container);
+
+const appendContainer = () => {
+  container = document.createElement("div");
+  document.body.append(container);
+
+  var cssNode = document.createElement("link");
+  cssNode.setAttribute("rel", "stylesheet");
+  cssNode.setAttribute("type", "text/css");
+  cssNode.setAttribute("href", "https://cdn.sell.app/embed/style.css");
+  document.head.append(cssNode);
+};
+
+const app = createApp(Embed);
+("undefined" != typeof window || "undefined" != typeof document) &&
+  appendContainer();
+app.mount(container);
