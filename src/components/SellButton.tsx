@@ -1,5 +1,6 @@
 import React from "react";
 import { onClickCheckout } from "../library";
+
 export interface ComponentProps
   extends React.DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLButtonElement>,

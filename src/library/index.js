@@ -103,6 +103,54 @@ function normalizeClass(value) {
   }
   return res.trim();
 }
+function looseCompareArrays(a, b) {
+  if (a.length !== b.length) return false;
+  let equal = true;
+  for (let i = 0; equal && i < a.length; i++) {
+    equal = looseEqual(a[i], b[i]);
+  }
+  return equal;
+}
+function looseEqual(a, b) {
+  if (a === b) return true;
+  let aValidType = isDate(a);
+  let bValidType = isDate(b);
+  if (aValidType || bValidType) {
+    return aValidType && bValidType ? a.getTime() === b.getTime() : false;
+  }
+  aValidType = isArray$1(a);
+  bValidType = isArray$1(b);
+  if (aValidType || bValidType) {
+    return aValidType && bValidType ? looseCompareArrays(a, b) : false;
+  }
+  aValidType = isObject(a);
+  bValidType = isObject(b);
+  if (aValidType || bValidType) {
+    if (!aValidType || !bValidType) {
+      return false;
+    }
+    const aKeysCount = Object.keys(a).length;
+    const bKeysCount = Object.keys(b).length;
+    if (aKeysCount !== bKeysCount) {
+      return false;
+    }
+    for (const key in a) {
+      const aHasKey = a.hasOwnProperty(key);
+      const bHasKey = b.hasOwnProperty(key);
+      if (
+        (aHasKey && !bHasKey) ||
+        (!aHasKey && bHasKey) ||
+        !looseEqual(a[key], b[key])
+      ) {
+        return false;
+      }
+    }
+  }
+  return String(a) === String(b);
+}
+function looseIndexOf(arr, val) {
+  return arr.findIndex((item) => looseEqual(item, val));
+}
 const toDisplayString = (val) => {
   return isString$1(val)
     ? val
@@ -155,6 +203,7 @@ const hasOwn = (val, key) => hasOwnProperty.call(val, key);
 const isArray$1 = Array.isArray;
 const isMap = (val) => toTypeString(val) === "[object Map]";
 const isSet = (val) => toTypeString(val) === "[object Set]";
+const isDate = (val) => val instanceof Date;
 const isFunction$1 = (val) => typeof val === "function";
 const isString$1 = (val) => typeof val === "string";
 const isSymbol = (val) => typeof val === "symbol";
@@ -6423,6 +6472,61 @@ const vModelText = {
     }
   },
 };
+const vModelCheckbox = {
+  deep: true,
+  created(el, _, vnode) {
+    el._assign = getModelAssigner(vnode);
+    addEventListener(el, "change", () => {
+      const modelValue = el._modelValue;
+      const elementValue = getValue$1(el);
+      const checked = el.checked;
+      const assign2 = el._assign;
+      if (isArray$1(modelValue)) {
+        const index = looseIndexOf(modelValue, elementValue);
+        const found = index !== -1;
+        if (checked && !found) {
+          assign2(modelValue.concat(elementValue));
+        } else if (!checked && found) {
+          const filtered = [...modelValue];
+          filtered.splice(index, 1);
+          assign2(filtered);
+        }
+      } else if (isSet(modelValue)) {
+        const cloned = new Set(modelValue);
+        if (checked) {
+          cloned.add(elementValue);
+        } else {
+          cloned.delete(elementValue);
+        }
+        assign2(cloned);
+      } else {
+        assign2(getCheckboxValue(el, checked));
+      }
+    });
+  },
+  mounted: setChecked,
+  beforeUpdate(el, binding, vnode) {
+    el._assign = getModelAssigner(vnode);
+    setChecked(el, binding, vnode);
+  },
+};
+function setChecked(el, { value, oldValue }, vnode) {
+  el._modelValue = value;
+  if (isArray$1(value)) {
+    el.checked = looseIndexOf(value, vnode.props.value) > -1;
+  } else if (isSet(value)) {
+    el.checked = value.has(vnode.props.value);
+  } else if (value !== oldValue) {
+    el.checked = looseEqual(value, getCheckboxValue(el, true));
+  }
+}
+function getValue$1(el) {
+  return "_value" in el ? el._value : el.value;
+}
+function getCheckboxValue(el, checked) {
+  const key = checked ? "_trueValue" : "_falseValue";
+  return key in el ? el[key] : checked;
+}
 const rendererOptions = extend({ patchProp }, nodeOps);
 let renderer;
 function ensureRenderer() {
@@ -16069,11 +16173,11 @@ const _hoisted_5$5 = {
   class:
     "embed-flex embed-flex-col sm:embed-flex-row sm:embed-justify-between embed-text-left",
 };
-const _hoisted_6$3 = {
+const _hoisted_6$4 = {
   class: "embed-flex embed-items-center embed-flex-grow-0",
 };
-const _hoisted_7$2 = { class: "embed-text-sm" };
-const _hoisted_8$2 = {
+const _hoisted_7$3 = { class: "embed-text-sm" };
+const _hoisted_8$3 = {
   class:
     "embed-mt-2 embed-flex embed-text-sm sm:embed-mt-0 sm:embed-block sm:embed-ml-4 sm:embed-text-right embed-w-auto embed-flex-shrink-0",
 };
@@ -16177,8 +16281,8 @@ function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
                               },
                               [
                                 createBaseVNode("div", _hoisted_5$5, [
-                                  createBaseVNode("div", _hoisted_6$3, [
-                                    createBaseVNode("div", _hoisted_7$2, [
+                                  createBaseVNode("div", _hoisted_6$4, [
+                                    createBaseVNode("div", _hoisted_7$3, [
                                       createVNode(
                                         _component_RadioGroupLabel,
                                         {
@@ -16205,7 +16309,7 @@ function _sfc_render$b(_ctx, _cache, $props, $setup, $data, $options) {
                                       ),
                                     ]),
                                   ]),
-                                  createBaseVNode("div", _hoisted_8$2, [
+                                  createBaseVNode("div", _hoisted_8$3, [
                                     createBaseVNode(
                                       "div",
                                       _hoisted_9$2,
@@ -16450,7 +16554,7 @@ const _hoisted_2$8 = {
 const _hoisted_3$6 = ["type", "value"];
 const _hoisted_4$4 = ["checked", "type", "value"];
 const _hoisted_5$4 = ["value"];
-const _hoisted_6$2 = ["textContent"];
+const _hoisted_6$3 = ["textContent"];
 function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
   const _component_ExclamationCircleIcon = resolveComponent(
     "ExclamationCircleIcon"
@@ -16613,7 +16717,7 @@ function _sfc_render$9(_ctx, _cache, $props, $setup, $data, $options) {
               },
               null,
               8,
-              _hoisted_6$2
+              _hoisted_6$3
             ))
           : createCommentVNode("", true),
       ],
@@ -16693,16 +16797,16 @@ const _hoisted_4$3 = ["innerHTML"];
 const _hoisted_5$3 = {
   class: "embed-flex embed-flex-col embed-mx-auto embed-items-center",
 };
-const _hoisted_6$1 = {
+const _hoisted_6$2 = {
   key: 0,
   class:
     "embed-text-xl embed-text-center embed-font-light dark:embed-text-white embed-line-through",
 };
-const _hoisted_7$1 = {
+const _hoisted_7$2 = {
   class:
     "embed-text-xl embed-text-center dark:embed-text-white embed-font-bold",
 };
-const _hoisted_8$1 = {
+const _hoisted_8$2 = {
   key: 0,
   class: "embed-flex embed-flex-col embed-mx-auto embed-items-center",
 };
@@ -16821,21 +16925,21 @@ function _sfc_render$8(_ctx, _cache, $props, $setup, $data, $options) {
             ? (openBlock(),
               createElementBlock(
                 "div",
-                _hoisted_6$1,
+                _hoisted_6$2,
                 toDisplayString(_ctx.variant.price),
                 1
               ))
             : createCommentVNode("", true),
           createBaseVNode(
             "div",
-            _hoisted_7$1,
+            _hoisted_7$2,
             toDisplayString(_ctx.variant.total),
             1
           ),
         ]),
         _ctx.variant.humble
           ? (openBlock(),
-            createElementBlock("div", _hoisted_8$1, [
+            createElementBlock("div", _hoisted_8$2, [
               _ctx.orMore
                 ? (openBlock(),
                   createBlock(
@@ -21170,12 +21274,14 @@ const _hoisted_2$6 = /* @__PURE__ */ createTextVNode("Payment");
 const _hoisted_3$4 = /* @__PURE__ */ createTextVNode("Payment Method");
 const _hoisted_4$2 = /* @__PURE__ */ createTextVNode("Select a payment method");
 const _hoisted_5$2 = { class: "embed-space-y-4" };
-const _hoisted_6 = {
+const _hoisted_6$1 = {
   class:
     "embed-flex embed-flex-col sm:embed-flex-row sm:embed-justify-between embed-text-left",
 };
-const _hoisted_7 = { class: "embed-flex embed-items-center embed-flex-grow-0" };
-const _hoisted_8 = { class: "embed-text-sm" };
+const _hoisted_7$1 = {
+  class: "embed-flex embed-items-center embed-flex-grow-0",
+};
+const _hoisted_8$1 = { class: "embed-text-sm" };
 const _hoisted_9 = { class: "embed-mr-1" };
 const _hoisted_10 = { class: "embed-capitalize" };
 const _hoisted_11 = {
@@ -21285,9 +21391,9 @@ function _sfc_render$7(_ctx, _cache, $props, $setup, $data, $options) {
                                 ]),
                               },
                               [
-                                createBaseVNode("div", _hoisted_6, [
-                                  createBaseVNode("div", _hoisted_7, [
-                                    createBaseVNode("div", _hoisted_8, [
+                                createBaseVNode("div", _hoisted_6$1, [
+                                  createBaseVNode("div", _hoisted_7$1, [
+                                    createBaseVNode("div", _hoisted_8$1, [
                                       createVNode(
                                         _component_RadioGroupLabel,
                                         {
@@ -21649,8 +21755,16 @@ const _hoisted_4$1 = {
   key: 0,
   class: "embed-p-3 embed-text-left",
 };
-const _hoisted_5$1 = { class: "embed-px-3 embed-text-left" };
+const _hoisted_5$1 = {
+  class: "embed-px-3 embed-relative embed-flex embed-items-start",
+};
+const _hoisted_6 = { class: "embed-min-w-0 embed-flex-1 embed-text-sm" };
+const _hoisted_7 = ["textContent"];
+const _hoisted_8 = {
+  class: "embed-ml-3 embed-flex embed-items-center embed-h-5",
+};
 function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
+  var _a2, _b, _c, _d, _e, _f, _g, _h;
   const _component_DialogTitle = resolveComponent("DialogTitle");
   const _component_MailIcon = resolveComponent("MailIcon");
   const _component_InputGroup = resolveComponent("InputGroup");
@@ -21707,24 +21821,84 @@ function _sfc_render$5(_ctx, _cache, $props, $setup, $data, $options) {
           ]))
         : createCommentVNode("", true),
       createBaseVNode("div", _hoisted_5$1, [
-        createVNode(
-          _component_InputGroup,
-          {
-            "error-key": "terms_of_service",
-            id: "terms_of_service",
-            name: "terms_of_service",
-            type: "checkbox",
-            label: "By making this purchase, you agree to the terms of service",
-            modelValue: _ctx.checkout_information.terms_of_service,
-            "onUpdate:modelValue":
-              _cache[1] ||
-              (_cache[1] = ($event) =>
-                (_ctx.checkout_information.terms_of_service = $event)),
-          },
-          null,
-          8,
-          ["modelValue"]
-        ),
+        createBaseVNode("div", _hoisted_6, [
+          createBaseVNode(
+            "label",
+            {
+              for: "terms_of_service",
+              class: normalizeClass([
+                "embed-font-medium embed-select-none embed-mb-0",
+                [
+                  (
+                    (_c =
+                      (_b =
+                        (_a2 = _ctx.context.error) == null
+                          ? void 0
+                          : _a2.errors) == null
+                        ? void 0
+                        : _b.terms_of_service) == null
+                      ? void 0
+                      : _c[0]
+                  )
+                    ? "embed-text-red-700"
+                    : "embed-text-slate-700 dark:embed-text-slate-300",
+                ],
+              ]),
+            },
+            "By making this purchase, you agree to the terms of service",
+            2
+          ),
+          (
+            (_f =
+              (_e = (_d = _ctx.context.error) == null ? void 0 : _d.errors) ==
+              null
+                ? void 0
+                : _e.terms_of_service) == null
+              ? void 0
+              : _f[0]
+          )
+            ? (openBlock(),
+              createElementBlock(
+                "p",
+                {
+                  key: 0,
+                  class:
+                    "embed-ml-1 embed-text-left embed-text-xs embed-text-red-600 embed-w-full",
+                  textContent: toDisplayString(
+                    (_h =
+                      (_g = _ctx.context.error) == null ? void 0 : _g.errors) ==
+                      null
+                      ? void 0
+                      : _h.terms_of_service[0]
+                  ),
+                },
+                null,
+                8,
+                _hoisted_7
+              ))
+            : createCommentVNode("", true),
+        ]),
+        createBaseVNode("div", _hoisted_8, [
+          withDirectives(
+            createBaseVNode(
+              "input",
+              {
+                "onUpdate:modelValue":
+                  _cache[1] ||
+                  (_cache[1] = ($event) =>
+                    (_ctx.checkout_information.terms_of_service = $event)),
+                id: "terms_of_service",
+                name: "terms_of_service",
+                type: "checkbox",
+                class:
+                  "embed-bg-slate-200 checked:embed-bg-slate-400 embed-border embed-border-slate-400 dark:embed-border-slate-600 embed-ring-1 embed-ring-slate-400 dark:embed-ring-slate-600 hover:embed-bg-slate-300 focus:embed-bg-slate-300 dark:embed-bg-slate-900 dark:checked:embed-bg-slate-800 dark:hover:embed-bg-slate-800 dark:focus:embed-bg-slate-800 embed-rounded-md embed-shadow-lg dark:embed-shadow-black focus:embed-ring-0",
+              },
+              null,
+              512
+            ),
+            [[vModelCheckbox, _ctx.checkout_information.terms_of_service]]
+          ),
+        ]),
       ]),
       createVNode(_component_Navigator, {
         next: { type: "CHECKOUT" },
@@ -22017,7 +22191,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
                     "div",
                     {
                       class: normalizeClass([
-                        "embed-absolute embed-inset-0 embed-overflow-y-auto embed-flex embed-items-center embed-justify-center embed-p-4 sm:embed-p-6",
+                        "embed-flex embed-items-center embed-justify-center embed-min-h-screen embed-text-center",
                         { "embed-dark": _ctx.context.customization.darkMode },
                       ]),
                     },
@@ -22176,7 +22350,7 @@ export function onClickCheckout(data) {
   const darkMode =
     ((_b = data.darkmode ?? el.attributes["data-sell-darkmode"]) == null
       ? void 0
-      : _b.value) === "true";
+      : data.darkmode.toString() || _b.value) === "true";
   const theme =
     (_c = data.theme ?? el.attributes["data-sell-theme"]) == null
       ? void 0
